@@ -5,7 +5,7 @@ const getEnv = (key: string) => {
 
   const envVar = key.startsWith('NEXT_PUBLIC_') ? publicRuntimeConfig[key] : serverRuntimeConfig[key]
 
-  if (envVar === undefined && typeof window === 'undefined') {
+  if (!envVar && typeof window === 'undefined') {
     throw new Error(`Env variable ${key} is required`)
   }
 
@@ -16,6 +16,7 @@ export const BASE_TARGET = getEnv('NEXT_PUBLIC_TARGET')
 export const API_PREFIX = getEnv('NEXT_PUBLIC_API_PREFIX')
 export const TOKEN_PATH = getEnv('NEXT_PUBLIC_TOKEN_PATH')
 export const BASE_URL = BASE_TARGET + '/' + API_PREFIX
+export const API_MOCKING = getEnv('NEXT_PUBLIC_API_MOCKING')
 
 // Режим запуска программы
 export const NODE_ENV = getEnv('NODE_ENV')

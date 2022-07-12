@@ -1,11 +1,10 @@
 version: '3.4'
 services:
-  admin:
+  frontend:
+    image: ${CONTAINER_REGISTRY_BASE}/frontend:${CONTAINER_VERSION}
     build:
       context: .
       dockerfile: Dockerfile
-      target: frontend_dev
+      target: frontend_prod
     ports:
-      - '3000:3000'
-    volumes:
-      - ./:/app:rw,cached
+      - '8888:80'

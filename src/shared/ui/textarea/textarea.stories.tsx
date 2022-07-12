@@ -30,8 +30,3 @@ const Template: Story<TextareaProps> = args => {
 
 export const Default = Template.bind({})
 Default.args = {}
-
-export const WithFile = Template.bind({})
-WithFile.args = {
-  uploadProps: true,
-}

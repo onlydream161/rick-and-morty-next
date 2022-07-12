@@ -3,15 +3,12 @@ ARG NODE_VERSION=16.15.0
 FROM node:${NODE_VERSION}-alpine as deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY /package.json ./
-COPY /yarn.lock ./
-RUN yarn install --frozen-lockfile
 COPY . .
+RUN yarn install --frozen-lockfile
 
 FROM deps as frontend_dev
-EXPOSE 3000
 VOLUME /app/node_modules
-CMD ["yarn", "dev"]
+CMD ["yarn", "next"]
 
 FROM frontend_dev AS frontend_prod_build
 RUN yarn build

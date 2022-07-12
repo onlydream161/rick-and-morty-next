@@ -16,24 +16,13 @@ dayjs.locale(ru)
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter()
   useEffect(() => {
-    const startLoading = NProgress.start
-    const doneLoading = NProgress.done
-    //TODO: Вернуть
-    //Чистка пустых хэшей в урле
-    // window.addEventListener('hashchange', () =>
-    //   history.pushState(
-    //     '',
-    //     document.title,
-    //     window.location.pathname + window.location.hash.replace(/&?\w+=%22%22&?/gm, '')
-    //   )
-    // )
-    router.events.on('routeChangeStart', startLoading)
-    router.events.on('routeChangeComplete', doneLoading)
-    router.events.on('routeChangeError', doneLoading)
+    router.events.on('routeChangeStart', NProgress.start)
+    router.events.on('routeChangeComplete', NProgress.done)
+    router.events.on('routeChangeError', NProgress.done)
     return () => {
-      router.events.off('routeChangeStart', startLoading)
-      router.events.off('routeChangeComplete', doneLoading)
-      router.events.off('routeChangeError', doneLoading)
+      router.events.off('routeChangeStart', NProgress.start)
+      router.events.off('routeChangeComplete', NProgress.done)
+      router.events.off('routeChangeError', NProgress.done)
     }
   }, [])
 

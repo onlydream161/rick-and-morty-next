@@ -11,9 +11,7 @@ const nextConfig = {
     },
     { serverRuntimeConfig: {}, publicRuntimeConfig: {} }
   ),
-  output: {
-    standalone: true,
-  },
+  output: 'standalone',
   i18n,
   webpack: config => {
     config.module.rules.push({

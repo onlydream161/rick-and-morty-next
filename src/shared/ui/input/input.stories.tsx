@@ -33,8 +33,3 @@ export const Password = Template.bind({})
 Password.args = {
   type: 'password',
 }
-
-export const WithFile = Template.bind({})
-WithFile.args = {
-  uploadProps: true,
-}

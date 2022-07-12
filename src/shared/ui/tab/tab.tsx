@@ -10,7 +10,7 @@ export interface TabProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLBut
 
 export const Tab: FC<TabProps> = ({ children, href, active, border = true, ...rest }) => {
   return (
-    <OptionalLinkWrapper href={href} isLink={!!href}>
+    <OptionalLinkWrapper href={href}>
       <button
         className={cn(
           `relative flex items-center px-base text-subtext text-gray
