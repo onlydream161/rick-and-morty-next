@@ -1,0 +1,10 @@
+version: '3.4'
+services:
+  frontend:
+    build:
+      image: ${CONTAINER_REGISTRY_BASE}/frontend:${CONTAINER_VERSION}
+      context: .
+      dockerfile: Dockerfile
+      target: frontend_prod
+    ports:
+      - '8888:80'

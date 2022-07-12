@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-[2.5rem] leading-[122.5%] font-bold;
+  }
+  h2 {
+    @apply text-[1.5625rem] leading-[120%] font-bold;
+  }
+  h3 {
+    @apply text-[1.375rem] leading-[123%];
+  }
+  h4 {
+    @apply text-base leading-[125%] font-bold;
+  }
+  h5 {
+    @apply text-base leading-[158%];
+  }
+  h6 {
+    @apply text-[0.8125rem] leading-[206%];
+  }
+  p {
+    @apply text-[0.8125rem] leading-[140%];
+  }
+  a {
+    @apply transition-colors duration-100 hover:text-primary active:text-lines disabled:text-gray;
+  }
+  button {
+    @apply text-primary hover:text-white active:text-lines disabled:text-gray
+  }
+  img {
+    @apply object-cover
+  }
+}
+
+@layer components {
+  .input-focus {
+    @apply focus:outline-none focus-visible:ring-1;
+  }
+  .icon-base {
+    @apply fill-primary stroke-primary hover:drop-shadow-icon-hover active:fill-button-press-primary active:stroke-button-press-primary;
+  }
+}
+
+@layer utilities {}

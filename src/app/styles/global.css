@@ -1,0 +1,19 @@
+:root {
+  font-size: 16px;
+}
+
+/*
+  Для перебития стилей браузерного автозаполенния
+*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  @apply !border-background-hover shadow-[0_0_0_1000px_rgb(var(--background-hover))_inset];
+  -webkit-text-fill-color: rgb(var(--white));
+}

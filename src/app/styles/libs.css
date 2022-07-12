@@ -1,0 +1,19 @@
+@import url('~react-toastify/dist/ReactToastify.min.css');
+@import url('~nprogress/nprogress.css');
+@import url('~react-loading-skeleton/dist/skeleton.css');
+
+#nprogress .bar {
+  @apply !bg-primary;
+}
+
+.Toastify__toast {
+  @apply bg-background-hover min-h-[93px] p-0 rounded-[10px] text-white;
+}
+
+.Toastify__toast-body {
+  @apply contents;
+}
+
+.Toastify__toast-body > div {
+  @apply flex items-center gap-x-5 px-[30px] py-[25px];
+}
