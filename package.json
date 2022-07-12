@@ -10,7 +10,7 @@
     "start": "cp .production.env .env && next start",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "jest --no-cache --coverage",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "eslint --quiet",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,scss}\"",
