@@ -21,7 +21,7 @@ const customJestConfig = {
   },
   coveragePathIgnorePatterns: ['<rootDir>/.*/index.ts$'],
   testEnvironment: 'jest-environment-jsdom',
-  resolver: '<rootDir>/jest/resolver.ts',
+  resolver: '<rootDir>/jest/resolver.js',
   watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
 }
 
