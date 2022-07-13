@@ -12,9 +12,11 @@ const getEnv = (key: string) => {
   return envVar
 }
 
-export const BASE_TARGET = getEnv('NEXT_PUBLIC_TARGET')
-export const API_PREFIX = getEnv('NEXT_PUBLIC_API_PREFIX')
-export const TOKEN_PATH = getEnv('NEXT_PUBLIC_TOKEN_PATH')
+export const IS_STORYBOOK = process.env.STORYBOOK_ENV
+
+export const BASE_TARGET = IS_STORYBOOK ? 'http://storybook.mocks:3000' : getEnv('NEXT_PUBLIC_TARGET')
+export const API_PREFIX = IS_STORYBOOK ? 'api' : getEnv('NEXT_PUBLIC_API_PREFIX')
+export const TOKEN_PATH = IS_STORYBOOK ? 'token' : getEnv('NEXT_PUBLIC_TOKEN_PATH')
 export const BASE_URL = BASE_TARGET + '/' + API_PREFIX
 export const API_MOCKING = getEnv('NEXT_PUBLIC_API_MOCKING')
 

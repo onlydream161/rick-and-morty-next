@@ -9,7 +9,7 @@ const withReactQuery = (Component: FC<AppProps>) => (props: AppProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={props.pageProps.dehydratedState}>
+      <Hydrate state={props.pageProps?.dehydratedState || {}}>
         <Component {...props} />
       </Hydrate>
     </QueryClientProvider>

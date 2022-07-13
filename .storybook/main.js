@@ -8,6 +8,7 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
+    'msw-storybook-addon',
     'storybook-addon-next',
     'storybook-react-i18next',
     {
@@ -19,17 +20,12 @@ module.exports = {
       },
     },
   ],
-  ...Object.keys(process.env).reduce(
-    (acc, el) => {
-      acc[el.startsWith('NEXT_PUBLIC_') ? 'publicRuntimeConfig' : 'serverRuntimeConfig'][el] = process.env[el]
-      return acc
-    },
-    { serverRuntimeConfig: {}, publicRuntimeConfig: {} }
-  ),
+  staticDirs: ['../public'],
   framework: '@storybook/react',
   core: {
     builder: 'webpack5',
   },
+  env: config => ({ ...config, STORYBOOK_ENV: true }),
   webpackFinal: async baseConfig => {
     const fileLoaderRule = baseConfig.module.rules.find(rule => rule.test?.test('.svg'))
     fileLoaderRule.exclude = /\.svg$/

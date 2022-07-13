@@ -2,6 +2,8 @@ import * as NextImage from 'next/image'
 import { i18n } from './i18next.js'
 import { SkeletonTheme } from 'react-loading-skeleton'
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider'
+import { initialize, mswDecorator } from 'msw-storybook-addon'
+import { handlers } from '@/app/mocks-server/handlers'
 import '@/app/index.css'
 
 const OriginalNextImage = NextImage.default
@@ -20,9 +22,17 @@ export const parameters = {
     en: 'English',
     ru: 'Russian',
   },
+  msw: {
+    handlers,
+  },
 }
 
+initialize({
+  onUnhandledRequest: 'bypass',
+})
+
 export const decorators = [
+  mswDecorator,
   Story => (
     <MemoryRouterProvider>
       <SkeletonTheme

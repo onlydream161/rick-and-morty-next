@@ -1,4 +1,4 @@
-import { render, RenderResult } from '@testing-library/react'
+import { render, RenderResult } from '@/jest/utils'
 import { Form } from '.'
 
 describe('FormTests', () => {
@@ -8,7 +8,7 @@ describe('FormTests', () => {
     component = render(<Form onSubmit={() => console.error(123)} />)
   })
 
-  it('component should be render', () => {
+  it('component should be render', async () => {
     expect(component.container).toBeInTheDocument()
   })
 })

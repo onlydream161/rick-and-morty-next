@@ -1,4 +1,4 @@
-import { render, RenderResult } from '@testing-library/react'
+import { render, RenderResult } from '@/jest/utils'
 import { composeStories } from '@storybook/testing-react'
 import * as stories from './modal.stories'
 

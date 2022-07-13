@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren } from 'react'
 import { LANG_RU, LANG_EN, THEME_DARK, THEME_LIGHT, SORT_ASC, SORT_DESC } from '@/shared/config'
 
-export type FCWithChildren<T> = FC<PropsWithChildren<T>>
+export type FCWithChildren<T = unknown> = FC<PropsWithChildren<T>>
 
 export type ThemeType = typeof THEME_LIGHT | typeof THEME_DARK
 

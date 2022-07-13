@@ -15,6 +15,7 @@ const customJestConfig = {
     '<rootDir>/src/shared/@types',
   ],
   moduleNameMapper: {
+    '^@/jest/(.*)': '<rootDir>/jest/$1',
     '^@/(.*)': '<rootDir>/src/$1',
     '^.+\\.(svg)$': '<rootDir>/jest/__mocks__/svg.ts',
   },
