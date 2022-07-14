@@ -1,12 +1,12 @@
 version: '3.4'
 services:
   frontend:
-    env_file: 
-      - .env.development
     build:
       context: .
-      dockerfile: Dockerfile
-      target: frontend_dev
+      dockerfile: Dockerfile.dev
+      target: dev
+    env_file:
+      - .env.development
     ports:
       - '3000:3000'
     volumes:

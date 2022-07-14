@@ -1,0 +1,17 @@
+ARG NODE_VERSION=16.15.0
+
+FROM node:${NODE_VERSION}-alpine as dev
+
+RUN apk add --no-cache libc6-compat
+
+WORKDIR /app
+
+COPY . .
+
+COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
+ENTRYPOINT ["docker-entrypoint"]
+
+CMD ["yarn", "next", "dev"]

@@ -5,6 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: frontend_prod
+      target: prod
     ports:
       - '8888:80'

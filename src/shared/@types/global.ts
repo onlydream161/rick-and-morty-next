@@ -9,6 +9,8 @@ export type Nullable<T> = T | null
 
 export type Sort = typeof SORT_ASC | typeof SORT_DESC
 
+export type TFunction = (str: string) => string
+
 export type Language = typeof LANG_RU | typeof LANG_EN
 
 export type JWT_Token = string
