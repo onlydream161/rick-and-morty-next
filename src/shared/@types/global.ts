@@ -13,6 +13,16 @@ export type TFunction = (str: string) => string
 
 export type Language = typeof LANG_RU | typeof LANG_EN
 
+export type FileModel = {
+  id: number
+  name: string
+  originalName: string
+  path: string
+  url: string
+  dateCreate: string
+  dateUpdate: string
+}
+
 export type JWT_Token = string
 
 export type Color =

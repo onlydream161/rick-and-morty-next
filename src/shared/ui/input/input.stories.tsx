@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react'
 import { Input, InputProps } from './input'
 
 export default {
-  title: 'UI/Input',
+  title: 'Shared/Input',
   component: Input,
   args: {
     name: 'storyInput',

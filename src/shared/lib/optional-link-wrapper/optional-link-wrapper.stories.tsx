@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react'
 import { OptionalLinkWrapper, OptionalLinkWrapperProps } from './optional-link-wrapper'
 
 export default {
-  title: 'UI/OptionalLinkWrapper',
+  title: 'Shared/OptionalLinkWrapper',
   component: OptionalLinkWrapper,
 } as Meta
 

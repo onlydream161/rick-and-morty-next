@@ -4,7 +4,7 @@ import { Button } from '../button/button'
 import { Modal, ModalProps } from './modal'
 
 export default {
-  title: 'UI/Modal',
+  title: 'Shared/Modal',
   component: Modal,
   args: {
     nativeClose: true,

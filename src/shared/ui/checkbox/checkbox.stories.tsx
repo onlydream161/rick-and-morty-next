@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react'
 import { Checkbox, CheckboxProps } from './checkbox'
 
 export default {
-  title: 'UI/Checkbox',
+  title: 'Shared/Checkbox',
   component: Checkbox,
   args: {
     name: 'storybookCheckbox',

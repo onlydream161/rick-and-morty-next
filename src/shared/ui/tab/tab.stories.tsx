@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react'
 import { Tab, TabProps } from '.'
 
 export default {
-  title: 'UI/TabPanel',
+  title: 'Shared/TabPanel',
   component: Tab,
 } as Meta
 

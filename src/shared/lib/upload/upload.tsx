@@ -1,10 +1,11 @@
 import RCUpload, { UploadProps as RCUploadProps } from 'rc-upload'
-import { Children, cloneElement, FC, isValidElement, ReactElement } from 'react'
+import { Children, cloneElement, ReactElement } from 'react'
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form'
 import cn from 'classnames'
 import { UploadHookProps, useUpload } from '@/shared/hooks'
 import { RcFile } from 'rc-upload/lib/interface'
 import { AxiosResponse } from 'axios'
+import { FCWithChildren } from '@/shared/@types'
 
 export interface UploadProps extends Omit<RCUploadProps, 'customRequest'> {
   optimistic?: boolean
@@ -14,7 +15,7 @@ export interface UploadProps extends Omit<RCUploadProps, 'customRequest'> {
 }
 
 // Использовать только внутри компонента Form
-export const Upload: FC<UploadProps> = ({
+export const Upload: FCWithChildren<UploadProps> = ({
   children,
   name = 'files',
   optimistic,
@@ -47,7 +48,7 @@ export const Upload: FC<UploadProps> = ({
           onSuccess={res => {
             if (rest.multiple) {
               const currentValue = field.value || []
-              const existItemIndex = currentValue.findIndex((file: MediaContent) => file.uid === res.uid)
+              const existItemIndex = currentValue.findIndex((file: RcFile) => file.uid === res.uid)
               if (~existItemIndex) {
                 currentValue[existItemIndex] = res
                 field.onChange(currentValue)
@@ -61,7 +62,7 @@ export const Upload: FC<UploadProps> = ({
           }}
           {...rest}
         >
-          {isValidElement(children) &&
+          {Array.isArray(children) &&
             Children.map(children, (child: ReactElement) => {
               return cloneElement(child, {
                 ...child.props,

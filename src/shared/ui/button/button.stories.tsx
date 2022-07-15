@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react'
 import { Button, ButtonProps } from './button'
 
 export default {
-  title: 'UI/Button',
+  title: 'Shared/Button',
   component: Button,
   argTypes: {
     variant: {

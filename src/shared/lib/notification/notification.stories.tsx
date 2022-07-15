@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react'
 import { Notification, NotificationProps } from './notification'
 
 export default {
-  title: 'UI/Notification',
+  title: 'Shared/Notification',
   component: Notification,
 } as Meta
 

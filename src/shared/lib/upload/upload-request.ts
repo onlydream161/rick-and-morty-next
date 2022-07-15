@@ -1,3 +1,4 @@
+import { FileModel } from '@/shared/@types'
 import { httpClient } from '@/shared/lib'
 import { AxiosRequestConfig } from 'axios'
 import { RcFile } from 'rc-upload/lib/interface'
@@ -11,7 +12,7 @@ export const uploadFiles = (files: RcFile | RcFile[], config: Omit<AxiosRequestC
   } else {
     data.append('files', files)
   }
-  return httpClient<RcFile, FormData>({
+  return httpClient<FileModel, FormData>({
     ...config,
     data,
     url: '/files',

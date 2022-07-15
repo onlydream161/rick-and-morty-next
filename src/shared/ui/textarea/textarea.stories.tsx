@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { Textarea, TextareaProps } from './textarea'
 
 export default {
-  title: 'UI/Textarea',
+  title: 'Shared/Textarea',
   component: Textarea,
   args: {
     name: 'StoryTextarea',

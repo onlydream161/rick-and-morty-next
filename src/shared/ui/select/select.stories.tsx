@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Select } from './select'
 
 export default {
-  title: 'UI/Select',
+  title: 'Shared/Select',
   component: Select,
   args: {
     options: [

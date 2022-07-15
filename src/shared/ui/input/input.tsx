@@ -86,7 +86,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               onClick={() => !rest.disabled && onOpen(prev => !prev)}
             >
               <SuffixIcon
-                className={cn(' w-[18px] h-[18px] cursor-pointer', {
+                className={cn('stroke-primary w-[18px] h-[18px] cursor-pointer', {
                   'stroke-red': error,
                   'stroke-gray !cursor-not-allowed': rest.disabled,
                 })}

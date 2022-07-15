@@ -32,6 +32,9 @@
     "next-seo": "^5.4.0",
     "nookies": "^2.5.2",
     "nprogress": "^0.2.0",
+    "rc-picker": "^2.6.10",
+    "rc-progress": "^3.4.0",
+    "rc-table": "^7.25.2",
     "rc-upload": "^4.3.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -39,6 +42,7 @@
     "react-loading-skeleton": "^3.1.0",
     "react-query": "^3.39.1",
     "react-toastify": "^9.0.5",
+    "tippy.js": "^6.3.7",
     "yup": "^0.32.11"
   },
   "devDependencies": {
