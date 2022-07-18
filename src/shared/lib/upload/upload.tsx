@@ -5,13 +5,13 @@ import cn from 'classnames'
 import { UploadHookProps, useUpload } from '@/shared/hooks'
 import { RcFile } from 'rc-upload/lib/interface'
 import { AxiosResponse } from 'axios'
-import { FCWithChildren } from '@/shared/@types'
+import { FCWithChildren, FileModel } from '@/shared/@types'
 
 export interface UploadProps extends Omit<RCUploadProps, 'customRequest'> {
   optimistic?: boolean
   rules?: RegisterOptions
   error?: boolean
-  customRequest?: (file: RcFile) => Promise<AxiosResponse<RcFile>>
+  customRequest?: (file: RcFile) => Promise<AxiosResponse<FileModel>>
 }
 
 // Использовать только внутри компонента Form

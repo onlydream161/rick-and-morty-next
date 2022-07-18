@@ -9,7 +9,7 @@ export interface UploadHookProps {
   optimistic?: boolean
   t: TFunction
   // Изменить возвращаемое значение в зависимости с бэком
-  customRequest?: (file: RcFile | RcFile[], config?: AxiosRequestConfig<RcFile>) => Promise<AxiosResponse<FileModel>>
+  customRequest?: (file: RcFile, config?: AxiosRequestConfig<RcFile>) => Promise<AxiosResponse<FileModel>>
 }
 
 export const useUpload = ({ multiple, optimistic, t, customRequest }: UploadHookProps) => {

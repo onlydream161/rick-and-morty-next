@@ -37,7 +37,7 @@
 
 @layer components {
   .icon-base {
-    @apply fill-primary stroke-primary hover:drop-shadow-icon-hover active:fill-button-press-primary active:stroke-button-press-primary;
+    @apply fill-primary stroke-primary active:fill-button-press-primary active:stroke-button-press-primary;
   }
   .pagination-button {
     @apply flex items-center justify-center rounded-full w-[44px] h-[44px] hover:border hover:border-primary;

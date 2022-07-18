@@ -22,3 +22,8 @@ const Template: Story<UploadProps> = args => (
 
 export const Default = Template.bind({})
 Default.args = {}
+
+export const Multiple = Template.bind({})
+Multiple.args = {
+  multiple: true,
+}

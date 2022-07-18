@@ -21,6 +21,7 @@ export type FileModel = {
   url: string
   dateCreate: string
   dateUpdate: string
+  loading?: boolean
 }
 
 export type JWT_Token = string
