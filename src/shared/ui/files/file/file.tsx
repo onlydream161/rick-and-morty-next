@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import cn from 'classnames'
-import DownLoad from '/public/icons/common/download.svg'
-import Close from '/public/icons/common/close.svg'
-import Loading from '/public/icons/common/loading.svg'
+import DownLoad from '@/shared/assets/icons/common/download.svg'
+import Close from '@/shared/assets/icons/common/close.svg'
+import Loading from '@/shared/assets/icons/common/loading.svg'
 import { FileModel } from '@/shared/@types'
 
 export interface FileProps {

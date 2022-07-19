@@ -1,9 +1,9 @@
 import * as NextImage from 'next/image'
 import { i18n } from './i18next.js'
-import { SkeletonTheme } from 'react-loading-skeleton'
 import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider'
 import { initialize, mswDecorator } from 'msw-storybook-addon'
-import { handlers } from '@/app/mocks-server/handlers'
+import { storybookHandlers as handlers } from '@/app/mocks-server/handlers'
+import { withProviders } from '@/app/providers'
 import '@/app/index.css'
 
 const OriginalNextImage = NextImage.default
@@ -33,18 +33,14 @@ initialize({
 
 export const decorators = [
   mswDecorator,
-  Story => (
-    <MemoryRouterProvider>
-      <SkeletonTheme
-        inline
-        borderRadius={10}
-        baseColor='rgb(var(--skeleton))'
-        highlightColor='rgb(var(--skeleton-highlight))'
-      >
+  Story => {
+    const App = withProviders(() => (
+      <MemoryRouterProvider>
         <Story />
-      </SkeletonTheme>
-    </MemoryRouterProvider>
-  ),
+      </MemoryRouterProvider>
+    ))
+    return <App />
+  },
 ]
 
 Object.defineProperty(NextImage, 'default', {

@@ -68,7 +68,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             id={name}
             name={name}
             className={cn(
-              `relative block input-focus border border-transparent bg-background-hover w-full min-h-[2.5rem] h-full px-small pt-[10px] pb-10
+              `relative block input-focus border border-transparent bg-background-hover w-full min-h-[2.5rem] h-full px-small py-[10px]
             overflow-hidden focus-visible:ring-primary rounded-base caret-primary focus:text-white group-hover:text-primary disabled:border-background-hover
             disabled:text-gray disabled:cursor-not-allowed disabled:group-hover:text-gray`,
               {

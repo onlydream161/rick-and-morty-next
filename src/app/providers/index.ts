@@ -3,5 +3,7 @@ import withReactQuery from './with-react-query'
 import withJotai from './with-jotai'
 import { appWithTranslation } from 'next-i18next'
 import withSkeleton from './with-skeleton'
+import { FC } from 'react'
 
-export const withProviders = compose(withReactQuery, withJotai, appWithTranslation, withSkeleton)
+export const withProviders = <T>(component: FC<T>) =>
+  compose<FC<T>>(withReactQuery, withJotai, appWithTranslation, withSkeleton)(component)

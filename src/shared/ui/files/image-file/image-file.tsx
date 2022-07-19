@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import Close from '/public/icons/common/close_secondary.svg'
+import Close from '@/shared/assets/icons/common/close_secondary.svg'
 import Link from 'next/link'
 import cn from 'classnames'
 import { FileModel } from '@/shared/@types'
