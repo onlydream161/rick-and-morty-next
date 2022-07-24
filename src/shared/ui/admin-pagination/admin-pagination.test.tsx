@@ -7,7 +7,7 @@ const { Default } = composeStories(stories)
 describe('PaginationTests', () => {
   let component = {} as RenderResult
 
-  beforeAll(() => {
+  beforeEach(() => {
     component = render(<Default />)
   })
 

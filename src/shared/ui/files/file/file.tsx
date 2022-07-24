@@ -24,7 +24,7 @@ export const File: FC<FileProps> = ({ file, className = '', onRemove }) => {
       )}
     >
       {!isLoading && (
-        <a download href={file.url}>
+        <a href={file.url} download>
           <DownLoad className='w-4 h-4 icon-base fill-primary' />
         </a>
       )}

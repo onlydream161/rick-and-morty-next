@@ -3,6 +3,7 @@ import { RcFile, UploadRequestError, UploadRequestOption } from 'rc-upload/lib/i
 import { useRef, useState } from 'react'
 import { FileModel, Nullable, TFunction } from '@/shared/@types'
 import { notifyError, uploadFiles } from '@/shared/lib'
+import { getNumberFromString } from '@/shared/helpers'
 
 export interface UploadHookProps {
   multiple?: boolean
@@ -20,7 +21,7 @@ export const useUpload = ({ multiple, optimistic, t, customRequest }: UploadHook
     file,
     onSuccess,
     onError,
-  }: UploadRequestOption<Partial<FileModel> & { loading: boolean }>) => {
+  }: UploadRequestOption<Partial<FileModel> & { uid: string; loading: boolean }>) => {
     try {
       setIsLoading(true)
       if (!multiple && abortController.current) {
@@ -30,6 +31,7 @@ export const useUpload = ({ multiple, optimistic, t, customRequest }: UploadHook
       const rcFile = file as RcFile
       const optimisticFileData = {
         uid: rcFile.uid,
+        id: getNumberFromString(rcFile.uid),
         name: rcFile.name,
       }
       optimistic &&
@@ -37,19 +39,16 @@ export const useUpload = ({ multiple, optimistic, t, customRequest }: UploadHook
           ...optimisticFileData,
           loading: true,
         })
+      let response: Nullable<AxiosResponse<FileModel>> = null
       if (customRequest) {
-        const response = await customRequest(rcFile, {
+        response = await customRequest(rcFile, {
           signal: abortController.current.signal,
-        })
-        onSuccess?.({
-          loading: false,
-          ...response.data,
         })
       } else {
-        await uploadFiles(rcFile, {
+        response = await uploadFiles(rcFile, {
           signal: abortController.current.signal,
         })
-        // onSuccess?.({ loading: false, ...response.data, uid: rcFile.uid })
+        onSuccess?.({ ...response.data, loading: false, uid: rcFile.uid })
       }
     } catch (error) {
       if ((error as Cancel).message === 'canceled') return

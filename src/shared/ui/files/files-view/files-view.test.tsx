@@ -7,7 +7,7 @@ const { Default } = composeStories(stories)
 describe('FilesTests', () => {
   let component = {} as RenderResult
 
-  beforeAll(() => {
+  beforeEach(() => {
     component = render(<Default />)
   })
 

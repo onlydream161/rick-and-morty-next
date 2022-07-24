@@ -29,6 +29,12 @@ module.exports = {
       'skeleton-highlight': 'rgb(var(--skeleton-highlight) / <alpha-value>)',
     },
     extend: {
+      height: {
+        small: '10px',
+      },
+      width: {
+        small: '10px',
+      },
       margin: {
         'extra-small': '5px',
         small: '10px',

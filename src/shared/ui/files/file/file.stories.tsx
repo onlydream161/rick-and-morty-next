@@ -1,12 +1,13 @@
+import Mock from 'mockjs'
 import { Story, Meta } from '@storybook/react'
+import { FILE_ENTITY_MOCK } from '@/app/mocks-server/constants'
 import { File, FileProps } from './file'
 
 export default {
-  title: 'UI/Files/File',
+  title: 'Shared/File',
   component: File,
   args: {
-    file: {},
-    // file: {https://dummyimage.com/200x100},
+    file: Mock.mock(FILE_ENTITY_MOCK),
   },
 } as Meta
 

@@ -26,8 +26,7 @@ export const FilesView: FC<FilesViewProps> = ({ name, files, className = '' }) =
 
   const sortedFiles = files.reduce(
     (acc, file) => {
-      acc[ALLOWED_IMAGES_EXT.includes(getFileExtension(file)) ? 'images' : 'files'].push(file)
-
+      acc[ALLOWED_IMAGES_EXT.includes(getFileExtension(file).toUpperCase()) ? 'images' : 'files'].push(file)
       return acc
     },
     { images: [], files: [] } as SortedFiles

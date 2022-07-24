@@ -67,7 +67,7 @@ export const Upload: FCWithChildren<UploadProps> = ({
               return cloneElement(child, {
                 ...child.props,
                 value: field.value,
-                isLoading: isLoading,
+                loading: isLoading,
               })
             })}
         </RCUpload>

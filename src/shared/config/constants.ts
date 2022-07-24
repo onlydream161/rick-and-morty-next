@@ -23,7 +23,7 @@ export const EMAIL_REG_EXP =
   // eslint-disable-next-line
   /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
 
-export const ALLOWED_IMAGES_EXT = ['JPEG', 'PNG', 'GIF', 'SVG', 'TIFF', 'ICO']
+export const ALLOWED_IMAGES_EXT = ['JPG', 'JPEG', 'PNG', 'GIF', 'SVG', 'TIFF', 'ICO']
 export const ALLOWED_VIDEOS_EXT = ['MPEG', 'MP4', 'Quicktime', 'WMV', 'AVI', 'FLV', 'OGG']
 export const ALLOWED_AUDIOS_EXT = ['MP3', 'WAV', 'OGG']
 export const ALLOWED_FILES_EXT = [...ALLOWED_IMAGES_EXT, ...ALLOWED_VIDEOS_EXT, ...ALLOWED_AUDIOS_EXT]
