@@ -1,6 +1,7 @@
 import Head from 'next/head'
-import NextApp, { AppContext, AppProps } from 'next/app'
+import NextApp, { AppContext } from 'next/app'
 import { API_MOCKING } from '@/shared/config'
+import { AppPropsWithLayout } from '@/shared/@types'
 import App from '@/app'
 //Next.js требует импортировать глобальные стили только в _app.tsx
 import '@/app/index.css'
@@ -9,7 +10,7 @@ if (API_MOCKING === 'enabled') {
   require('@/app/mocks-server')
 }
 
-const _App = (props: AppProps) => {
+const _App = (props: AppPropsWithLayout) => {
   return (
     <>
       <Head>

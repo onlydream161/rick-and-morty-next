@@ -1,18 +1,22 @@
 import { AxiosError, AxiosRequestConfig } from 'axios'
 
-export interface OnSubmitProps<T, R extends (config: AxiosRequestConfig<T>) => ReturnType<R>> {
+export interface OnSubmitProps<T, R extends (config: AxiosRequestConfig<T>) => ReturnType<R>, E> {
   submitRequest: R
-  onSuccess?: (formData: T, response: ReturnType<R>) => Promise<void> | void
-  onError?: (error: AxiosError) => Promise<void> | void
+  onSuccess?: (formData: T, response: Awaited<ReturnType<R>>) => Promise<void> | void
+  onError?: (error: AxiosError<E>) => Promise<void> | void
 }
 
 export const onSubmit =
-  <T, R extends (config: AxiosRequestConfig<T>) => ReturnType<R>>(data: T) =>
-  async ({ submitRequest, onSuccess, onError }: OnSubmitProps<T, R>) => {
+  <T,>(data: T) =>
+  async <R extends (config: AxiosRequestConfig<T>) => ReturnType<R>, E>({
+    submitRequest,
+    onSuccess,
+    onError,
+  }: OnSubmitProps<T, R, E>) => {
     try {
       const response = await submitRequest({ data })
       onSuccess?.(data, response)
     } catch (error) {
-      onError?.(error as AxiosError)
+      onError?.(error as AxiosError<E>)
     }
   }

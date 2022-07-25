@@ -1,8 +1,8 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
 import { HomePage } from '@/views/home'
+import { NextPageWithLayout } from '@/shared/@types'
 
-const Home: NextPage = () => (
+const Home: NextPageWithLayout = () => (
   <div>
     <Head>
       <title>Create Next App</title>

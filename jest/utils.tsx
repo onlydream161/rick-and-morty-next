@@ -10,7 +10,6 @@ const TestWrapper: FCWithChildren = ({ children }) => {
 }
 
 const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
-  //@ts-expect-error
   render(ui, { wrapper: withProviders(TestWrapper), ...options })
 
 export * from '@testing-library/react'

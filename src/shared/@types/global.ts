@@ -1,11 +1,17 @@
-import { FC, PropsWithChildren } from 'react'
+import { NextPage } from 'next'
+import { AppProps } from 'next/app'
 import { LANG_RU, LANG_EN, THEME_DARK, THEME_LIGHT, SORT_ASC, SORT_DESC } from '@/shared/config'
+import { FCWithChildren } from './utils'
 
-export type FCWithChildren<T = unknown> = FC<PropsWithChildren<T>>
+export type NextPageWithLayout = NextPage & {
+  Layout?: FCWithChildren
+}
+
+export type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
 
 export type ThemeType = typeof THEME_LIGHT | typeof THEME_DARK
-
-export type Nullable<T> = T | null
 
 export type Sort = typeof SORT_ASC | typeof SORT_DESC
 
