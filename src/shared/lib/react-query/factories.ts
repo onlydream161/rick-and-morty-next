@@ -34,7 +34,7 @@ export const queryFactory = <Response, Filters = Record<string, unknown>>(
 ) => {
   return {
     prefetch: async (queryClient: QueryClient, locale?: string, preBuildFilters?: Filters) => {
-      const filters = merge(initialFilters, preBuildFilters)
+      const filters = merge(initialFilters, { locale }, preBuildFilters)
       const key = [primaryKey, locale, ...Object.values(filters)]
       await queryClient.prefetchQuery(key, fetch(config?.(filters) || {}))
       return queryClient.getQueryData(key) as Response
