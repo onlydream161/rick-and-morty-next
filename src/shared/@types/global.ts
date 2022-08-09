@@ -2,6 +2,8 @@ import { NextPage } from 'next'
 import { AppProps } from 'next/app'
 import { LANG_RU, LANG_EN, THEME_DARK, THEME_LIGHT, SORT_ASC, SORT_DESC } from '@/shared/config'
 import { FCWithChildren } from './utils'
+import { RESET } from 'jotai/utils'
+import { SetStateAction } from 'jotai'
 
 export type NextPageWithLayout = NextPage & {
   Layout?: FCWithChildren
@@ -14,6 +16,8 @@ export type AppPropsWithLayout = AppProps & {
 export type ThemeType = typeof THEME_LIGHT | typeof THEME_DARK
 
 export type Sort = typeof SORT_ASC | typeof SORT_DESC
+
+export type SortAtom = [Sort, (update: typeof RESET | SetStateAction<Sort>) => void]
 
 export type TFunction = (str: string) => string
 
