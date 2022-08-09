@@ -32,7 +32,8 @@ export const queryFactory =
     return {
       prefetch: async (queryClient: QueryClient, preBuildFilters?: Partial<Filters & { locale: string }>) => {
         const filters = { ...initialFilters, ...preBuildFilters }
-        const key = [...primaryKey, filters]
+        const key = [...primaryKey] as unknown[]
+        Object.keys(filters).length && key.push(filters)
         await queryClient.prefetchQuery(key, fetch(config?.(filters) || {}))
         return {
           response: queryClient.getQueryData(key) as Response,
@@ -41,11 +42,12 @@ export const queryFactory =
       },
       useHookInitializer: (currentFitlers?: Partial<Filters & { locale: string }>, params?: QueryParams<Response>) => {
         const filters = { ...initialFilters, ...currentFitlers } as Filters
-        const key = [...primaryKey, filters]
+        const key = [...primaryKey] as unknown[]
+        Object.keys(filters).length && key.push(filters)
         // TODO: Заменить на atomWithQuery, когда в реакт добавят OffScreen и переписать на Suspense
         const response = useQuery(
           key,
-          fetch(config?.(filters)),
+          fetch(config?.(filters) || {}),
           //@ts-expect-error
           params
         )
