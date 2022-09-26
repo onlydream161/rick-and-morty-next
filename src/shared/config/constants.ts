@@ -11,6 +11,8 @@ export const LANG_EN = 'en'
 export const SORT_ASC = 'asc'
 export const SORT_DESC = 'desc'
 
+export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 15, 20, 30, 40, 50]
+
 export const STRONG_PASSWORD_REG_EXP = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
 
 export const MEDIUM_PASSWORD_REG_EXP = new RegExp(
