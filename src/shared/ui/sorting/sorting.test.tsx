@@ -1,10 +1,10 @@
 import { render, RenderResult } from '@testing-library/react'
 import { composeStories } from '@storybook/testing-react'
-import * as stories from './change-theme-button.stories'
+import * as stories from './sorting.stories'
 
 const { Default } = composeStories(stories)
 
-describe('ChangeThemeButtonTests', () => {
+describe('SortingTests', () => {
   let component = {} as RenderResult
 
   beforeEach(() => {

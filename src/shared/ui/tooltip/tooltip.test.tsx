@@ -1,10 +1,10 @@
-import { render, RenderResult } from '@testing-library/react'
 import { composeStories } from '@storybook/testing-react'
-import * as stories from './change-theme-button.stories'
+import { render, RenderResult } from '@testing-library/react'
+import * as stories from './tooltip.stories'
 
 const { Default } = composeStories(stories)
 
-describe('ChangeThemeButtonTests', () => {
+describe('TooltipTests', () => {
   let component = {} as RenderResult
 
   beforeEach(() => {

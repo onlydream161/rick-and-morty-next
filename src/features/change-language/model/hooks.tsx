@@ -1,18 +1,21 @@
-import { useMemo } from 'react'
-import { Language } from '@/shared/@types'
-import { LANG_EN, LANG_RU } from '@/shared/config'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import En from '@/shared/assets/icons/common/en.svg'
 import Ru from '@/shared/assets/icons/common/ru.svg'
+import { LANG_EN, LANG_RU } from '@/shared/config'
+import { Language } from '@/shared/@types'
 
-export const useTranslate = (namespace?: string[]) => {
+export const useTranslate = (namespace: string[] = []) => {
   const router = useRouter()
   const translation = useTranslation(namespace)
+  const [Icon, setIcon] = useState(() => En)
 
   const lang = translation.i18n.language
 
-  const Icon = useMemo(() => (lang === LANG_RU ? En : Ru), [lang])
+  useEffect(() => {
+    setIcon(() => (lang === LANG_RU ? En : Ru))
+  }, [lang])
 
   const _changeLocale = (locale: string) =>
     router.push({ pathname: router.pathname, query: router.query }, router.asPath, { locale })
@@ -26,7 +29,7 @@ export const useTranslate = (namespace?: string[]) => {
 
   return {
     ...translation,
-    Icon: <Icon className='fill-primary w-[22px] h-[22px]' />,
+    Icon,
     changeLanguage,
     toggleLanguage,
   }

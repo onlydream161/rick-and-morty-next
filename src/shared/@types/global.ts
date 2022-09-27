@@ -23,6 +23,11 @@ export type TFunction = (str: string) => string
 
 export type Language = typeof LANG_RU | typeof LANG_EN
 
+export interface SelectOption {
+  id: number | string
+  label: string
+}
+
 export type FileModel = {
   id: number
   name: string

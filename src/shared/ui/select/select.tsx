@@ -1,27 +1,25 @@
 import { Combobox, Transition } from '@headlessui/react'
 import Arrow from '@/shared/assets/icons/common/arrow.svg'
 import Loading from '@/shared/assets/icons/common/loading.svg'
-import { ForwardedRef, forwardRef, InputHTMLAttributes, useState, FocusEvent } from 'react'
 import SearchSVG from '@/shared/assets/icons/common/search.svg'
+import { ForwardedRef, forwardRef, InputHTMLAttributes, useState, FocusEvent } from 'react'
 import cn from 'classnames'
-import { useTranslation } from 'next-i18next'
-
-export interface SelectOption {
-  id: number | string
-  label: string
-}
+import { SelectOption, TFunction } from '@/shared/@types'
 
 export interface SelectProps<T> extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'onSelect'> {
   showSearch?: boolean
   onlySearch?: boolean
+  darkTheme?: boolean
   prefix?: string
-  searchValue?: string
-  value?: T
+  value: T
   options?: SelectOption[]
   className?: string
+  selectInputClassName?: string
+  notSelected?: string
   hidden?: boolean
   isLoading?: boolean
-  onChange?: (selected?: T) => void
+  t: TFunction
+  onChange?: (selected: T) => void
   onSearch?: (value: string) => void
 }
 
@@ -29,21 +27,24 @@ const SelectComponent = <T extends string | number>(
   {
     showSearch,
     onlySearch,
+    darkTheme,
     prefix = '',
-    searchValue,
     value,
     options,
     className = '',
+    selectInputClassName = '',
     hidden,
     isLoading,
+    notSelected = 'notSelected',
+    t,
     onChange,
     onSearch,
     ...rest
   }: SelectProps<T>,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
-  const { t } = useTranslation('common')
   const [isFocused, setIsFocused] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
 
   return (
     <Combobox value={value} onChange={e => onChange?.(e)}>
@@ -55,6 +56,7 @@ const SelectComponent = <T extends string | number>(
                 'bg-transparent placeholder:text-transparent group-hover:bg-background-hover': hidden && !searchValue,
                 'bg-background-hover placeholder:text-gray': searchValue || isFocused || !hidden,
                 [className]: className,
+                'bg-background-primary group-hover:bg-background-primary': darkTheme,
               })}
             >
               <Combobox.Input
@@ -63,9 +65,10 @@ const SelectComponent = <T extends string | number>(
                 type='text'
                 className={cn(
                   `caret-primary focus:outline-none w-full text-subtext
-                    text-white group-hover:text-primary group-hover:placeholder:text-primary transition-colors duration-100
+                    text-white group-hover:text-primary group-hover:placeholder:text-primary
                     placeholder:transition-colors placeholder:duration-100`,
                   {
+                    'bg-background-primary': darkTheme,
                     'bg-background-hover': !hidden,
                     'bg-transparent': hidden,
                   }
@@ -78,15 +81,18 @@ const SelectComponent = <T extends string | number>(
                   setIsFocused(false)
                   rest.onBlur?.(e)
                 }}
-                displayValue={(value: T) => options?.find(option => option.id === value)?.label || searchValue || ''}
+                displayValue={(value: T) =>
+                  options?.find(option => option.id === value)?.label || searchValue || String(value) || ''
+                }
                 onChange={e => {
-                  onSearch?.(e.target.value)
+                  setSearchValue(e.target.value)
+                  onSearch?.(e.target.value.trim())
                 }}
               />
               <Combobox.Button>
                 <SearchSVG
                   className={cn(
-                    ' h-4 w-4 cursor-pointer stroke-white group-hover:stroke-primary transition-colors duration-100',
+                    'icon-base h-4 w-4 cursor-pointer stroke-white group-hover:stroke-primary transition-colors duration-100',
                     {
                       '!stroke-primary': hidden || isFocused,
                     }
@@ -100,6 +106,7 @@ const SelectComponent = <T extends string | number>(
                 `flex items-center justify-between w-full input-focus focus-visible:ring-primary bg-background-hover
               rounded-base h-[44px] text-left px-4 py-2 text-gray text-subtext`,
                 {
+                  [selectInputClassName]: selectInputClassName,
                   ['text-primary']: value,
                 }
               )}
@@ -111,12 +118,12 @@ const SelectComponent = <T extends string | number>(
                 })}
               >
                 <span className='text-white group-hover:text-primary group-active:text-primary'>{`${prefix}: `}</span>
-                <span className=''>{options?.find(option => option.id === value)?.label || 'Не выбрано'}</span>
+                <span className=''>{options?.find(option => option.id === value)?.label || t(notSelected)}</span>
               </div>
               <Arrow className='fill-white group-hover:fill-primary w-[13px] h-[13px] -rotate-90 group-active:fill-primary' />
             </Combobox.Button>
           )}
-          {onlySearch || (!searchValue && showSearch) || (
+          {onlySearch || (!searchValue && !value && showSearch) || (
             <Transition
               show={open}
               unmount={false}

@@ -7,7 +7,7 @@ const withPWA = require('next-pwa')({
 const { i18n } = require('./next-i18next.config')
 
 /** @type {import('next').NextConfig} */
-const nextConfig = withPWA({
+const baseConfig = {
   reactStrictMode: true,
   swcMinify: true,
   ...Object.keys(process.env).reduce(
@@ -26,6 +26,6 @@ const nextConfig = withPWA({
     })
     return config
   },
-})
+}
 
-module.exports = nextConfig
+module.exports = withPWA({ ...baseConfig, baseConfig })

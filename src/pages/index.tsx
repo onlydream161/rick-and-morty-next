@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { HomePage } from '@/views/home'
+import { HomePage } from '@/views/home-view'
 import { NextPageWithLayout } from '@/shared/@types'
 
 const Home: NextPageWithLayout = () => (

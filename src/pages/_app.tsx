@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import NextApp, { AppContext } from 'next/app'
 import { API_MOCKING } from '@/shared/config'
 import { AppPropsWithLayout } from '@/shared/@types'
 import App from '@/app'
@@ -24,11 +23,11 @@ const _App = (props: AppPropsWithLayout) => {
 // This disables the ability to perform automatic static optimization,
 // causing every page in your app to be server-side rendered.
 // Если не нужно подтягивать одинаковые данные для каждой страницы, то метод стоит убрать
-_App.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await NextApp.getInitialProps(appContext)
-  return {
-    ...appProps,
-  }
-}
+// _App.getInitialProps = async (appContext: AppContext) => {
+//   const appProps = await NextApp.getInitialProps(appContext)
+//   return {
+//     ...appProps,
+//   }
+// }
 
 export default _App

@@ -29,7 +29,7 @@ module.exports = {
   webpackFinal: async baseConfig => {
     const fileLoaderRule = baseConfig.module.rules.find(rule => rule.test?.test('.svg'))
     fileLoaderRule.exclude = /\.svg$/
-    nextConfig.webpack(baseConfig)
+    nextConfig.baseConfig.webpack(baseConfig)
     baseConfig.resolve.plugins = [new TsconfigPathsPlugin()]
     baseConfig.resolve.alias = {
       ...baseConfig.resolve.alias,

@@ -6,7 +6,7 @@ export const useFormErrors = (errors: FieldErrorsImpl<DeepMap<DeepPartial<Record
     const error = get(errors, name)
     return {
       error: !!error,
-      helperText: (error as FieldError)?.message,
+      errorMessage: (error as FieldError)?.message,
     }
   }
 
