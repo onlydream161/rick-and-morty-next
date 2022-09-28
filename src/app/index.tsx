@@ -4,7 +4,6 @@ import dayjs from 'dayjs'
 import ru from 'dayjs/locale/ru'
 import NProgress from 'nprogress'
 import { setCookie } from 'nookies'
-import { ToastContainer } from 'react-toastify'
 import { i18n } from 'next-i18next'
 import { withProviders } from './providers'
 import { useAfterMountEffect } from '@/shared/hooks'
@@ -34,16 +33,13 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const Layout = Component.Layout ?? (({ children }) => <>{children}</>)
 
   return (
-    <>
-      <div className='flex flex-col justify-between h-full min-h-screen'>
-        <main className='flex flex-col overflow-x-hidden min-w-base'>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </main>
-      </div>
-      <ToastContainer position='bottom-right' hideProgressBar={true} closeButton={false} />
-    </>
+    <div className='flex flex-col justify-between h-full min-h-screen'>
+      <main className='flex flex-col overflow-x-hidden min-w-base'>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </main>
+    </div>
   )
 }
 

@@ -3,9 +3,10 @@ import { useTranslate } from '../model'
 
 export const ChangeLanguageButton: FC = () => {
   const { Icon, toggleLanguage } = useTranslate()
+
   return (
     <button key='lang' onClick={toggleLanguage}>
-      {Icon}
+      <Icon className='fill-primary w-[22px] h-[22px]' />
     </button>
   )
 }

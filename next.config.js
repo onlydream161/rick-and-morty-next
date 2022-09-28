@@ -1,7 +1,13 @@
+const runtimeCaching = require('next-pwa/cache')
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  runtimeCaching,
+  disable: process.env.NODE_ENV === 'development',
+})
 const { i18n } = require('./next-i18next.config')
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const baseConfig = {
   reactStrictMode: true,
   swcMinify: true,
   ...Object.keys(process.env).reduce(
@@ -22,4 +28,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withPWA({ ...baseConfig, baseConfig })

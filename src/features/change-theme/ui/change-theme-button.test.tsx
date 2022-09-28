@@ -1,4 +1,4 @@
-import { render, RenderResult } from '@/jest/utils'
+import { render, RenderResult } from '@testing-library/react'
 import { composeStories } from '@storybook/testing-react'
 import * as stories from './change-theme-button.stories'
 

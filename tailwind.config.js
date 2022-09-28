@@ -1,6 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{ts,tsx}'],
+  safelist: [
+    {
+      pattern: /rc-picker/,
+    },
+  ],
   darkMode: 'class',
   theme: {
     container: {
@@ -61,6 +66,11 @@ module.exports = {
       },
       cursor: {
         inherit: 'inherit',
+      },
+      fontSize: {
+        smalltext: ['.8125rem', '140%'],
+        subtext: ['.8125rem', '206%'],
+        base: ['1rem', '158%'],
       },
     },
   },
