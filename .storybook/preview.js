@@ -4,6 +4,7 @@ import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider'
 import { initialize, mswDecorator } from 'msw-storybook-addon'
 import { storybookHandlers as handlers } from '@/app/mocks-server/handlers'
 import { withProviders } from '@/app/providers'
+import { withJotai } from 'storybook-addon-jotai'
 import '@/app/index.css'
 
 const OriginalNextImage = NextImage.default
@@ -32,6 +33,7 @@ initialize({
 })
 
 export const decorators = [
+  withJotai,
   mswDecorator,
   Story => {
     const App = withProviders(() => (

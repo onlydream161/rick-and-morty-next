@@ -9,6 +9,7 @@ module.exports = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
     'msw-storybook-addon',
+    'storybook-addon-jotai',
     'storybook-addon-next',
     'storybook-react-i18next',
     {
