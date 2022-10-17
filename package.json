@@ -10,7 +10,7 @@
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "jest --coverage",
+    "test": "jest --coverage --silent",
     "test:watch": "jest --watch",
     "lint": "eslint --quiet",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,scss}\"",
