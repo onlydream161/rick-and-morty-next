@@ -17,3 +17,9 @@ jest.mock('next-i18next', () => ({
 
 jest.mock('next/router', () => mockRouter)
 jest.mock('next/dist/client/router', () => mockRouter)
+jest.mock('next/dist/shared/lib/router-context', () => {
+  const { createContext } = require('react')
+  const router = mockRouter.default
+  const RouterContext = createContext(router)
+  return { RouterContext }
+})
