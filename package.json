@@ -10,7 +10,6 @@
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook",
-    "storybook:publish": "rollup -c && npm version patch && npm publish",
     "test": "jest --coverage --silent",
     "test:watch": "jest --watch",
     "lint": "eslint --quiet",

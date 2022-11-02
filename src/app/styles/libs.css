@@ -32,9 +32,9 @@
     after:transition-opacity after:opacity-0 text-subtext transition-colors;
 }
 .custom-checkbox ~ label::after {
-  mask-image: url("/src/shared/assets/icons/common/complete.svg");
+  mask-image: url(../../shared/assets/icons/common/complete.svg);
   mask-size: cover;
-  -webkit-mask-image: url("/src/shared/assets/icons/common/complete.svg");
+  -webkit-mask-image: url(../../shared/assets/icons/common/complete.svg);
   -webkit-mask-size: cover;
 }
 /* checkbox states */
@@ -69,9 +69,9 @@
 .rc-picker-input::after {
   @apply absolute content-[""] w-[14px] h-[14px] bg-background-primary bg-no-repeat -translate-x-full top-1/2
   -translate-y-1/2 right-[2px] cursor-pointer;
-  mask-image: url('/src/shared/assets/icons/common/date-picker.svg');
+  mask-image: url(../../shared/assets/icons/common/date-picker.svg);
   mask-size: cover;
-  -webkit-mask-image: url('/src/shared/assets/icons/common/date-picker.svg');
+  -webkit-mask-image: url(../../shared/assets/icons/common/date-picker.svg);
   -webkit-mask-size: cover;
 }
 .rc-picker-input::after {

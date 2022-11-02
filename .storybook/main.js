@@ -22,7 +22,7 @@ module.exports = {
       },
     },
   ],
-  staticDirs: ['../src/shared/assets'],
+  staticDirs: ['../public'],
   framework: '@storybook/react',
   core: {
     builder: 'webpack5',
