@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import EmptyContentIcon from '@/shared/assets/icons/common/empty-content.svg'
-import { useTranslate } from '@/features/change-language'
+import { useTranslate } from '@/shared/lib'
 import cn from 'classnames'
 
 export interface EmptyContentProps {

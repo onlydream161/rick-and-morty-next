@@ -2,7 +2,7 @@ import { FC } from 'react'
 import Error from '@/shared/assets/icons/common/error.svg'
 import Success from '@/shared/assets/icons/common/success.svg'
 import { toast } from 'react-toastify'
-import { TFunction } from '@/shared/@types'
+import { useTranslate } from '../change-language'
 
 export type NotifyType = 'success' | 'error'
 
@@ -11,10 +11,11 @@ export interface NotificationProps {
   title?: string
   payload?: string
   icon?: FC
-  t: TFunction
 }
 
-export const Notification: FC<NotificationProps> = ({ status, title, payload, icon, t }) => {
+export const Notification: FC<NotificationProps> = ({ status, title, payload, icon }) => {
+  const { t } = useTranslate(['common'])
+
   const DEFAULT_NOTIFICATION_BODY = {
     success: {
       title: t('success'),
@@ -39,13 +40,7 @@ export const Notification: FC<NotificationProps> = ({ status, title, payload, ic
   )
 }
 
-export const notifySuccess = (
-  payload = '',
-  t: TFunction,
-  settings: Omit<NotificationProps, 'status' | 'payload' | 't'> = {}
-) => toast(<Notification {...settings} status='success' t={t} payload={payload} />)
-export const notifyError = (
-  payload = '',
-  t: TFunction,
-  settings: Omit<NotificationProps, 'status' | 'payload' | 't'> = {}
-) => toast(<Notification {...settings} status='error' t={t} payload={payload} />)
+export const notifySuccess = (payload = '', settings: Omit<NotificationProps, 'status' | 'payload' | 't'> = {}) =>
+  toast(<Notification {...settings} status='success' payload={payload} />)
+export const notifyError = (payload = '', settings: Omit<NotificationProps, 'status' | 'payload' | 't'> = {}) =>
+  toast(<Notification {...settings} status='error' payload={payload} />)

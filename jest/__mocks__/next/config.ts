@@ -4,6 +4,9 @@ export default () => {
       acc[el.startsWith('NEXT_PUBLIC_') ? 'publicRuntimeConfig' : 'serverRuntimeConfig'][el] = process.env[el]
       return acc
     },
-    { serverRuntimeConfig: {}, publicRuntimeConfig: {} }
+    { serverRuntimeConfig: {}, publicRuntimeConfig: {} } as {
+      serverRuntimeConfig: Record<string, unknown>
+      publicRuntimeConfig: Record<string, unknown>
+    }
   )
 }

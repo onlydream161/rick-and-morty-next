@@ -11,6 +11,7 @@ module.exports = {
     'msw-storybook-addon',
     'storybook-addon-jotai',
     'storybook-addon-next',
+    'storybook-addon-next-router',
     'storybook-react-i18next',
     {
       name: '@storybook/addon-postcss',
@@ -21,7 +22,7 @@ module.exports = {
       },
     },
   ],
-  staticDirs: ['../public'],
+  staticDirs: ['../src/shared/assets'],
   framework: '@storybook/react',
   core: {
     builder: 'webpack5',

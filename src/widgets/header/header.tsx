@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { ChangeThemeButton } from '@/features/change-theme'
-import { ChangeLanguageButton } from '@/features/change-language'
+import { ChangeLanguageButton } from '@/shared/lib'
 
 export const Header: FC = () => {
   return (

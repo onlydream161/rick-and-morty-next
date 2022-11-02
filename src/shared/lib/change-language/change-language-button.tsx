@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useTranslate } from '../model'
+import { useTranslate } from './hooks'
 
 export const ChangeLanguageButton: FC = () => {
   const { Icon, toggleLanguage } = useTranslate()

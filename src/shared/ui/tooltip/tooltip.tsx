@@ -30,7 +30,7 @@ export const Tooltip: FC<TooltipProps & { children: ReactElement }> = ({
   children,
   label,
   placement = 'top',
-  isActive,
+  isActive = true,
   className = '',
   labelClassName = '',
 }) => {

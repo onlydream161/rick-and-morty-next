@@ -47,3 +47,5 @@ yarn-error.log*
 
 # StoryBook
 /storybook-static
+/library
+/.rollup.cache

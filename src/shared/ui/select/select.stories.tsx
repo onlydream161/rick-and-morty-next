@@ -1,6 +1,6 @@
 import { Story, Meta } from '@storybook/react'
 import { useState } from 'react'
-import { Select } from './select'
+import { Select, SelectProps } from './select'
 
 export default {
   title: 'Shared/Select',
@@ -13,10 +13,11 @@ export default {
       { id: 4, label: 'Benedict Kessler' },
       { id: 5, label: 'Katelyn Rohan' },
     ],
+    t: (str: string) => str,
   },
 } as Meta
 
-const Template: Story = args => {
+const Template: Story<SelectProps<number>> = args => {
   const [value, onChange] = useState<number | undefined>(1)
 
   return <Select {...args} value={value} onChange={onChange} />

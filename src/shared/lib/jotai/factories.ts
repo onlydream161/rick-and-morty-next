@@ -9,7 +9,7 @@ export interface FilterAtomParams {
 
 export interface AtomWithHashOptions<Value> {
   serialize?: (val: Value) => string
-  deserialize?: (str: string) => Value
+  deserialize?: (str: string | null) => Value
   delayInit?: boolean
   replaceState?: boolean
   subscribe?: (callback: () => void) => () => void
