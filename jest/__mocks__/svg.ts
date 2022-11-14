@@ -1,3 +1,3 @@
 import { createElement } from 'react'
 
-export default () => createElement('svg')
+export default (props: SVGElement) => createElement('svg', props)
