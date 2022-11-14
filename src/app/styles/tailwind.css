@@ -45,36 +45,6 @@
   .pagination-arrow {
     @apply flex items-center justify-center rounded-full w-[44px] h-[44px];
   }
-  
-  /* Custom checkbox styles */
-  /* ::bofore */
-  .custom-checkbox ~ label {
-    @apply before:content-[""] before:absolute before:-left-[10px] before:-translate-x-full before:top-1/2
-    before:-translate-y-1/2 before:w-[15px] before:h-[15px] before:border before:rounded-[3px]
-    before:transition-colors before:duration-75;
-  }
-  /* ::after */
-  .custom-checkbox ~ label {
-    @apply after:content-[""] after:absolute after:bg-[url("/icons/common/complete.svg")] after:bg-no-repeat
-    after:-left-[12.5px] after:-translate-x-full after:top-1/2 after:-translate-y-1/2 after:w-[9px] after:h-[7px]
-    after:transition-opacity after:duration-75 after:opacity-0 transition-colors duration-75;
-  }
-  /* checkbox states */
-  .custom-checkbox:not(:disabled) ~ label {
-    @apply cursor-pointer before:border-gray hover:before:border-primary hover:text-primary;
-  }
-  .custom-checkbox-error ~ label {
-    @apply before:!border-red;
-  }
-  .custom-checkbox:checked ~ label {
-    @apply before:border-primary before:bg-primary after:opacity-100;
-  }
-  .custom-checkbox:disabled ~ label {
-    @apply before:bg-background-hover before:!border-lines text-gray cursor-not-allowed;
-  }
-  .custom-checkbox:focus-visible ~ label {
-    @apply before:border-primary;
-  }
 }
 
 @layer utilities {
