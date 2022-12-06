@@ -13,8 +13,8 @@ export const normalizeSelectOptions = <T extends {}[]>(
 ): SelectOption[] => {
   const defaultOptions = {
     defaultValue: [],
-    labelKey: 'attributes.name',
-    valueKey: 'attributes.slug',
+    labelKey: 'name',
+    valueKey: 'id',
     ...options,
   }
 
@@ -22,9 +22,12 @@ export const normalizeSelectOptions = <T extends {}[]>(
     ...defaultOptions.defaultValue,
     ...(data
       ? data.map(el => ({
-          label: get(el, defaultOptions?.labelKey || '', '') as string,
-          id: get(el, defaultOptions?.valueKey || 'id') as number,
+          label: get(el, defaultOptions.labelKey, '') as string,
+          id: get(el, defaultOptions.valueKey) as number,
         }))
       : []),
   ]
 }
+
+export const normalizeSelectOptionsFromConstantsKeysArray = (constants: string[], t: TFunction): SelectOption[] =>
+  constants.map((constant, index) => ({ id: index, label: t(constant) }))

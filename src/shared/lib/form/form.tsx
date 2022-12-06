@@ -3,6 +3,7 @@ import { Children, cloneElement, FormHTMLAttributes, isValidElement, ReactNode, 
 import {
   ArrayPath,
   FieldErrors,
+  FieldValues,
   FormProvider,
   useFieldArray,
   UseFieldArrayProps,
@@ -15,12 +16,13 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { ObjectSchema, AnySchema } from 'yup'
 import merge from 'lodash.merge'
 
-type FormChildren<T> =
+type FormChildren<T extends FieldValues> =
   | ReactNode
   | ReactNode[]
   | ((methods: UseFormReturn<T> & UseFieldArrayReturn<T, ArrayPath<T>, 'id'> & { isLoading: boolean }) => ReactNode)
 
-export interface FormProps<T> extends Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'onError' | 'children'> {
+export interface FormProps<T extends FieldValues>
+  extends Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'onError' | 'children'> {
   children?: FormChildren<T>
   validationSchema?: ObjectSchema<Record<keyof T, AnySchema>, object>
   formParams?: UseFormProps<T>

@@ -44,18 +44,21 @@ module.exports = {
         'extra-small': '5px',
         small: '10px',
         base: '15px',
+        medium: '25px',
         large: '30px',
       },
       padding: {
         'extra-small': '5px',
         small: '10px',
         base: '15px',
+        medium: '25px',
         large: '30px',
       },
       gap: {
         'extra-small': '5px',
         small: '10px',
         base: '15px',
+        medium: '25px',
         large: '30px',
       },
       minWidth: {
@@ -63,9 +66,16 @@ module.exports = {
       },
       borderRadius: {
         base: '10px',
+        large: '20px',
       },
       cursor: {
         inherit: 'inherit',
+      },
+      boxShadow: {
+        button: '0 4px 4px rgba(0, 0, 0, 0.25)',
+      },
+      dropShadow: {
+        base: ['0 4px 4px rgba(0, 0, 0, 0.15)', '0 0px 30px rgba(0, 0, 0, 0.11)'],
       },
       fontSize: {
         smalltext: ['.8125rem', '140%'],

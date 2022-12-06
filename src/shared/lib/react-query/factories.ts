@@ -45,13 +45,11 @@ export type QueryFactoryReturnValue<
   PrefetchResult extends Response | InfiniteData<Response>,
   Params extends QueryParams<Response> | InfiniteQueryParams<Response>,
   QueryResult extends UseQueryResult | UseInfiniteQueryResult
-> = (
-  primaryKey: CustomQueryKey,
-  config?: (filters: Filters & { locale?: string }) => AxiosRequestConfig
-) => {
+> = (config?: (filters: Filters & { locale?: string }) => AxiosRequestConfig) => {
   prefetch: (
     queryClient: QueryClient,
-    preBuildFilters?: Partial<Filters & { locale: string }>
+    preBuildFilters?: Partial<Filters & { locale: string }>,
+    params?: Params
   ) => Promise<{
     response?: PrefetchResult
     currentQueryKey: CustomQueryKey
@@ -63,11 +61,13 @@ export type QueryFactoryReturnValue<
 }
 
 export function queryFactory<Response, Filters = Record<string, unknown>>(
+  primaryKey: CustomQueryKey,
   fetch: QueryFetchFunction<Response>,
   initialFilters?: Filters,
   type?: 'query'
 ): QueryFactoryReturnValue<Response, Filters, Response, QueryParams<Response>, UseQueryResult<Response, AxiosError>>
 export function queryFactory<Response, Filters = Record<string, unknown>>(
+  primaryKey: CustomQueryKey,
   fetch: QueryFetchFunction<Response>,
   initialFilters?: Filters,
   type?: 'infinite'
@@ -79,6 +79,7 @@ export function queryFactory<Response, Filters = Record<string, unknown>>(
   UseInfiniteQueryResult<Response, AxiosError>
 >
 export function queryFactory<Response, Filters = Record<string, unknown>>(
+  primaryKey: CustomQueryKey,
   fetch: QueryFetchFunction<Response>,
   initialFilters: Filters = {} as Filters,
   type: QueryType = 'query'
@@ -89,16 +90,21 @@ export function queryFactory<Response, Filters = Record<string, unknown>>(
   QueryParams<Response> | InfiniteQueryParams<Response>,
   UseQueryResult<Response, AxiosError> | UseInfiniteQueryResult<Response, AxiosError>
 > {
-  return (primaryKey, config) => {
+  return config => {
     return {
-      prefetch: async (queryClient, preBuildFilters) => {
+      prefetch: async (queryClient, preBuildFilters, params) => {
         const filters = { ...initialFilters, ...preBuildFilters }
-        const key = [...primaryKey] as CustomQueryKey
-        Object.keys(filters).length && key.push(filters)
+        // Нужно делать копию, т.к. без нее будет мутация оригинального primaryKey из-за push ниже и react-query будет спамить запросы без остановки
+        const key = [...primaryKey, Object.values(filters).join()] as CustomQueryKey
+
         if (type === 'query') {
-          await queryClient.prefetchQuery(key, fetch(config?.(filters) || {}))
+          await queryClient.prefetchQuery(key, fetch(config?.(filters) || {}), params as QueryParams<Response>)
         } else {
-          await queryClient.prefetchInfiniteQuery(key, fetch(config?.(filters) || {}))
+          await queryClient.prefetchInfiniteQuery(
+            key,
+            fetch(config?.(filters) || {}),
+            params as InfiniteQueryParams<Response>
+          )
         }
         return {
           response: queryClient.getQueryData<Response | InfiniteData<Response>>(key),
@@ -106,17 +112,20 @@ export function queryFactory<Response, Filters = Record<string, unknown>>(
         }
       },
       useHookInitializer: (currentFitlers, params) => {
-        const filters = { ...initialFilters, ...currentFitlers } as Filters
-        const key = [...primaryKey] as CustomQueryKey
-        Object.keys(filters).length && key.push(filters)
+        const filters = { ...initialFilters, ...currentFitlers }
+        // TODO: Нужно протестить, что ключ такого формата не ломает логику react-query
+        // Нужно делать копию, т.к. без нее будет мутация оригинального primaryKey из-за push ниже и react-query будет спамить запросы без остановки
+        const key = [...primaryKey, Object.values(filters).join()] as CustomQueryKey
 
         let response
 
         if (type === 'query') {
-          response = useQuery(key, fetch(config?.(filters) || {}), params as QueryParams<Response>) // eslint-disable-line react-hooks/rules-of-hooks
+          // eslint-disable-next-line
+          response = useQuery(key, fetch(config?.(filters) || {}), params as QueryParams<Response>)
         } else {
           //TODO: Стоит сразу описать getNextPageParam для текущего проекта
-          response = useInfiniteQuery(key, fetch(config?.(filters) || {}), params as InfiniteQueryParams<Response>) // eslint-disable-line react-hooks/rules-of-hooks
+          // eslint-disable-next-line
+          response = useInfiniteQuery(key, fetch(config?.(filters) || {}), params as InfiniteQueryParams<Response>)
         }
 
         return {

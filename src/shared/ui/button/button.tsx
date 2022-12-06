@@ -49,6 +49,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         >
           {
             <Loading
+              data-testid='loading-button-icon'
               className={cn('absolute fill-[#fff] h-[39px] animate-spin', {
                 '!fill-primary': variant === 'outlined' || variant === 'inverse',
                 '!fill-gray':

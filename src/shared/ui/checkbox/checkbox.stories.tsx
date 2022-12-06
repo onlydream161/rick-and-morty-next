@@ -7,9 +7,14 @@ export default {
   args: {
     name: 'storybookCheckbox',
     label: 'Получать рассылку на e-mail',
+    errorMessage: 'Error text',
   },
   argTypes: {
     disabled: {
+      control: 'boolean',
+      defaultValue: false,
+    },
+    error: {
       control: 'boolean',
       defaultValue: false,
     },

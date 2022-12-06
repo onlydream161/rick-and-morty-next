@@ -76,6 +76,7 @@ export const Tooltip: FC<TooltipProps & { children: ReactElement }> = ({
             })}
           >
             <Arrow
+              data-testid='tooltip-arrow'
               className={cn('absolute fill-lines pointer-events-none', {
                 'bottom-0 left-1/2 -translate-x-1/2 translate-y-full rotate-180': placement === 'top',
                 'top-0 left-1/2 -translate-x-1/2 -translate-y-full': placement === 'bottom',

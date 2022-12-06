@@ -27,3 +27,8 @@ const Template: Story<ModalProps> = args => {
 
 export const Default = Template.bind({})
 Default.args = {}
+
+export const MaskClosable = Template.bind({})
+MaskClosable.args = {
+  maskClosable: true,
+}

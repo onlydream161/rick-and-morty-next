@@ -1,17 +1,21 @@
-import Mock from 'mockjs'
+import { mock } from 'mockjs'
 import { Story, Meta } from '@storybook/react'
-import { FILE_ENTITY_MOCK } from '@/app/mocks-server/constants'
 import { File, FileProps } from './file'
+import { FILE_ENTITY_MOCK, IMAGE_ENTITY_MOCK } from '@/shared/config'
 
 export default {
   title: 'Shared/File',
   component: File,
-  args: {
-    file: Mock.mock(FILE_ENTITY_MOCK),
-  },
 } as Meta
 
 const Template: Story<FileProps> = args => <File {...args} />
 
 export const Default = Template.bind({})
-Default.args = {}
+Default.args = {
+  file: mock(FILE_ENTITY_MOCK),
+}
+
+export const Image = Template.bind({})
+Image.args = {
+  file: mock(IMAGE_ENTITY_MOCK),
+}

@@ -1,17 +1,21 @@
-import { Button } from '@/shared/ui'
 import { Story, Meta } from '@storybook/react'
-import { Form, notifySuccess } from '@/shared/lib'
+import { Form, notify } from '@/shared/lib'
 import { Upload, UploadProps } from './upload'
+import { Button } from '@/shared/ui'
 
 export default {
   title: 'Shared/Upload',
   component: Upload,
+  argTypes: {
+    multiple: { control: 'boolean', defaultValue: false },
+    disabled: { control: 'boolean', defaultValue: false },
+  },
 } as Meta
 
 const Template: Story<UploadProps> = args => (
   <Form
     onSubmit={() => {
-      notifySuccess('Успешно')
+      notify('Успешно')
     }}
   >
     <Upload {...args}>
@@ -22,8 +26,3 @@ const Template: Story<UploadProps> = args => (
 
 export const Default = Template.bind({})
 Default.args = {}
-
-export const Multiple = Template.bind({})
-Multiple.args = {
-  multiple: true,
-}

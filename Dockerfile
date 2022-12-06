@@ -11,9 +11,6 @@ COPY . .
 RUN yarn install --frozen-lockfile && \
     yarn build
 
-ARG BUILD_STORYBOOK
-RUN if [[ "$BUILD_STORYBOOK" = "true" ]] ; then yarn storybook:build ; fi
-
 FROM node:${NODE_VERSION} AS prod
 
 WORKDIR /app

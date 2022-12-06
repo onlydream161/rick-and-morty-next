@@ -6,7 +6,5 @@ services:
       context: .
       dockerfile: Dockerfile
       target: prod
-      args:
-        BUILD_STORYBOOK: ${NEXT_PUBLIC_BUILD_STORYBOOK}
     ports:
       - '8888:80'

@@ -4,9 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "docker-compose -f docker-compose.dev.yaml up",
-    "build": "next build",
-    "docker:dev": "docker-compose --env-file .env.development build && docker-compose --env-file .env.development push",
-    "docker:prod": "docker-compose --env-file .env.production build && docker-compose --env-file .env.production push",
+    "build": "docker-compose build && docker-compose push",
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook",
@@ -46,6 +44,7 @@
     "react-loading-skeleton": "^3.1.0",
     "react-query": "^3.39.1",
     "react-toastify": "^9.0.5",
+    "swiper": "^8.4.4",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -62,6 +61,7 @@
     "@svgr/webpack": "^6.2.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^14.4.3",
     "@types/compose-function": "^0.0.30",
     "@types/lodash.get": "^4.4.7",
     "@types/lodash.merge": "^4.6.7",

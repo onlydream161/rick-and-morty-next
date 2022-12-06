@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosResponse, Cancel } from 'axios'
 import { RcFile, UploadRequestError, UploadRequestOption } from 'rc-upload/lib/interface'
 import { useRef, useState } from 'react'
 import { FileModel, Nullable, TFunction } from '@/shared/@types'
-import { notifyError, uploadFiles } from '@/shared/lib'
+import { notify, uploadFiles } from '@/shared/lib'
 import { getNumberFromString } from '@/shared/helpers'
 
 export interface UploadHookProps {
@@ -52,7 +52,7 @@ export const useUpload = ({ multiple, optimistic, t, customRequest }: UploadHook
       }
     } catch (error) {
       if ((error as Cancel).message === 'canceled') return
-      notifyError(t('fileUploadError'))
+      notify(t('fileUploadError'), { status: 'error' })
       onError?.(error as UploadRequestError)
     } finally {
       setIsLoading(false)

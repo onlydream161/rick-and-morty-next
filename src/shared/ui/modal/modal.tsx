@@ -2,6 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import React, { FC, Fragment, PropsWithChildren, useEffect } from 'react'
 import Close from '@/shared/assets/icons/common/close.svg'
 import { useRouter } from 'next/router'
+import cn from 'classnames'
 
 export interface ModalProps {
   isOpen: boolean
@@ -48,7 +49,11 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
         >
-          <Dialog.Overlay className='fixed bg-[#000] bg-opacity-60 backdrop-blur-[9px] inset-0 will-change-auto' />
+          {/* Цвет сделал статичным, т.к. скорее всего он дожен быть одинаковым не зависимо от темы */}
+          <Dialog.Overlay
+            data-testid='dialog-overlay'
+            className='fixed bg-[#262424] bg-opacity-70 inset-0 will-change-auto'
+          />
         </Transition.Child>
         <Transition.Child
           as={Fragment}
@@ -59,11 +64,23 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           leaveFrom='opacity-100 scale-100'
           leaveTo='opacity-0 scale-95'
         >
-          <div className={`relative will-change-transform ${className}`}>
-            {children}
+          <div className='relative w-full desktop:w-fit px-small'>
+            <div
+              data-testid='modal-body'
+              className={cn(
+                'bg-background-primary p-5 rounded-large max-h-[calc(100vh-100px)] overflow-auto will-change-transform',
+                className
+              )}
+            >
+              {children}
+            </div>
             {withCloseIcon && (
-              <button className='absolute -right-[19px] translate-x-full top-[9px]' onClick={onClose}>
-                <Close className=' fill-[#fff] hover:drop-shadow-icon-hover h-[14px] w-[14px]' />
+              <button
+                data-testid='modal-close-button'
+                className='absolute flex items-center justify-center w-10 h-10 right-0 desktop:right-2.5 top-0 -translate-y-full desktop:translate-x-full desktop:translate-y-0'
+                onClick={onClose}
+              >
+                <Close className='stroke-[#fff]' />
               </button>
             )}
           </div>
