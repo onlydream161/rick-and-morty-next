@@ -14,7 +14,6 @@ import {
 } from '@floating-ui/react-dom-interactions'
 import { motion, AnimatePresence } from 'framer-motion'
 import cn from 'classnames'
-import { cloneElement } from 'react'
 import { FC } from 'react'
 import { mergeRefs } from '@/shared/helpers'
 
@@ -55,7 +54,7 @@ export const Tooltip: FC<TooltipProps & { children: ReactElement }> = ({
 
   return (
     <>
-      {cloneElement(children, { ...getReferenceProps({ ref }), ...children.props })}
+      <div {...getReferenceProps({ ref })}>{children}</div>
       <AnimatePresence>
         {isActive && open && (
           <motion.div
