@@ -22,6 +22,8 @@ export const API_MOCKING = getEnv('NEXT_PUBLIC_API_MOCKING')
 
 // Режим запуска программы
 export const NODE_ENV = getEnv('NODE_ENV')
+// Режим тестирования
+export const isTestEnv = NODE_ENV === 'test'
 // Режим разработки
 export const isDevEnv = NODE_ENV === 'development'
 // Режим продакшена

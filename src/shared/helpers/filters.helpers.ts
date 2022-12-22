@@ -9,3 +9,5 @@ export const getDateRangeFilters = (data: Record<string, Nullable<Dayjs>>) => {
   const object = getObjectWithoutEmptyProperty(data)
   return Object.keys(object).reduce((arr, key) => ({ ...arr, [key]: dayjs(object[key]).format() }), {})
 }
+
+export const getBetweenFilterValue = (value: Nullable<number[]>) => value && value.join('..')

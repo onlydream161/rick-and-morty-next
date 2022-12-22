@@ -1,3 +1,4 @@
+import { isTestEnv } from '@/shared/config'
 import { SetStateAction, WritableAtom } from 'jotai'
 import { atomWithStorage, RESET } from 'jotai/utils'
 import { Router } from 'next/router'
@@ -99,10 +100,10 @@ export const atomWithStorageFactory = <Value>(
       {
         delayInit: false,
         subscribe: callback => {
-          Router.events.on('routeChangeComplete', callback)
+          isTestEnv || Router.events.on('routeChangeComplete', callback)
           window.addEventListener(eventName, callback)
           return () => {
-            Router.events.off('routeChangeComplete', callback)
+            isTestEnv || Router.events.off('routeChangeComplete', callback)
             window.removeEventListener(eventName, callback)
           }
         },
@@ -112,12 +113,12 @@ export const atomWithStorageFactory = <Value>(
   )
 }
 
-export const filterAtomsFactory = <Filters extends Record<string, Filters[keyof Filters]>>(
-  filters: Filters,
-  options?: AtomWithHashOptions<Filters[keyof Filters]>
+export const filterAtomsFactory = <FiltersContent extends Record<string, FiltersContent[keyof FiltersContent]>>(
+  filters: FiltersContent,
+  options?: AtomWithHashOptions<FiltersContent[keyof FiltersContent]>
 ) =>
   Object.fromEntries(
     Object.entries(filters).map(([key, value]) => [key, atomWithStorageFactory(key, value, options)])
   ) as {
-    [key in keyof Filters]: WritableAtom<Filters[key], SetStateAction<Filters[key]> | typeof RESET>
+    [key in keyof FiltersContent]: WritableAtom<FiltersContent[key], SetStateAction<FiltersContent[key]> | typeof RESET>
   }

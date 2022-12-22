@@ -1,11 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{ts,tsx}', '!src/**/*.test.{ts,tsx}', './index.html'],
-  safelist: [
-    {
-      pattern: /rc-picker/,
-    },
-  ],
   darkMode: 'class',
   theme: {
     container: {

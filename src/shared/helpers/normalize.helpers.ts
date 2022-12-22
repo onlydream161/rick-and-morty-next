@@ -31,3 +31,6 @@ export const normalizeSelectOptions = <T extends {}[]>(
 
 export const normalizeSelectOptionsFromConstantsKeysArray = (constants: string[], t: TFunction): SelectOption[] =>
   constants.map((constant, index) => ({ id: index, label: t(constant) }))
+
+export const normalizeArrayToSeparatedString = (data: unknown[], separator: string): string =>
+  data.filter(entity => entity).join(separator)

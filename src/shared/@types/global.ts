@@ -23,38 +23,28 @@ export type TFunction = (str: string) => string
 
 export type Language = typeof LANG_RU | typeof LANG_EN
 
+export interface BaseEntity {
+  id: number
+  dateCreate: string
+  dateUpdate: string
+}
+
+export interface CollectionResponse<T> {
+  countOfPages: number
+  items: T[]
+  itemsPerPage: number
+  totalItems: number
+}
+
+export interface FileModel extends BaseEntity {
+  name: string
+  path: string
+  isFullPath: boolean
+  loading?: boolean
+}
+
 export interface SelectOption {
   id: number | string
   label: string
   disabled?: boolean
 }
-
-export type FileModel = {
-  id: number
-  name: string
-  originalName: string
-  path: string
-  url: string
-  dateCreate: string
-  dateUpdate: string
-  loading?: boolean
-}
-
-export type JWT_Token = string
-
-export type Color =
-  | 'default'
-  | 'transparent'
-  | 'primary'
-  | 'secondary'
-  | 'gray'
-  | 'lines'
-  | 'backgroundPrimary'
-  | 'backgroundSecondary'
-  | 'backgroundHover'
-  | 'red'
-  | 'white'
-  | 'buttonPressPrimary'
-  | 'buttonPressSecondary'
-  | 'orange'
-  | 'green'
