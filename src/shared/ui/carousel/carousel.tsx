@@ -17,7 +17,7 @@ export const Carousel: FC<CarouselProps> = ({ images, slideWidth, slideHeight, s
   <Swiper modules={[A11y, Keyboard]} grabCursor loop freeMode slidesPerView='auto' {...rest}>
     {images.map(image => (
       <SwiperSlide key={image.id} style={{ width: slideWidth, height: slideHeight }}>
-        <NextImage src={image.url} style={{ borderRadius: slideBorderRadius }} />
+        <NextImage src={image.path} style={{ borderRadius: slideBorderRadius }} />
       </SwiperSlide>
     ))}
   </Swiper>

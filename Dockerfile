@@ -9,7 +9,7 @@ WORKDIR /app
 COPY . .
 
 RUN yarn install --frozen-lockfile && \
-    yarn build
+    yarn next build
 
 FROM node:${NODE_VERSION} AS prod
 
@@ -25,9 +25,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/next.config.js ./next.config.js
 COPY --from=builder /app/next-i18next.config.js ./next-i18next.config.js
-
-# Storybook
-COPY --from=builder /app/storybook-static ./app/storybook
 
 USER nextjs
 
