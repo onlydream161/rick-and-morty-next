@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react'
 import { Table, TableProps } from './table'
 
 export default {
-  title: 'src/widgets/Table',
+  title: 'Widgets/Table',
   component: Table,
 } as Meta
 

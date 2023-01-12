@@ -3,7 +3,7 @@ import { NextImage, NextImageProps } from './next-image'
 import { Random } from 'mockjs'
 
 export default {
-  title: 'Shared/NextImage',
+  title: 'Shared/Next Image',
   component: NextImage,
   argTypes: {
     width: { control: { type: 'number' }, defaultValue: undefined },

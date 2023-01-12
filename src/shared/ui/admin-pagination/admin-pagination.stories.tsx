@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { AdminPagination, AdminPaginationProps } from './admin-pagination'
 
 export default {
-  title: 'Shared/AdminPagination',
+  title: 'Shared/Admin Pagination',
   component: AdminPagination,
   args: {
     pageSizeTitle: 'Rows per page:',

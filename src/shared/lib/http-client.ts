@@ -33,7 +33,7 @@ async function requestInterceptor(config: AxiosRequestConfig) {
 
   if (!access_token && refresh_token) {
     isRefreshing = true
-    // Здесб должен быть запрос на смену токена, добавляется свой в зависимости от проекта
+    // Здесь должен быть запрос на смену токена, добавляется свой в зависимости от проекта
     // const token = await auth(refresh_token)
     isRefreshing = false
     for (const request of requestQueue) {
@@ -45,7 +45,7 @@ async function requestInterceptor(config: AxiosRequestConfig) {
   }
 
   config.headers = {
-    Accept: 'application/ld+json',
+    Accept: 'application/json',
     Pragma: 'no-cache',
     'Cache-Control': 'no-cache',
     ...(access_token && { Authorization: `Bearer ${access_token}` }),

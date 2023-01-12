@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react'
 import { ChangeLanguageButton } from './change-language-button'
 
 export default {
-  title: 'Features/ChangeLanguageButton',
+  title: 'Features/Change Language Button',
   component: ChangeLanguageButton,
 } as Meta
 

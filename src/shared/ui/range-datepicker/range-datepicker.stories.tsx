@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react'
 import { RangeDatepicker, DatepickerProps } from './range-datepicker'
 
 export default {
-  title: 'Shared/RangeDatepicker',
+  title: 'Shared/Range Datepicker',
   component: RangeDatepicker,
   args: {
     name: 'storybook-range-datepicker',

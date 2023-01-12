@@ -2,7 +2,7 @@ import { Story, Meta } from '@storybook/react'
 import { EmptyContent, EmptyContentProps } from './empty-content'
 
 export default {
-  title: 'src/entities/nodata/nodata',
+  title: 'Shared/Empty Content',
   component: EmptyContent,
 } as Meta
 
