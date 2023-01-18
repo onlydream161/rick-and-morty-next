@@ -30,11 +30,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <div
-        className={cn('group flex flex-col w-full text-subtext', {
-          [className]: className,
-        })}
-      >
+      <div className={cn('group flex flex-col w-full text-subtext', className)}>
         <label
           htmlFor={name}
           className={cn('group-hover:text-primary', {

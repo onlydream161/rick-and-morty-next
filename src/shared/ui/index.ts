@@ -1,3 +1,4 @@
+export * from './truncate-container'
 export * from './range-datepicker'
 export * from './admin-pagination'
 export * from './empty-content'

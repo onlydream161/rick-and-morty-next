@@ -1,19 +1,18 @@
 import { forwardRef, InputHTMLAttributes, useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
-import { Nullable } from '@/shared/@types'
+import { Nullable, PropsWithClassName } from '@/shared/@types'
 
 export interface TextareaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   name: string
   label?: string
   error?: boolean
   errorMessage?: string
-  className?: string
   textareaStyle?: string
   resizable?: boolean
   autosize?: boolean
 }
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+export const Textarea = forwardRef<HTMLTextAreaElement, PropsWithClassName<TextareaProps>>(
   (
     { name, label, className = '', textareaStyle = '', resizable, autosize = true, error, errorMessage, ...rest },
     ref
@@ -54,11 +53,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         >
           {label}
         </label>
-        <div
-          className={cn('relative input-focus bg-background-hover rounded-base', {
-            [className]: className,
-          })}
-        >
+        <div className={cn('relative input-focus bg-background-hover rounded-base', className)}>
           <textarea
             {...rest}
             ref={instance => {
@@ -71,8 +66,8 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
               `relative block input-focus border border-transparent bg-background-hover w-full min-h-[2.5rem] h-full px-small py-[10px]
             overflow-hidden focus-visible:ring-primary rounded-base caret-primary focus:text-white group-hover:text-primary disabled:border-background-hover
             disabled:text-gray disabled:cursor-not-allowed disabled:group-hover:text-gray`,
+              textareaStyle,
               {
-                [textareaStyle]: textareaStyle,
                 'resize-none': !resizable,
                 'group-hover:text-red focus:text-red caret-red focus-visible:ring-transparent !border-red': error,
               }

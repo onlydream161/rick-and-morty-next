@@ -64,9 +64,7 @@ export const Tooltip: FC<TooltipProps & { children: ReactElement }> = ({
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
             {...getFloatingProps({
               ref: floating,
-              className: cn('flex items-center bg-lines px-small min-h-[34px] rounded-base z-[9999]', {
-                [className]: className,
-              }),
+              className: cn('flex items-center bg-lines px-small min-h-[34px] rounded-base z-[9999]', className),
               style: {
                 position: strategy,
                 top: y ?? 0,
@@ -83,13 +81,7 @@ export const Tooltip: FC<TooltipProps & { children: ReactElement }> = ({
                 '-right-[10px] bottom-1/2 translate-y-1/2 rotate-90': placement === 'left',
               })}
             />
-            <h6
-              className={cn('text-white', {
-                [labelClassName]: labelClassName,
-              })}
-            >
-              {label}
-            </h6>
+            <h6 className={cn('text-white', labelClassName)}>{label}</h6>
           </motion.div>
         )}
       </AnimatePresence>

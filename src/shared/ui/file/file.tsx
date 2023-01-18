@@ -1,5 +1,4 @@
-import { FC } from 'react'
-import { FileModel } from '@/shared/@types'
+import { FCWithClassName, FileModel } from '@/shared/@types'
 import { OptionalLinkWrapper } from '@/shared/lib'
 import { ALLOWED_IMAGES_EXT } from '@/shared/config'
 import { getFileExtension } from '@/shared/helpers'
@@ -11,16 +10,15 @@ import Skeleton from 'react-loading-skeleton'
 
 export interface FileProps {
   file: FileModel
-  className?: string
   onRemove?: (file: FileModel) => void
 }
 
-export const File: FC<FileProps> = ({ file, className = '', onRemove }) => {
+export const File: FCWithClassName<FileProps> = ({ file, className = '', onRemove }) => {
   const isLoading = file.loading
 
   const isImage = ALLOWED_IMAGES_EXT.includes(getFileExtension(file).toUpperCase())
 
-  const CloseButton: FC<{ className?: string }> = ({ className }) => (
+  const CloseButton: FCWithClassName = ({ className }) => (
     <button
       data-testid='file-close-button'
       type='button'

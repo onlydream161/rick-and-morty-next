@@ -4,7 +4,7 @@ import Loading from '@/shared/assets/icons/common/loading.svg'
 import SearchSVG from '@/shared/assets/icons/common/search.svg'
 import { ForwardedRef, forwardRef, InputHTMLAttributes, useState, FocusEvent } from 'react'
 import cn from 'classnames'
-import { SelectOption, TFunction } from '@/shared/@types'
+import { PropsWithClassName, SelectOption, TFunction } from '@/shared/@types'
 
 export interface SelectProps<T> extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'onSelect'> {
   showSearch?: boolean
@@ -13,7 +13,6 @@ export interface SelectProps<T> extends Omit<InputHTMLAttributes<HTMLInputElemen
   prefix?: string
   value: T
   options?: SelectOption[]
-  className?: string
   selectInputClassName?: string
   notSelected?: string
   hidden?: boolean
@@ -40,7 +39,7 @@ const SelectComponent = <T extends string | number>(
     onChange,
     onSearch,
     ...rest
-  }: SelectProps<T>,
+  }: PropsWithClassName<SelectProps<T>>,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const [isFocused, setIsFocused] = useState(false)
@@ -52,10 +51,9 @@ const SelectComponent = <T extends string | number>(
         <div className={'group relative w-full ' + className}>
           {showSearch ? (
             <div
-              className={cn('group flex items-center w-full h-[44px] gap-base py-2 px-base rounded-base', {
+              className={cn('group flex items-center w-full h-[44px] gap-base py-2 px-base rounded-base', className, {
                 'bg-transparent placeholder:text-transparent group-hover:bg-background-hover': hidden && !searchValue,
                 'bg-background-hover placeholder:text-gray': searchValue || isFocused || !hidden,
-                [className]: className,
                 'bg-background-primary group-hover:bg-background-primary': darkTheme,
               })}
             >

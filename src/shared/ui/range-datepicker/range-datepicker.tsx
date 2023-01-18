@@ -8,7 +8,7 @@ import { RangePickerSharedProps } from 'rc-picker/lib/RangePicker'
 import Arrow from '@/shared/assets/icons/common/separator-arrow.svg'
 import ClearSvg from '@/shared/assets/icons/common/close.svg'
 import cn from 'classnames'
-import { TFunction } from '@/shared/@types'
+import { PropsWithClassName, TFunction } from '@/shared/@types'
 import { RangeValue } from 'rc-picker/lib/interface'
 import utc from 'dayjs/plugin/utc'
 
@@ -22,14 +22,13 @@ export interface DatepickerProps extends Omit<RangePickerSharedProps<Dayjs>, 'va
   resetTime?: boolean
   error?: boolean
   errorMessage?: string
-  className?: string
   rangePickerClassName?: string
   inputReadOnly?: boolean
   t: TFunction
 }
 
 // Если брать этот компонент для формы, то только через Controller
-export const RangeDatepicker = forwardRef<RangePicker<Dayjs>, DatepickerProps>(
+export const RangeDatepicker = forwardRef<RangePicker<Dayjs>, PropsWithClassName<DatepickerProps>>(
   (
     {
       name,
@@ -54,11 +53,7 @@ export const RangeDatepicker = forwardRef<RangePicker<Dayjs>, DatepickerProps>(
     })
 
     return (
-      <div
-        className={cn('flex flex-col gap-[2px] w-fit', {
-          [className]: className,
-        })}
-      >
+      <div className={cn('flex flex-col gap-[2px] w-fit', className)}>
         {label && <h6 className='text-gray ml-base'>{label}</h6>}
         <RangePicker
           inputReadOnly={inputReadOnly}

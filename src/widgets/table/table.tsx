@@ -21,9 +21,7 @@ export const Table: FC<TableProps> = ({ data, className = '', children, isLoadin
       <RCTable
         emptyText={isLoading ? <Skeleton /> : <EmptyContent />}
         rowKey='id'
-        className={cn('mb-5 bg-background-secondary w-full h-fit rounded-xl p-large', {
-          [className]: className,
-        })}
+        className={cn('mb-5 bg-background-secondary w-full h-fit rounded-xl p-large', className)}
         data={data}
         {...rest}
       >
