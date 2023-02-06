@@ -1,12 +1,18 @@
 import { useRef, useEffect, useState } from 'react'
 import { FCWithChildren, Nullable } from '@/shared/@types'
 import { Tooltip } from '../tooltip'
-
+import cn from 'classnames'
 export interface TrancateContainerProps {
   maxWidth: number
+  childrenClassName?: string
 }
 
-export const TrancateContainer: FCWithChildren<TrancateContainerProps> = ({ children, className, maxWidth }) => {
+export const TrancateContainer: FCWithChildren<TrancateContainerProps> = ({
+  children,
+  className,
+  maxWidth,
+  childrenClassName = '',
+}) => {
   const ref = useRef<Nullable<HTMLDivElement>>(null)
 
   const [isTrancated, setIsTrancated] = useState(false)
@@ -28,7 +34,7 @@ export const TrancateContainer: FCWithChildren<TrancateContainerProps> = ({ chil
   return (
     <div ref={ref} className={className}>
       <Tooltip isActive={isTrancated} label={children as string}>
-        <div className='truncate' style={{ maxWidth: maxWidth + 'px' }}>
+        <div className={cn('truncate', childrenClassName)} style={{ maxWidth: maxWidth + 'px' }}>
           {children}
         </div>
       </Tooltip>
