@@ -23,6 +23,12 @@ jest.mock('next/dist/shared/lib/router-context', () => {
 })
 
 const mockIntersectionObserver = jest.fn()
+// При необходимости можно добавить еще моки
+jest.mock('swiper/css', jest.fn())
+jest.mock('swiper/css/navigation', jest.fn())
+jest.mock('swiper/css/mousewheel', jest.fn())
+jest.mock('swiper/css/pagination', jest.fn())
+
 mockIntersectionObserver.mockReturnValue({
   observe: () => null,
   unobserve: () => null,

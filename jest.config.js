@@ -25,4 +25,7 @@ const customJestConfig = {
   watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
 }
 
-module.exports = createJestConfig(customJestConfig)
+module.exports = async () => ({
+  ...(await createJestConfig(customJestConfig)()),
+  transformIgnorePatterns: ['node_modules/(?!(swiper|ssr-window|dom7)/)', '^.+\\.module\\.(css|sass|scss)$'],
+})
