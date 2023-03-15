@@ -1,4 +1,5 @@
 :root {
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
 }
 
@@ -7,13 +8,57 @@
 */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
-select:-webkit-autofill:hover,
+select:-webkit-autofill:hover {
+  @apply !border-background-primary shadow-[0_0_0_1000px_rgb(var(--background-secondary))_inset];
+  -webkit-text-fill-color: rgb(var(--black));
+}
+
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus,
 select:-webkit-autofill:focus {
-  @apply !border-background-hover shadow-[0_0_0_1000px_rgb(var(--background-hover))_inset];
-  -webkit-text-fill-color: rgb(var(--white));
+  @apply !border-main shadow-[0_0_0_1000px_rgb(var(--white))_inset];
+  -webkit-text-fill-color: rgb(var(--black));
+}
+
+/* Убирает подсвечивание фона кнопки при тапе с телефона */
+button {
+  /* T_T */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* clears the select ‘X’ from Internet Explorer */
+input[type=search]::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+input[type=search]::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* clears the select ‘X’ from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type='number'],
+input[type="number"]:hover,
+input[type="number"]:focus {
+  appearance: none;
+  -moz-appearance: textfield;
 }

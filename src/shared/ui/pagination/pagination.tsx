@@ -33,8 +33,8 @@ export const Pagination: FC<PaginationProps> = ({
   const renderButton = (page: number) => (
     <button key={page} className={cn('group pagination-button')} onClick={() => onChange(page)}>
       <p
-        className={cn('text-base font-bold text-white group-active:text-primary', {
-          ['!text-primary']: currentPage === page,
+        className={cn('text-base font-bold text-white group-active:text-main', {
+          ['!text-main']: currentPage === page,
         })}
       >
         {page}
@@ -54,18 +54,18 @@ export const Pagination: FC<PaginationProps> = ({
         })
       }
     >
-      <Dots className='fill-white w-[12px] h-[4px] group-active:fill-primary' />
+      <Dots className='fill-white w-[12px] h-[4px] group-active:fill-main' />
     </button>
   )
 
   const renderArrowButton = (type: 'prev' | 'next') => (
     <button
-      className='border border-transparent group pagination-arrow bg-background-hover active:border active:border-primary disabled:border-background-secondary disabled:bg-transparent'
+      className='border border-transparent group pagination-arrow bg-background-secondary active:border active:border-main disabled:border-background-primary disabled:bg-transparent'
       onClick={() => onChange(prev => (type === 'prev' ? --prev : ++prev))}
       disabled={(type === 'prev' && currentPage === 1) || (type === 'next' && currentPage >= totalPageCount)}
     >
       <Arrow
-        className={`fill-white w-[7px] h-[13px] group-hover:fill-primary group-disabled:fill-gray ${
+        className={`fill-white w-[7px] h-[13px] group-hover:fill-main group-disabled:fill-background-primary ${
           type === 'next' && 'rotate-180'
         }`}
       />

@@ -25,12 +25,12 @@ export const Switch: FC<SwitchProps> = ({ name, value, label, wrapperClassName, 
         id={name}
         name={name}
         checked={value}
-        className='group relative inline-flex items-center w-10 h-small bg-lines rounded-xl disabled:bg-gray disabled:cursor-not-allowed'
+        className='group relative inline-flex items-center w-10 h-small bg-border rounded-xl disabled:bg-background-primary disabled:cursor-not-allowed'
       >
         {({ checked }) => (
           <span
             aria-hidden='true'
-            className={cn('w-5 h-5 bg-primary rounded-full inline-block transition-all group-disabled:bg-lines', {
+            className={cn('w-5 h-5 bg-main rounded-full inline-block transition-all group-disabled:bg-border', {
               'translate-x-5 bg-secondary': checked,
             })}
           />

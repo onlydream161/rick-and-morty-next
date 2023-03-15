@@ -1,17 +1,12 @@
-import { render, RenderResult } from '@/jest/utils'
+import { render } from '@/jest/utils'
 import { composeStories } from '@storybook/testing-react'
 import * as stories from './select.stories'
 
 const { Default } = composeStories(stories)
 
-describe('SelectTests', () => {
-  let component = {} as RenderResult
-
-  beforeEach(() => {
-    component = render(<Default />)
-  })
-
-  it('component should be render', () => {
+describe('Select Tests', () => {
+  it('Select should be render', () => {
+    const component = render(<Default />)
     expect(component.container).toBeInTheDocument()
   })
 })

@@ -5,9 +5,16 @@ import { AdminPagination, AdminPaginationProps } from './admin-pagination'
 export default {
   title: 'Shared/Admin Pagination',
   component: AdminPagination,
+  argTypes: {
+    loading: {
+      control: 'boolean',
+      defaultValue: false,
+    },
+  },
   args: {
-    pageSizeTitle: 'Rows per page:',
+    pageSizeTitle: 'Строк на странице:',
     pageSizeOptions: [5, 10, 15, 20, 30, 40, 50],
+    totalItems: 150,
   },
 } as Meta
 
@@ -20,7 +27,7 @@ const Template: Story<AdminPaginationProps> = args => {
       {...args}
       page={page}
       pageSize={pageSize}
-      totalPageCount={32}
+      totalPageCount={2}
       onPageChange={onPageChange}
       onPageSizeChange={onPageSizeChange}
     />
@@ -35,7 +42,7 @@ Disabled.args = {
   disabled: true,
 }
 
-export const withPageSize = Template.bind({})
-withPageSize.args = {
+export const WithPageSize = Template.bind({})
+WithPageSize.args = {
   withPageSize: true,
 }

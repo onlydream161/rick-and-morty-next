@@ -21,3 +21,9 @@ export const FILE_ENTITY_MOCK = {
   dateUpdate: '2022-03-11T12:21:53.553Z',
   loading: false,
 }
+
+export const SELECT_OPTION_MOCK = {
+  'id|+1': 1,
+  label: '@word',
+  disabled: '@boolean',
+}

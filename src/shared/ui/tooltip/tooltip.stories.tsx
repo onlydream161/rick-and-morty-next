@@ -8,6 +8,13 @@ export default {
   args: {
     label: 'Test Storybook tooltip',
   },
+  argTypes: {
+    placement: {
+      control: 'select',
+      options: ['top', 'bottom', 'left', 'right'],
+      defaultValue: 'top',
+    },
+  },
   decorators: [
     Story => (
       <div className='flex justify-center p-12'>

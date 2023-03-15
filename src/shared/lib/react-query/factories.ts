@@ -23,15 +23,17 @@ export type QueryFetchFunction<Response> = (
   config?: AxiosRequestConfig | undefined
 ) => QueryFunction<Response, CustomQueryKey>
 
-export type QueryParams<Response> = Omit<
+export type QueryFilters<Filters> = Partial<Filters & { locale: string }>
+
+export type QueryParams<Response, FiltersContent = {}> = Omit<
   UseQueryOptions<Response, AxiosError, Response, CustomQueryKey>,
   'queryKey' | 'queryFn'
->
+> & { key?: string[]; filters?: QueryFilters<FiltersContent> }
 
-export type InfiniteQueryParams<Response> = Omit<
+export type InfiniteQueryParams<Response, FiltersContent = {}> = Omit<
   UseInfiniteQueryOptions<Response, AxiosError, Response, Response, CustomQueryKey>,
   'queryKey' | 'queryFn'
->
+> & { key?: string[]; filters?: QueryFilters<FiltersContent> }
 
 export const getSingleRequestTarget = (id: number | string, target: string): string =>
   // eslint-disable-next-line
@@ -49,7 +51,7 @@ export type QueryFactoryReturnValue<
   Response,
   FiltersContent,
   PrefetchResult extends Response | InfiniteData<Response>,
-  Params extends QueryParams<Response> | InfiniteQueryParams<Response>,
+  Params extends QueryParams<Response, FiltersContent> | InfiniteQueryParams<Response, FiltersContent>,
   QueryResult extends UseQueryResult | UseInfiniteQueryResult
 > = (config?: (filters: FiltersContent & { locale?: string }) => AxiosRequestConfig) => {
   prefetch: (
@@ -60,10 +62,7 @@ export type QueryFactoryReturnValue<
     response?: PrefetchResult
     currentQueryKey: CustomQueryKey
   }>
-  useHookInitializer: (
-    currentFitlers?: Partial<FiltersContent & { locale: string }>,
-    params?: Params
-  ) => QueryResult & { currentQueryKey: CustomQueryKey }
+  useHookInitializer: (params?: Params) => QueryResult & { currentQueryKey: CustomQueryKey }
 }
 
 export function queryFactory<Response, FiltersContent = Record<string, unknown>>(
@@ -75,7 +74,7 @@ export function queryFactory<Response, FiltersContent = Record<string, unknown>>
   Response,
   FiltersContent,
   Response,
-  QueryParams<Response>,
+  QueryParams<Response, FiltersContent>,
   UseQueryResult<Response, AxiosError>
 >
 export function queryFactory<Response, FiltersContent = Record<string, unknown>>(
@@ -87,7 +86,7 @@ export function queryFactory<Response, FiltersContent = Record<string, unknown>>
   Response,
   FiltersContent,
   InfiniteData<Response>,
-  InfiniteQueryParams<Response>,
+  InfiniteQueryParams<Response, FiltersContent>,
   UseInfiniteQueryResult<Response, AxiosError>
 >
 export function queryFactory<Response, FiltersContent = Record<string, unknown>>(
@@ -99,7 +98,7 @@ export function queryFactory<Response, FiltersContent = Record<string, unknown>>
   Response,
   FiltersContent,
   Response | InfiniteData<Response>,
-  QueryParams<Response> | InfiniteQueryParams<Response>,
+  QueryParams<Response, FiltersContent> | InfiniteQueryParams<Response, FiltersContent>,
   UseQueryResult<Response, AxiosError> | UseInfiniteQueryResult<Response, AxiosError>
 > {
   return config => {
@@ -127,18 +126,22 @@ export function queryFactory<Response, FiltersContent = Record<string, unknown>>
         const filters = { ...initialFilters, ...preBuildFilters }
 
         // Нужно делать копию, т.к. без нее будет мутация оригинального primaryKey из-за push ниже и react-query будет спамить запросы без остановки
-        const key = [...primaryKey, Object.entries(filters).join()] as CustomQueryKey
+        const key = [...primaryKey, ...(params?.key || []), Object.entries(filters).join()] as CustomQueryKey
 
         // useHydrate не работает на atomWithUrlLocation, так что нужно на server side передавать initial filters через замыкание
         serverSideFilters = key
 
         if (type === 'query') {
-          await queryClient.prefetchQuery(key, fetch(config?.(filters) || {}), params as QueryParams<Response>)
+          await queryClient.prefetchQuery(
+            key,
+            fetch(config?.(filters) || {}),
+            params as QueryParams<Response, FiltersContent>
+          )
         } else {
           await queryClient.prefetchInfiniteQuery(
             key,
             fetch(config?.(filters) || {}),
-            params as InfiniteQueryParams<Response>
+            params as InfiniteQueryParams<Response, FiltersContent>
           )
         }
         return {
@@ -146,22 +149,28 @@ export function queryFactory<Response, FiltersContent = Record<string, unknown>>
           currentQueryKey: key,
         }
       },
-      useHookInitializer: (currentFitlers, params = {}) => {
-        const filters = { ...initialFilters, ...currentFitlers }
+      useHookInitializer: (params = {}) => {
+        const filters = { ...initialFilters, ...params.filters } as FiltersContent & { locale: string }
 
         // TODO: Нужно протестить, что ключ такого формата не ломает логику react-query
         // Нужно делать копию, т.к. без нее будет мутация оригинального primaryKey из-за push ниже и react-query будет спамить запросы без остановки
-        const key = serverSideFilters || ([...primaryKey, Object.entries(filters).join()] as CustomQueryKey)
+        const key =
+          serverSideFilters ||
+          ([...primaryKey, ...(params?.key || []), Object.entries(filters).join()] as CustomQueryKey)
 
         let response
 
         if (type === 'query') {
           // eslint-disable-next-line
-          response = useQuery(key, fetch(config?.(filters) || {}), params as QueryParams<Response>)
+          response = useQuery(key, fetch(config?.(filters) || {}), params as QueryParams<Response, FiltersContent>)
         } else {
           //TODO: Стоит сразу описать getNextPageParam для текущего проекта
           // eslint-disable-next-line
-          response = useInfiniteQuery(key, fetch(config?.(filters) || {}), params as InfiniteQueryParams<Response>)
+          response = useInfiniteQuery(
+            key,
+            fetch(config?.(filters) || {}),
+            params as InfiniteQueryParams<Response, FiltersContent>
+          )
         }
 
         return {

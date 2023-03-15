@@ -3,11 +3,11 @@
 @import url('~react-loading-skeleton/dist/skeleton.css');
 
 #nprogress .bar {
-  @apply !bg-primary;
+  @apply !bg-main;
 }
 
 .Toastify__toast {
-  @apply bg-background-hover min-h-[93px] p-0 rounded-[10px] text-white;
+  @apply p-0 text-white bg-white rounded-base pr-large;
 }
 
 .Toastify__toast-body {
@@ -15,21 +15,21 @@
 }
 
 .Toastify__toast-body > div {
-  @apply flex items-center gap-x-5 px-[30px] py-[25px];
+  @apply flex items-center;
 }
 
 /* Custom checkbox styles */
 /* ::bofore */
 .custom-checkbox ~ label {
-  @apply before:content-[""] before:absolute before:-left-[10px] before:-translate-x-full before:top-1/2
-    before:-translate-y-1/2 before:w-[15px] before:h-[15px] before:border before:rounded-[3px]
+  @apply before:content-[""] before:absolute before:-left-[15px] before:-translate-x-full before:top-1/2
+    before:-translate-y-1/2 before:w-[22px] before:h-[22px] before:border-[1.5px] before:rounded-[5px]
     before:transition-colors;
 }
 /* ::after */
 .custom-checkbox ~ label {
-  @apply after:content-[""] after:absolute after:bg-no-repeat after:bg-background-primary
-    after:-left-[13px] after:-translate-x-full after:top-1/2 after:-translate-y-1/2 after:w-2 after:h-[7px]
-    after:transition-opacity after:opacity-0 text-subtext transition-colors;
+  @apply after:content-[""] after:absolute after:bg-no-repeat after:bg-white
+    after:-left-[20.5px] after:-translate-x-full after:top-1/2 after:-translate-y-1/2 after:w-[11px] after:h-2
+    after:transition-opacity after:opacity-0 transition-colors;
 }
 .custom-checkbox ~ label::after {
   mask-image: url(../../shared/assets/icons/common/complete.svg);
@@ -39,154 +39,123 @@
 }
 /* checkbox states */
 .custom-checkbox:not(:disabled) ~ label {
-  @apply cursor-pointer before:border-gray hover:before:border-primary hover:text-primary;
+  @apply cursor-pointer before:bg-white hover:before:border-main;
 }
-.custom-checkbox-indeterminate ~ label {
-  @apply after:bg-primary after:bg-none before:p-1 after:rounded-[1px] after:-left-[14.5px]
+/* Вернуть, если понадобится CheckBox Group */
+/* .custom-checkbox-indeterminate ~ label {
+  @apply after:bg-main after:bg-none before:p-1 after:rounded-[1px] after:-left-[14.5px]
         after:opacity-100 after:w-[6px] after:h-[6px];
-}
-.custom-checkbox-error ~ label {
-  @apply before:!border-red;
-}
+} */
 .custom-checkbox:checked ~ label {
-  @apply before:border-primary before:bg-primary after:opacity-100;
+  @apply before:border-main before:bg-main after:opacity-100;
 }
 .custom-checkbox:disabled ~ label {
-  @apply before:bg-background-hover before:!border-lines text-gray cursor-not-allowed;
+  @apply cursor-not-allowed before:bg-background-secondary before:border-border;
 }
 .custom-checkbox:focus-visible ~ label {
-  @apply before:border-primary;
+  @apply before:border-main;
 }
 /* Custom checkbox styles */
 
 /* Start Custom Date Range Picker styles */
-.rc-picker {
-  @apply flex items-center gap-[5px];
-}
-.rc-picker-input {
-  @apply relative w-fit;
-}
-.rc-picker-input::after {
-  @apply absolute content-[""] w-[14px] h-[14px] bg-background-primary bg-no-repeat -translate-x-full top-1/2
-  -translate-y-1/2 right-[2px] cursor-pointer;
-  mask-image: url(../../shared/assets/icons/common/date-picker.svg);
-  mask-size: cover;
-  -webkit-mask-image: url(../../shared/assets/icons/common/date-picker.svg);
-  -webkit-mask-size: cover;
-}
-.rc-picker-input::after {
-  @apply bg-gray
-}
-.rc-picker-input:hover::after {
-  @apply bg-primary
-}
-.rc-picker-disabled .rc-picker-input::after {
-  @apply cursor-not-allowed bg-lines
-}
-.rc-picker input {
-  @apply text-smalltext cursor-pointer text-white w-[160px] h-[44px] bg-background-primary border border-background-primary rounded-base px-[15px]
-  disabled:text-lines disabled:cursor-not-allowed focus:outline-none placeholder:text-gray
-  caret-primary transition-colors;
-}
-.rc-picker-range-error > .rc-picker-input input {
-  @apply border-red;
-}
+/* Вернуть, когда будет дизайн в ui kit */
 .rc-picker-dropdown,
-.rc-picker-range-wrapper,
 .rc-picker-panel-container {
   @apply w-fit;
 }
-.rc-picker-panels {
-  @apply flex items-center gap-4;
-}
 .rc-picker-panel {
-  @apply w-[390px] border border-gray rounded-base pt-large pb-[22px] px-[34px] bg-background-hover z-10;
+  @apply w-[380px] border border-border rounded-base p-large bg-white z-10;
 }
 .rc-picker-header {
-  @apply flex items-center mb-5 pl-[11px] pr-[3px];
-}
-.rc-picker-panels .rc-picker-panel:first-of-type .rc-picker-header {
-  @apply justify-end;
-}
-.rc-picker-panels .rc-picker-panel:first-of-type .rc-picker-header-view {
-  @apply order-2 ml-4;
-}
-.rc-picker-panels .rc-picker-panel:last-of-type .rc-picker-header-view {
-  @apply mr-4 -order-2;
+  @apply flex items-center gap-small px-1.5 mb-[18px];
 }
 .rc-picker-header-view {
-  @apply flex items-center gap-[5px];
+  @apply flex items-center flex-grow text-black -order-1 gap-extra-small text-h2;
 }
 .rc-picker-header-view > button {
-  @apply text-white text-[1.25rem] font-bold leading-6 tracking-[.38px] active:text-primary
+  @apply hover:text-main-secondary active:text-main;
+}
+.rc-picker-body tbody::before {
+  @apply content-['-'] block leading-[18px] text-transparent;
+}
+.rc-picker-body th {
+  @apply p-0 font-normal text-p text-text-secondary;
 }
 .rc-picker-body > table {
   @apply w-full;
 }
-.rc-picker-body tbody::before {
-  @apply content-['-'] block leading-4 text-transparent;
+.rc-picker-panel td {
+  @apply p-0;
 }
-.rc-picker-body th {
-  @apply font-normal text-gray text-base leading-[131%] -tracking-[.32px];
+.rc-picker-date-panel td > div {
+  @apply w-[46px] h-[38px] mx-auto;
 }
-.rc-picker-body td {
-  @apply w-[46px] h-[38px] p-0;
+.rc-picker-month-panel td > div {
+  @apply w-[90px] h-10 mx-auto;
+}
+.rc-picker-year-panel td > div {
+  @apply w-20 h-10 mx-auto;
+}
+.rc-picker-decade-panel td > div {
+  @apply h-10;
 }
 .rc-picker-cell-inner {
-  @apply flex items-center justify-center w-full h-full transition-colors border border-transparent rounded-md cursor-pointer bg-background-hover hover:border-primary;
+  @apply flex items-center justify-center w-full h-full transition-colors rounded-md cursor-pointer text-background-primary hover:bg-background-tertiary;
 }
-.rc-picker-cell {
-  @apply text-gray;
+.rc-picker-cell-in-view > .rc-picker-cell-inner {
+  @apply text-black;
 }
 .rc-picker-cell-selected > .rc-picker-cell-inner {
-  @apply text-primary bg-background-primary;
-}
-.rc-picker-cell-in-range > .rc-picker-cell-inner {
-  @apply bg-opacity-50 rounded-none bg-background-primary;
-}
-.rc-picker-cell-range-start > .rc-picker-cell-inner {
-  @apply rounded-r-none !rounded-l-base;
-}
-.rc-picker-cell-range-end > .rc-picker-cell-inner {
-  @apply rounded-l-none !rounded-r-base;
-}
-.rc-picker-cell-range-start > .rc-picker-cell-inner {
-  @apply text-primary bg-background-primary;
-}
-.rc-picker-cell-range-end > .rc-picker-cell-inner {
-  @apply text-primary bg-background-primary;
-}
-.rc-picker-cell-in-view {
-  @apply text-white;
-}
-.rc-picker-range-arrow {
-  @apply hidden;
-}
-.rc-picker-dropdown-range {
-  @apply py-base;
-}
-.rc-picker-cell-range-hover-start,
-.rc-picker-cell-range-hover-end,
-.rc-picker-cell-range-hover {
-  @apply relative;
-}
-.rc-picker-cell-range-hover::after,
-.rc-picker-cell-range-hover-start::after,
-.rc-picker-cell-range-hover-end::after {
-  @apply absolute content-[''] inset-0 bg-background-primary bg-opacity-50;
-}
-.rc-picker-cell-disabled {
-  @apply opacity-20;
-}
-.rc-picker-dropdown {
-  @apply absolute;
-}
-.rc-picker-dropdown-hidden {
-  @apply hidden;
-}
-.rc-picker-header > button {
-  @apply text-2xl text-primary;
+  @apply text-white bg-main;
 }
 /* End Custom Date Range Picker styles */
 
+/* Start Custom Select styles */
+.rc-select {
+  @apply relative inline-block w-full;
+}
+.rc-select-dropdown {
+  @apply absolute bg-white border border-border rounded-xl p-small;
+}
+.rc-select-dropdown-hidden {
+  @apply hidden;
+}
+.rc-select-selector {
+  @apply relative flex w-full;
+}
+.rc-select-selection-search {
+  @apply w-full;
+}
+.rc-select-selection-item,
+.rc-select-selection-placeholder {
+  @apply absolute pointer-events-none top-px left-1;
+}
+.rc-select-item-option {
+  @apply text-h4 text-black px-5 py-[10.5px] rounded-base;
+}
+.rc-select-item-option-active {
+  @apply bg-background-tertiary;
+}
+.rc-select-item-option-disabled {
+  @apply text-background-primary;
+}
+.rc-virtual-list-holder {
+  @apply !max-h-[212px]
+}
+.rc-virtual-list-holder-inner {
+  @apply flex flex-col gap-1;
+}
+.rc-virtual-list-scrollbar {
+  @apply !w-[5px] translate-x-full;
+}
+.rc-virtual-list-scrollbar-thumb {
+  @apply !w-0.5 !bg-background-primary !rounded-sm !left-[3px];
+}
+/* End Custom Select styles */
 
+/* Custom Table Styles */
+.rc-table-placeholder td {
+  @apply text-left;
+}
+
+/* End Custom Table Styles */

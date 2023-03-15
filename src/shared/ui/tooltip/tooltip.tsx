@@ -1,4 +1,4 @@
-import { ReactElement, useMemo, useState } from 'react'
+import { ReactNode, useMemo, useState } from 'react'
 import Arrow from '@/shared/assets/icons/common/tooltip-arrow.svg'
 import {
   Side,
@@ -25,7 +25,7 @@ export interface TooltipProps {
   labelClassName?: string
 }
 
-export const Tooltip: FC<TooltipProps & { children: ReactElement }> = ({
+export const Tooltip: FC<TooltipProps & { children: ReactNode }> = ({
   children,
   label,
   placement = 'top',
@@ -39,7 +39,7 @@ export const Tooltip: FC<TooltipProps & { children: ReactElement }> = ({
     placement,
     open,
     onOpenChange: setOpen,
-    middleware: [offset(16), shift({ padding: 8 })],
+    middleware: [offset(14), shift({ padding: 8 })],
     whileElementsMounted: autoUpdate,
   })
 
@@ -50,7 +50,7 @@ export const Tooltip: FC<TooltipProps & { children: ReactElement }> = ({
     useDismiss(context),
   ])
 
-  const ref = useMemo(() => mergeRefs([reference, (children as any).ref]), [reference, children])
+  const ref = useMemo(() => mergeRefs([reference]), [reference, children])
 
   return (
     <>
@@ -58,13 +58,15 @@ export const Tooltip: FC<TooltipProps & { children: ReactElement }> = ({
       <AnimatePresence>
         {isActive && open && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ type: 'spring', damping: 20, stiffness: 300 }}
             {...getFloatingProps({
               ref: floating,
-              className: cn('flex items-center bg-lines px-small min-h-[34px] rounded-base z-[9999]', className),
+              className: cn('flex items-center bg-white px-small py-2 rounded-base drop-shadow-tooltip z-[9999]', {
+                [className]: className,
+              }),
               style: {
                 position: strategy,
                 top: y ?? 0,
@@ -74,14 +76,20 @@ export const Tooltip: FC<TooltipProps & { children: ReactElement }> = ({
           >
             <Arrow
               data-testid='tooltip-arrow'
-              className={cn('absolute fill-lines pointer-events-none', {
+              className={cn('absolute fill-white pointer-events-none', {
                 'bottom-0 left-1/2 -translate-x-1/2 translate-y-full rotate-180': placement === 'top',
                 'top-0 left-1/2 -translate-x-1/2 -translate-y-full': placement === 'bottom',
                 '-left-[10px] bottom-1/2 translate-y-1/2 -rotate-90': placement === 'right',
                 '-right-[10px] bottom-1/2 translate-y-1/2 rotate-90': placement === 'left',
               })}
             />
-            <h6 className={cn('text-white', labelClassName)}>{label}</h6>
+            <h4
+              className={cn('text-black', {
+                [labelClassName]: labelClassName,
+              })}
+            >
+              {label}
+            </h4>
           </motion.div>
         )}
       </AnimatePresence>

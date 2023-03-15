@@ -4,7 +4,7 @@ import { Upload, UploadProps } from './upload'
 import { Button } from '@/shared/ui'
 
 export default {
-  title: 'Shared/Upload',
+  // title: 'Shared/Upload',
   component: Upload,
   argTypes: {
     multiple: { control: 'boolean', defaultValue: false },

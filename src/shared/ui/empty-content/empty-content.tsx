@@ -12,8 +12,8 @@ export const EmptyContent: FCWithClassName<EmptyContentProps> = ({ text, classNa
 
   return (
     <div className={cn('flex flex-col items-center justify-center w-full gap-6 pt-16 pb-large', className)}>
-      <EmptyContentIcon className='fill-lines' />
-      <h6 className='text-gray'>{text || t('noData')}</h6>
+      <EmptyContentIcon className='fill-border' />
+      <h6 className='text-background-primary'>{text || t('noData')}</h6>
     </div>
   )
 }

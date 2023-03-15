@@ -14,7 +14,7 @@ import utc from 'dayjs/plugin/utc'
 
 dayjs.extend(utc)
 
-export interface DatepickerProps extends Omit<RangePickerSharedProps<Dayjs>, 'value'> {
+export interface RangeDatepickerProps extends Omit<RangePickerSharedProps<Dayjs>, 'value'> {
   name: string
   locale?: 'ru' | 'en'
   value?: [string, string] | RangeValue<Dayjs>
@@ -28,7 +28,7 @@ export interface DatepickerProps extends Omit<RangePickerSharedProps<Dayjs>, 'va
 }
 
 // Если брать этот компонент для формы, то только через Controller
-export const RangeDatepicker = forwardRef<RangePicker<Dayjs>, PropsWithClassName<DatepickerProps>>(
+export const RangeDatepicker = forwardRef<RangePicker<Dayjs>, PropsWithClassName<RangeDatepickerProps>>(
   (
     {
       name,
@@ -54,7 +54,7 @@ export const RangeDatepicker = forwardRef<RangePicker<Dayjs>, PropsWithClassName
 
     return (
       <div className={cn('flex flex-col gap-[2px] w-fit', className)}>
-        {label && <h6 className='text-gray ml-base'>{label}</h6>}
+        {label && <h6 className='text-background-primary ml-base'>{label}</h6>}
         <RangePicker
           inputReadOnly={inputReadOnly}
           id={name}
@@ -64,14 +64,14 @@ export const RangeDatepicker = forwardRef<RangePicker<Dayjs>, PropsWithClassName
           locale={locale == 'ru' ? ruRu : enUS}
           separator={
             <Arrow
-              className={cn('fill-gray', {
+              className={cn('fill-background-primary', {
                 '!fill-red': error,
               })}
             />
           }
           allowClear
           clearIcon={
-            <ClearSvg className='w-4 h-4 transition-colors duration-100 cursor-pointer fill-gray hover:stroke-primary' />
+            <ClearSvg className='w-4 h-4 transition-colors duration-100 cursor-pointer fill-background-primary hover:stroke-main' />
           }
           className={cn('', {
             'rc-picker-range-error': error,

@@ -2,47 +2,68 @@ import { ButtonHTMLAttributes, forwardRef } from 'react'
 import cn from 'classnames'
 import Loading from '@/shared/assets/icons/common/loading.svg'
 import { OptionalLinkWrapper } from '@/shared/lib'
-import { PropsWithClassName } from '@/shared/@types'
 
-export type Variant = 'primary' | 'secondary' | 'outlined' | 'inverse' | 'inverseOutlined'
-export type Scale = 'default' | 'large'
+export type Variant = 'contained' | 'outlined' | 'text' | 'icon' | 'border-icon'
+type Color = 'primary' | 'secondary'
+export type Size = 'small' | 'medium' | 'large'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant
-  scale?: Scale
+  size?: Size
+  color?: Color
+  fullWidth?: boolean
   loading?: boolean
+  className?: string
+  childrenClassName?: string
   href?: string
   newTab?: boolean
 }
 
-export const Button = forwardRef<HTMLButtonElement, PropsWithClassName<ButtonProps>>(
-  ({ children, variant = 'primary', scale = 'default', type = 'button', className = '', loading, ...rest }, ref) => {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      children,
+      variant = 'contained',
+      color = 'primary',
+      size = 'medium',
+      fullWidth,
+      type = 'button',
+      className,
+      childrenClassName,
+      loading,
+      ...rest
+    },
+    ref
+  ) => {
     return (
       <OptionalLinkWrapper {...rest} href={rest.href}>
         <button
           ref={ref}
           className={cn(
-            `relative flex items-center text-[#fff] hover:text-[#fff] active:text-[#fff] disabled:text-background-hover justify-center min-h-[57px]
-          px-10 rounded-base transition-colors duration-100 shadow-[0px_1px_14px_transparent] active:hover:shadow-none disabled:cursor-not-allowed
-          will-change-contents`,
-            className,
+            'group relative flex items-center justify-center rounded-base disabled:cursor-not-allowed transition-colors',
             {
-              'bg-primary text-[#fff] hover:shadow-primary/50 active:bg-button-press-primary': variant === 'primary',
-              'bg-secondary text-[#fff] hover:shadow-secondary/50 active:bg-button-press-secondary':
-                variant === 'secondary',
-              [`bg-transparent border border-primary !text-white hover:!text-primary active:border-button-press-primary active:!text-button-press-primary
-            disabled:border-gray disabled:!text-gray`]: variant === 'outlined',
-              '!bg-gray text-background-hover !shadow-[transparent]':
-                rest.disabled && (variant === 'primary' || variant === 'secondary'),
-              [`bg-[#fff] text-primary hover:shadow-[0px_1px_14px_#FFFFFF] active:bg-[#F1F3FF]
-      disabled:text-gray disabled:hover:shadow-[transparent] disabled:active:bg-[#fff]`]: variant === 'inverse',
-              [`bg-transparent border border-[#fff] text-[#fff] hover:shadow-[0px_1px_10px_#FFFFFF] active:border-button-press-primary
-      active:text-button-press-primary disabled:border-gray disabled:hover:shadow-[transparent] disabled:active:border-gray
-      disabled:active:text-[#fff]`]: variant === 'inverseOutlined',
-              'px-[60px] min-h-[37px]': variant === 'inverse' || variant === 'inverseOutlined',
-              'px-5 min-h-[37px]': scale === 'default',
+              'disabled:bg-white disabled:text-background-primary disabled:border-border': variant !== 'contained',
+              'disabled:bg-background-secondary disabled:text-background-primary disabled:border-background-secondary':
+                variant === 'contained',
+              'bg-main-secondary text-main border border-main hover:bg-main hover:text-white active:bg-red active:border-red':
+                color === 'primary' && (variant === 'outlined' || variant === 'border-icon'),
+              'bg-background-quaternary text-black border border-background-primary hover:bg-border active:bg-background-primary':
+                color === 'secondary' && (variant === 'outlined' || variant === 'border-icon'),
+              'bg-main text-white border border-main hover:bg-main-hover hover:border-main-hover active:bg-red active:border-red':
+                variant === 'contained',
+              'text-main active:text-red': color === 'primary' && variant === 'text',
+              'disabled:bg-transparent text-secondary-secondary hover:text-black':
+                (color === 'secondary' && variant === 'text') || variant === 'icon',
+              'p-px': size === 'small' && variant === 'border-icon',
+              'p-3': size === 'medium' && variant === 'border-icon',
+              'px-base py-[10.5px]': size === 'medium' && (variant === 'contained' || variant === 'outlined'),
+              'px-10 py-[13.5px]': size === 'large' && (variant === 'contained' || variant === 'outlined'),
+              'p-0': variant === 'text',
+              'w-full': fullWidth,
+              'w-fit': !fullWidth,
               'pointer-events-none': loading,
-            }
+            },
+            className
           )}
           type={type}
           {...rest}
@@ -50,21 +71,26 @@ export const Button = forwardRef<HTMLButtonElement, PropsWithClassName<ButtonPro
           {
             <Loading
               data-testid='loading-button-icon'
-              className={cn('absolute fill-[#fff] h-[39px] animate-spin', {
-                '!fill-primary': variant === 'outlined' || variant === 'inverse',
-                '!fill-gray':
-                  rest.disabled && (variant === 'outlined' || variant === 'inverse' || variant === 'inverseOutlined'),
-                'h-[20px]': scale === 'default' || variant === 'inverse' || variant === 'inverseOutlined',
+              className={cn('absolute animate-spin group-disabled:fill-background-primary', {
+                'fill-main': color === 'primary' && variant !== 'contained',
+                'fill-white': color === 'primary' && variant === 'contained',
+                'fill-black': color === 'secondary' && (variant === 'outlined' || variant === 'border-icon'),
+                'fill-secondary-hover': (color === 'secondary' && variant === 'text') || variant === 'icon',
+                'h-[29px]': (size === 'large' || size === 'medium') && variant !== 'icon',
+                'h-4': size === 'small' || variant === 'icon',
                 hidden: !loading,
               })}
             />
           }
           <span
-            className={cn('transition-opacity duration-100', {
-              'opacity-0': loading,
-              'text-base': scale === 'large',
-              'text-subtext': scale === 'default' || variant === 'inverse' || variant === 'inverseOutlined',
-            })}
+            data-testid='button-children-wrapper'
+            className={cn(
+              'no-underline transition-opacity duration-100',
+              {
+                'opacity-0': loading,
+              },
+              childrenClassName
+            )}
           >
             {children}
           </span>

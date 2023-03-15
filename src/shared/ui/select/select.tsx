@@ -1,174 +1,127 @@
-import { Combobox, Transition } from '@headlessui/react'
-import Arrow from '@/shared/assets/icons/common/arrow.svg'
+import { useState } from 'react'
+import { Listbox, Transition } from '@headlessui/react'
+import { Nullable, SelectOption } from '@/shared/@types'
+import { useTranslate } from '@/shared/lib'
+import { Input, InputProps } from '../input'
+import { Button } from '../button'
 import Loading from '@/shared/assets/icons/common/loading.svg'
-import SearchSVG from '@/shared/assets/icons/common/search.svg'
-import { ForwardedRef, forwardRef, InputHTMLAttributes, useState, FocusEvent } from 'react'
+import ArrowIcon from '@/shared/assets/icons/common/select-arrow.svg'
 import cn from 'classnames'
-import { PropsWithClassName, SelectOption, TFunction } from '@/shared/@types'
 
-export interface SelectProps<T> extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'onSelect'> {
-  showSearch?: boolean
-  onlySearch?: boolean
-  darkTheme?: boolean
-  prefix?: string
-  value: T
+export interface SelectProps<T> {
+  name: string
+  label?: string
+  value?: Nullable<T>
+  defaultValue?: T
+  disabled?: boolean
   options?: SelectOption[]
-  selectInputClassName?: string
-  notSelected?: string
-  hidden?: boolean
+  isSaved?: boolean
+  inputProps?: Omit<InputProps, 'name'>
+  className?: string
+  optionClassName?: string
   isLoading?: boolean
-  t: TFunction
-  onChange?: (selected: T) => void
-  onSearch?: (value: string) => void
+  onChange?: (selected: Nullable<T>) => void
 }
 
-const SelectComponent = <T extends string | number>(
-  {
-    showSearch,
-    onlySearch,
-    darkTheme,
-    prefix = '',
-    value,
-    options,
-    className = '',
-    selectInputClassName = '',
-    hidden,
-    isLoading,
-    notSelected = 'notSelected',
-    t,
-    onChange,
-    onSearch,
-    ...rest
-  }: PropsWithClassName<SelectProps<T>>,
-  ref: ForwardedRef<HTMLInputElement>
-) => {
-  const [isFocused, setIsFocused] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
+export const Select = <T extends string | number>({
+  name,
+  label,
+  value = null,
+  defaultValue,
+  disabled,
+  options,
+  isSaved,
+  inputProps,
+  className,
+  optionClassName,
+  isLoading,
+  onChange,
+}: SelectProps<T>) => {
+  const { t } = useTranslate(['common'])
+  const [optionsListRef, setOptionsListRef] = useState<Nullable<HTMLDivElement>>(null)
+  const isScrollable = optionsListRef && optionsListRef.scrollHeight > optionsListRef.clientHeight
 
   return (
-    <Combobox value={value} onChange={e => onChange?.(e)}>
+    <Listbox
+      as='div'
+      defaultValue={defaultValue}
+      className={cn('relative w-full outline-none', className)}
+      value={value}
+      disabled={disabled || isSaved}
+      onChange={e => onChange?.(e)}
+    >
       {({ open }) => (
-        <div className={'group relative w-full ' + className}>
-          {showSearch ? (
-            <div
-              className={cn('group flex items-center w-full h-[44px] gap-base py-2 px-base rounded-base', className, {
-                'bg-transparent placeholder:text-transparent group-hover:bg-background-hover': hidden && !searchValue,
-                'bg-background-hover placeholder:text-gray': searchValue || isFocused || !hidden,
-                'bg-background-primary group-hover:bg-background-primary': darkTheme,
-              })}
-            >
-              <Combobox.Input
-                {...rest}
-                ref={ref}
-                type='text'
-                className={cn(
-                  `caret-primary focus:outline-none w-full text-subtext
-                    text-white group-hover:text-primary group-hover:placeholder:text-primary
-                    placeholder:transition-colors placeholder:duration-100`,
-                  {
-                    'bg-background-primary': darkTheme,
-                    'bg-background-hover': !hidden,
-                    'bg-transparent': hidden,
-                  }
-                )}
-                onFocus={(e: FocusEvent<HTMLInputElement, Element>) => {
-                  setIsFocused(true)
-                  rest.onFocus?.(e)
-                }}
-                onBlur={(e: FocusEvent<HTMLInputElement, Element>) => {
-                  setIsFocused(false)
-                  rest.onBlur?.(e)
-                }}
-                displayValue={(value: T) =>
-                  options?.find(option => option.id === value)?.label || searchValue || String(value) || ''
-                }
-                onChange={e => {
-                  setSearchValue(e.target.value)
-                  onSearch?.(e.target.value.trim())
-                }}
-              />
-              <Combobox.Button>
-                <SearchSVG
-                  className={cn(
-                    'icon-base h-4 w-4 cursor-pointer stroke-white group-hover:stroke-primary transition-colors duration-100',
-                    {
-                      '!stroke-primary': hidden || isFocused,
-                    }
-                  )}
-                />
-              </Combobox.Button>
-            </div>
-          ) : (
-            <Combobox.Button
-              className={cn(
-                `flex items-center justify-between w-full input-focus focus-visible:ring-primary bg-background-hover
-              rounded-base h-[44px] text-left px-4 py-2 text-gray text-subtext`,
-                {
-                  [selectInputClassName]: selectInputClassName,
-                  ['text-primary']: value,
-                }
-              )}
-            >
-              <div
-                className={cn('overflow-hidden text-ellipsis whitespace-nowrap max-w-[calc(100%-1.25rem)]', {
-                  ['text-primary']: value,
-                  ['text-gray']: !value,
-                })}
-              >
-                <span className='text-white group-hover:text-primary group-active:text-primary'>{`${prefix}: `}</span>
-                <span className=''>{options?.find(option => option.id === value)?.label || t(notSelected)}</span>
-              </div>
-              <Arrow className='fill-white group-hover:fill-primary w-[13px] h-[13px] -rotate-90 group-active:fill-primary' />
-            </Combobox.Button>
-          )}
-          {onlySearch || (!searchValue && !value && showSearch) || (
-            <Transition
-              show={open}
-              unmount={false}
-              enter='list-transition'
-              enterFrom='scale-y-95 opacity-0'
-              enterTo='scale-y-100 opacity-100'
-              leave='list-transition'
-              leaveFrom='scale-y-100 opacity-100'
-              leaveTo='scale-y-95 opacity-0'
-              className='absolute z-10 w-full border bg-background-hover dark:border-gray border-primary px-small mt-extra-small rounded-base will-change-transform'
-            >
+        <>
+          <Listbox.Button
+            className={cn('w-full', {
+              'cursor-text': isSaved,
+            })}
+          >
+            <Input
+              name={name}
+              label={label}
+              type='select'
+              readOnly
+              isSaved={isSaved}
+              value={options?.find(option => option.id === value)?.label || ''}
+              disabled={disabled}
+              isDropdownOpen={open}
+              extraContent={
+                <Button variant='icon' disabled={disabled}>
+                  <ArrowIcon className={cn('stroke-currentColor transition-transform', { 'rotate-180': open })} />
+                </Button>
+              }
+              reset={() => onChange?.(null)}
+              {...inputProps}
+            />
+          </Listbox.Button>
+          <Transition
+            show={open}
+            enterFrom='scale-y-95 opacity-0'
+            enterTo='scale-y-100 opacity-100'
+            leaveFrom='scale-y-100 opacity-100'
+            leaveTo='scale-y-95 opacity-0'
+            className={cn(
+              'absolute w-full bg-white border border-border p-small mt-1 rounded-xl z-10 overflow-hidden',
+              {
+                'pr-1': isScrollable,
+              }
+            )}
+          >
+            <div ref={setOptionsListRef} className='max-h-[210px] scrollbar-list overflow-auto'>
               {isLoading ? (
-                <Loading className='mx-auto fill-primary h-10 py-[10px] animate-spin' />
+                <div className='px-5 py-[10.5px]'>
+                  <Loading className='h-[29px] fill-main mx-auto animate-spin' />
+                </div>
               ) : options?.length ? (
-                <Combobox.Options
-                  static
-                  className='relative scrollbar-dropdown dark:scrollbar-dropdown-gray max-h-40 overflow-auto py-[10px] pr-[5px] input-focus'
-                >
+                <Listbox.Options static className={cn('flex flex-col gap-1 outline-none', { 'pr-1': isScrollable })}>
                   {options?.map(option => (
-                    <Combobox.Option key={option.id} value={option.id}>
-                      {({ active, selected }) => (
-                        <div
+                    <Listbox.Option key={`${option.id}`} value={option.id} disabled={option.disabled}>
+                      {({ active, selected, disabled }) => (
+                        <h4
                           className={cn(
-                            'relative flex items-center h-[35px] px-small py-1 text-white cursor-pointer rounded-[5px] text-subtext',
+                            'px-5 py-[10.5px] cursor-pointer rounded-base',
                             {
-                              ['bg-lines dark:bg-background-primary !text-primary']: selected,
-                              ['!text-primary']: active,
-                            }
+                              'bg-background-tertiary': active || selected,
+                              'text-black': !disabled,
+                              'text-background-primary': disabled,
+                            },
+                            optionClassName
                           )}
                         >
                           {option.label}
-                        </div>
+                        </h4>
                       )}
-                    </Combobox.Option>
+                    </Listbox.Option>
                   ))}
-                </Combobox.Options>
+                </Listbox.Options>
               ) : (
-                <div className='min-h-[55px] py-[14px] px-5 text-gray text-subtext'>{t('emptyRequest')}</div>
+                <h4 className='px-5 py-[10.5px] text-text-secondary'>{t('EmptyRequest')}</h4>
               )}
-            </Transition>
-          )}
-        </div>
+            </div>
+          </Transition>
+        </>
       )}
-    </Combobox>
+    </Listbox>
   )
 }
-
-export const Select = forwardRef(SelectComponent) as <T>(
-  props: SelectProps<T> & { ref?: ForwardedRef<HTMLInputElement> }
-) => ReturnType<typeof SelectComponent>

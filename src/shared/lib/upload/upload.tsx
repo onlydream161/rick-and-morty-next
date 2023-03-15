@@ -1,5 +1,5 @@
 import RCUpload, { UploadProps as RCUploadProps } from 'rc-upload'
-import { Children, cloneElement, ReactElement } from 'react'
+import { cloneElement } from 'react'
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form'
 import cn from 'classnames'
 import { UploadHookProps, useUpload } from '@/shared/hooks'
@@ -25,8 +25,8 @@ export const Upload: FCWithChildren<UploadProps> = ({
   customRequest,
   ...rest
 }) => {
-  const { control } = useFormContext()
-  const { isLoading, upload } = useUpload({
+  const { control, getValues } = useFormContext()
+  const { upload } = useUpload({
     multiple: rest.multiple,
     optimistic,
     customRequest,
@@ -40,20 +40,23 @@ export const Upload: FCWithChildren<UploadProps> = ({
       render={({ field }) => (
         <RCUpload
           disabled={rest.disabled}
-          className={cn('inline-flex input-focus focus-visible:ring-primary', className, {
+          className={cn('inline-flex input-focus focus-visible:ring-main', {
             'focus-visible:ring-red': error,
+            [className]: className,
           })}
+          beforeUpload={(_, list) => {
+            return !rest.max || list.length + (getValues(name) || []).length <= rest.max
+          }}
           customRequest={upload}
           onSuccess={res => {
             if (rest.multiple) {
-              const currentValue = field.value || []
+              const currentValue = getValues(name) || []
               const existItemIndex = currentValue.findIndex((file: RcFile) => file.uid === res.uid)
               if (~existItemIndex) {
                 currentValue[existItemIndex] = res
-                field.onChange(currentValue)
-                return
+              } else {
+                currentValue.push(res)
               }
-              currentValue.push(res)
               field.onChange(currentValue)
               return
             }
@@ -61,13 +64,11 @@ export const Upload: FCWithChildren<UploadProps> = ({
           }}
           {...rest}
         >
-          {Array.isArray(children) &&
-            Children.map(children, (child: ReactElement) => {
-              return cloneElement(child, {
-                ...child.props,
-                value: field.value,
-                loading: isLoading,
-              })
+          {children &&
+            cloneElement(children, {
+              ...children.props,
+              value: field.value,
+              disabled: rest.disabled,
             })}
         </RCUpload>
       )}

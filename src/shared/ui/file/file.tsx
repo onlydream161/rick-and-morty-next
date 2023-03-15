@@ -23,7 +23,7 @@ export const File: FCWithClassName<FileProps> = ({ file, className = '', onRemov
       data-testid='file-close-button'
       type='button'
       className={cn(
-        'flex items-center justify-center w-[23px] h-[23px] bg-border rounded-full hover:bg-gray active:bg-text transition-colors',
+        'flex items-center justify-center w-[23px] h-[23px] bg-border rounded-full hover:bg-background-primary active:bg-text transition-colors',
         className
       )}
       onClick={e => {
@@ -56,13 +56,13 @@ export const File: FCWithClassName<FileProps> = ({ file, className = '', onRemov
           data-testid='file'
           className={cn(
             `flex items-center gap-small max-w-full w-fit rounded-base pl-3 pr-1 h-[31px]
-       bg-background-secondary hover:bg-background-hover active:bg-background-secondary transition-colors border-none`,
+       bg-background-primary hover:bg-background-secondary active:bg-background-tertiary transition-colors border-none`,
             className
           )}
         >
           <h4 className='w-[116px] text-white truncate'>{file.name}</h4>
           {isLoading ? (
-            <Loading data-testid='file-preloader' className='fill-white w-4 h-4 mr-2 animate-spin shrink-0' />
+            <Loading data-testid='file-preloader' className='w-4 h-4 mr-2 fill-white animate-spin shrink-0' />
           ) : (
             <CloseButton />
           )}

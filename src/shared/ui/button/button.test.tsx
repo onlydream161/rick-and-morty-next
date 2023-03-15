@@ -46,6 +46,6 @@ describe('ButtonTests', () => {
 
   it('loading button should have invisible text', () => {
     render(<Default loading />)
-    expect(screen.getByText('Кнопка')).toHaveClass('opacity-0')
+    expect(screen.getByTestId('button-children-wrapper')).toHaveClass('opacity-0')
   })
 })

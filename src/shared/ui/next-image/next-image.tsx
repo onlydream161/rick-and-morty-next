@@ -19,7 +19,7 @@ export const NextImage: FC<NextImageProps> = ({ src, width, height, className, o
       <div
         data-testid='image-no-photo'
         // Изменить в зависимости от дизайна проекта
-        className={cn('flex items-center justify-center bg-gray w-full h-full text-lines', className)}
+        className={cn('flex items-center justify-center bg-background-primary w-full h-full text-border', className)}
         // Из-за JIT компилятора не получится всунуть в cn через tailwind
         style={{ width: width || '100%', height: height || '100%' }}
       >

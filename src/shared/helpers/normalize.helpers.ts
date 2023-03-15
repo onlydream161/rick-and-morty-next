@@ -1,7 +1,12 @@
 import { get } from 'lodash'
 import { SelectOption, TFunction } from '../@types'
 
-export const SELECT_ALL_OPTIONS = (t: TFunction) => [{ id: '', label: t('all') }]
+export const getSelectAllOption = (t: TFunction) => [{ id: '', label: t('all') }]
+
+export const getBinaryOptions = (truthyLabel: string, falsyLabel: string) => [
+  { label: truthyLabel, id: true },
+  { label: falsyLabel, id: false },
+]
 
 export const normalizeSelectOptions = <T extends {}[]>(
   data?: T,
@@ -28,6 +33,11 @@ export const normalizeSelectOptions = <T extends {}[]>(
       : []),
   ]
 }
+
+export const normalizeSelectOptionsFromEnum = <T extends Record<string, string>>(
+  data: T,
+  t: TFunction
+): SelectOption[] => Object.values(data).map(entity => ({ id: entity, label: t(entity) }))
 
 export const normalizeSelectOptionsFromConstantsKeysArray = (constants: string[], t: TFunction): SelectOption[] =>
   constants.map((constant, index) => ({ id: index, label: t(constant) }))

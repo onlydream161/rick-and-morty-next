@@ -1,4 +1,4 @@
 import { atom } from 'jotai'
-import { User } from '@/entities/viewer'
+import { User } from '../lib'
 
-export const userAtom = atom<User | undefined>(undefined)
+export const viewerAtom = atom<User | undefined>(undefined)

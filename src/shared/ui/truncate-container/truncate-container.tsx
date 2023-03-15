@@ -1,13 +1,14 @@
 import { useRef, useEffect, useState } from 'react'
-import { FCWithChildren, Nullable } from '@/shared/@types'
+import { FCWithClassName, Nullable } from '@/shared/@types'
 import { Tooltip } from '../tooltip'
 import cn from 'classnames'
 export interface TrancateContainerProps {
   maxWidth: number
+  children: string
   childrenClassName?: string
 }
 
-export const TrancateContainer: FCWithChildren<TrancateContainerProps> = ({
+export const TrancateContainer: FCWithClassName<TrancateContainerProps> = ({
   children,
   className,
   maxWidth,
@@ -33,7 +34,7 @@ export const TrancateContainer: FCWithChildren<TrancateContainerProps> = ({
 
   return (
     <div ref={ref} className={className}>
-      <Tooltip isActive={isTrancated} label={children as string}>
+      <Tooltip isActive={isTrancated} label={children}>
         <div className={cn('truncate', childrenClassName)} style={{ maxWidth: maxWidth + 'px' }}>
           {children}
         </div>

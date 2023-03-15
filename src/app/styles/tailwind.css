@@ -4,51 +4,49 @@
 
 @layer base {
   h1 {
-    @apply text-[2.5rem] leading-[122.5%] font-bold;
+    @apply text-[1.75rem] leading-[2.125rem] font-bold;
   }
+
   h2 {
-    @apply text-[1.5625rem] leading-[120%] font-bold;
+    @apply text-xl font-semibold leading-6;
   }
+
   h3 {
-    @apply text-[1.375rem] leading-[123%];
+    @apply text-[1.0625rem] leading-[1.3125rem] font-semibold;
   }
+
   h4 {
-    @apply text-base leading-[125%] font-bold;
+    @apply text-[1.0625rem] leading-[170%];
   }
-  h5 {
-    @apply text-base leading-[158%];
-  }
-  h6 {
-    @apply text-[0.8125rem] leading-[206%];
-  }
+
   p {
-    @apply text-[0.8125rem] leading-[140%];
+    @apply text-xs leading-5;
   }
+
+  h5 {
+    @apply text-[0.5rem] leading-[0.625rem] font-bold;
+  }
+
   a {
-    @apply transition-colors duration-100 hover:text-primary active:text-lines disabled:text-gray;
+    @apply text-secondary-secondary underline underline-offset-[3px] hover:no-underline active:text-black active:no-underline visited:text-black transition-colors
   }
-  button {
-    @apply text-primary hover:text-white active:text-lines disabled:text-gray
-  }
+
   img {
     @apply object-cover
   }
 }
 
-@layer components {
-  .icon-base {
-    @apply fill-primary stroke-primary active:fill-button-press-primary active:stroke-button-press-primary;
-  }
-  .pagination-button {
-    @apply flex items-center justify-center rounded-full w-[44px] h-[44px] hover:border hover:border-primary;
-  }
-  .pagination-arrow {
-    @apply flex items-center justify-center rounded-full w-[44px] h-[44px];
-  }
-}
+@layer components {}
 
 @layer utilities {
-  .input-focus {
-    @apply focus:outline-none focus-visible:ring-1;
+  /* Styled scrollBar for dropdown lists */
+  .scrollbar-list::-webkit-scrollbar {
+    @apply w-0.5;
+  }
+  .scrollbar-list::-webkit-scrollbar-thumb {
+    @apply bg-background-primary rounded-base;
+  }
+  .scrollbar-list::-webkit-scrollbar-track {
+    @apply bg-transparent;
   }
 }

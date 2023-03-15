@@ -1,3 +1,4 @@
+import { Nullable } from '@/shared/@types'
 import { Story, Meta } from '@storybook/react'
 import { useState } from 'react'
 import { Select, SelectProps } from './select'
@@ -13,26 +14,45 @@ export default {
       { id: 4, label: 'Benedict Kessler' },
       { id: 5, label: 'Katelyn Rohan' },
     ],
-    t: (str: string) => str,
+  },
+  argTypes: {
+    disabled: {
+      control: 'boolean',
+      defaultValue: false,
+    },
+    isLoading: {
+      control: 'boolean',
+      defaultValue: false,
+    },
+    isSaved: {
+      control: 'boolean',
+      defaultValue: false,
+    },
+    options: {
+      table: {
+        disable: true,
+      },
+    },
   },
 } as Meta
 
 const Template: Story<SelectProps<number>> = args => {
-  const [value, onChange] = useState<number | undefined>(1)
+  const [value, onChange] = useState<Nullable<number>>(null)
 
-  return <Select {...args} value={value} onChange={onChange} />
+  return <Select className='max-w-sm' {...args} value={value} onChange={onChange} label='StorySelect' />
 }
 
 export const Default = Template.bind({})
 Default.args = {}
 
-export const WithSearch = Template.bind({})
-WithSearch.args = {
-  showSearch: true,
+export const Empty = Template.bind({})
+Empty.args = {
+  options: [],
 }
 
-export const OnlySearch = Template.bind({})
-OnlySearch.args = {
-  showSearch: true,
-  onlySearch: true,
+export const WithError = Template.bind({})
+WithError.args = {
+  inputProps: {
+    error: { type: 'required', message: 'StorySelectSearchError' },
+  },
 }

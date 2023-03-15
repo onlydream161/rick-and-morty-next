@@ -9,6 +9,11 @@ export default {
     errorMessage: 'Заполните это поле',
   },
   argTypes: {
+    type: {
+      control: 'select',
+      options: ['text', 'search', 'password'],
+      defaultValue: 'text',
+    },
     error: {
       control: 'boolean',
       defaultValue: false,
@@ -17,7 +22,7 @@ export default {
       control: 'boolean',
       defaultValue: false,
     },
-    passwordStrength: {
+    isSaved: {
       control: 'boolean',
       defaultValue: false,
     },
@@ -28,8 +33,3 @@ const Template: Story<InputProps> = args => <Input {...args} label='StoryInput' 
 
 export const Default = Template.bind({})
 Default.args = {}
-
-export const Password = Template.bind({})
-Password.args = {
-  type: 'password',
-}

@@ -1,19 +1,19 @@
 import { AxiosRequestConfig, AxiosResponse, Cancel } from 'axios'
 import { RcFile, UploadRequestError, UploadRequestOption } from 'rc-upload/lib/interface'
 import { useRef, useState } from 'react'
-import { FileModel, Nullable, TFunction } from '@/shared/@types'
-import { notify, uploadFiles } from '@/shared/lib'
-import { getNumberFromString } from '@/shared/helpers'
+import { FileModel, Nullable } from '@/shared/@types'
+import { notify, uploadFiles, useTranslate } from '@/shared/lib'
 
 export interface UploadHookProps {
   multiple?: boolean
   optimistic?: boolean
-  t: TFunction
   // Изменить возвращаемое значение в зависимости с бэком
   customRequest?: (file: RcFile, config?: AxiosRequestConfig<RcFile>) => Promise<AxiosResponse<FileModel>>
 }
 
-export const useUpload = ({ multiple, optimistic, t, customRequest }: UploadHookProps) => {
+export const useUpload = ({ multiple, optimistic, customRequest }: UploadHookProps) => {
+  const { t } = useTranslate(['common'])
+
   const [isLoading, setIsLoading] = useState(false)
   const abortController = useRef<Nullable<AbortController>>(null)
 
@@ -29,27 +29,25 @@ export const useUpload = ({ multiple, optimistic, t, customRequest }: UploadHook
       }
       abortController.current = new AbortController()
       const rcFile = file as RcFile
+
       const optimisticFileData = {
         uid: rcFile.uid,
-        id: getNumberFromString(rcFile.uid),
         name: rcFile.name,
+        path: rcFile.name,
       }
+
       optimistic &&
         onSuccess?.({
           ...optimisticFileData,
           loading: true,
         })
-      let response: Nullable<AxiosResponse<FileModel>> = null
-      if (customRequest) {
-        response = await customRequest(rcFile, {
-          signal: abortController.current.signal,
-        })
-      } else {
-        response = await uploadFiles(rcFile, {
-          signal: abortController.current.signal,
-        })
-        onSuccess?.({ ...response.data, loading: false, uid: rcFile.uid })
-      }
+
+      const request = customRequest || uploadFiles
+
+      const response = await request(rcFile, {
+        signal: abortController.current.signal,
+      })
+      onSuccess?.({ ...response.data, loading: false, uid: rcFile.uid })
     } catch (error) {
       if ((error as Cancel).message === 'canceled') return
       notify(t('fileUploadError'), { status: 'error' })

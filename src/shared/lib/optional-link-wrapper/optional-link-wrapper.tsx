@@ -11,9 +11,7 @@ export const OptionalLinkWrapper: FC<PropsWithChildren<OptionalLinkWrapperProps>
     <>
       {href ? (
         <Link href={href}>
-          <a className='contents' {...(newTab && { target: '_blank', rel: 'noreferrer noopener' })}>
-            {children}
-          </a>
+          <a {...(newTab && { target: '_blank', rel: 'noreferrer noopener' })}>{children}</a>
         </Link>
       ) : (
         children

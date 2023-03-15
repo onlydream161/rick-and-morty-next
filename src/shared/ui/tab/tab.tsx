@@ -1,30 +1,61 @@
 import { ButtonHTMLAttributes, DetailedHTMLProps, FC } from 'react'
 import { OptionalLinkWrapper } from '@/shared/lib'
+import ErrorIcon from '@/shared/assets/icons/common/tab-error.svg'
+import CloseIcon from '@/shared/assets/icons/common/close.svg'
 import cn from 'classnames'
+import { Button } from '@/shared/ui'
+
+export type VariantTabs = 'primary' | 'transparent'
 
 export interface TabProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
+  variant?: VariantTabs
   href?: string
   active?: boolean
-  border?: boolean
+  error?: boolean
+  onRemove?: () => void
 }
 
-export const Tab: FC<TabProps> = ({ children, href, active, border = true, ...rest }) => {
+export const Tab: FC<TabProps> = ({
+  children,
+  href,
+  variant = 'primary',
+  error,
+  className,
+  active,
+  onRemove,
+  ...rest
+}) => {
   return (
     <OptionalLinkWrapper href={href}>
       <button
-        className={cn(
-          `relative flex items-center px-base text-subtext text-gray
-      bg-background-secondary w-full h-10 input-focus focus-visible:ring-primary
-      hover:bg-background-hover active:text-white disabled:hover:bg-background-secondary disabled:cursor-not-allowed`,
-          {
-            [`after:content-[""] after:absolute after:h-[1px] after:right-[15px]
-      after:left-[15px] after:bottom-0 after:bg-lines`]: border,
-            ['text-white']: active,
-          }
-        )}
+        type='button'
+        className={cn('flex items-center text-text border-2 outline-none transition-colors', className, {
+          'bg-transparent p-2 hover:border-b-main active:text-main active:border-b-main': variant === 'transparent',
+          'border-transparent': variant === 'transparent' && !active,
+          '!text-main border-transparent border-b-main p-3': variant === 'transparent' && active,
+          'rounded-base px-4 py-2.5': variant === 'primary',
+          '!text-black bg-border border-border': variant === 'primary' && active,
+          'bg-background-tertiary border-background-primary hover:border-main active:border-border active:text-black active:bg-border':
+            variant === 'primary' && !active,
+          '!text-red': error,
+          'gap-x-3.5': onRemove || error,
+        })}
         {...rest}
       >
-        {children}
+        <h2>{children}</h2>
+        {onRemove && (
+          <Button
+            variant='icon'
+            data-testid='remove-tab'
+            onClick={e => {
+              e.stopPropagation()
+              onRemove()
+            }}
+          >
+            <CloseIcon className='stroke-currentColor' />
+          </Button>
+        )}
+        {error && <ErrorIcon className='fill-red' />}
       </button>
     </OptionalLinkWrapper>
   )

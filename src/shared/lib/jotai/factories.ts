@@ -37,10 +37,12 @@ export const atomWithUrlLocation = <Value>(key: string, initialValue: Value, opt
 
     const url = urlMark + searchParams.toString()
 
+    const historyState = { ...history.state, url, as: url, key: key + Date.now() }
+
     if (options?.replaceState) {
-      history.replaceState(null, '', url)
+      history.replaceState(historyState, '', url)
     } else {
-      history.pushState(null, '', url)
+      history.pushState(historyState, '', url)
     }
   }
 

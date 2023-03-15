@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@/jest/utils'
 import { composeStories } from '@storybook/testing-react'
 import userEvent from '@testing-library/user-event'
+import { FieldError } from 'react-hook-form'
 import * as stories from './checkbox.stories'
 
 const { Default } = composeStories(stories)
@@ -61,14 +62,14 @@ describe('CheckboxTests', () => {
   })
 
   it('invalid checkbox should render error message', () => {
-    render(<Default error errorMessage='Error text' />)
+    render(<Default error={{ message: 'Error text' } as FieldError} />)
     const errorMessage = screen.queryByTestId('checkbox-error-message')
     expect(errorMessage).toBeInTheDocument()
     expect(errorMessage).toHaveTextContent('Error text')
   })
 
   it('invalid checkbox should render custrom error styles', () => {
-    render(<Default error errorMessage='Error text' />)
-    expect(screen.getByRole('checkbox')).toHaveClass('custom-checkbox-error')
+    render(<Default error={{ message: 'Error text' } as FieldError} />)
+    expect(screen.getByTestId('checkbox-label')).toHaveClass('before:border-red')
   })
 })

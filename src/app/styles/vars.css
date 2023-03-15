@@ -1,35 +1,49 @@
-:root {
-    --primary: 140 0 250;
-    --secondary: 73 146 255;
-    --gray: 140 144 171;
-    --lines: 232 229 250;
-    --background-primary: 255 255 255;
-    --background-secondary: 249 250 255;
-    --background-hover: 241 243 255;
-    --red: 255 28 110;
-    --white: 25 26 34;
-    --button-press-primary: 109 0 195;
-    --button-press-secondary: 53 59 194;
-    --orange: 235 173 16;
-    --green: 73 235 16;
-    --skeleton: 244 245 255;
-    --skeleton-highlight: 235 238 254;
-  }
-  
-  .dark {
-    --primary: 87 93 255;
-    --secondary: 255 28 110;
-    --gray: 140 144 171;
-    --lines: 43 43 51;
-    --background-primary: 14 9 26;
-    --background-secondary: 24 23 40;
-    --background-hover: 33 31 47;
-    --red: 214 61 134;
-    --white: 255 255 255;
-    --button-press-primary: 53 59 194;
-    --button-press-secondary: 172 0 62;
-    --orange: 235 173 16;
-    --green: 73 235 16;
-    --skeleton: 33 31 47;
-    --skeleton-highlight: 52 54 80;
-  }
+:root,
+::before,
+::after {
+  --black: 27 27 27;
+  --white: 255 255 255;
+  --text: 77 77 77;
+  --text-secondary: 101 102 111;
+  --main: 238 115 44;
+  --main-hover: 255 151 56;
+  --main-secondary: 255 240 230;
+  --secondary: 64 91 212;
+  --secondary-hover: 233 230 255;
+  --secondary-secondary: 87 106 142;
+  --background: 244 244 244;
+  --background-primary: 185 187 192;
+  --background-secondary: 249 249 250;
+  --background-tertiary: 239 239 241;
+  --background-quaternary: 237 239 246;
+  --red: 204 50 50;
+  --green: 39 180 26;
+  --border: 214 218 226;
+  --skeleton: 214 218 226;
+  --skeleton-highlight: 255 255 255;
+}
+
+.dark,
+dark::before,
+dark::after {
+  --black: 27 27 27;
+  --white: 255 255 255;
+  --text: 77 77 77;
+  --text-secondary: 101 102 111;
+  --main: 238 115 44;
+  --main-hover: 255 151 56;
+  --main-secondary: 255 240 230;
+  --secondary: 64 91 212;
+  --secondary-hover: 233 230 255;
+  --secondary-secondary: 87 106 142;
+  --background: 244 244 244;
+  --background-primary: 185 187 192;
+  --background-secondary: 249 249 250;
+  --background-tertiary: 239 239 241;
+  --background-quaternary: 237 239 246;
+  --red: 204 50 50;
+  --green: 39 180 26;
+  --border: 214 218 226;
+  --skeleton: 214 218 226;
+  --skeleton-highlight: 255 255 255;
+}

@@ -1,24 +1,39 @@
 import { forwardRef, InputHTMLAttributes, useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
-import { Nullable, PropsWithClassName } from '@/shared/@types'
+import { Nullable } from '@/shared/@types'
 
 export interface TextareaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   name: string
   label?: string
+  defaultValue?: string
   error?: boolean
   errorMessage?: string
-  textareaStyle?: string
+  className?: string
+  labelClassName?: string
+  textareaClassName?: string
   resizable?: boolean
   autosize?: boolean
 }
 
-export const Textarea = forwardRef<HTMLTextAreaElement, PropsWithClassName<TextareaProps>>(
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   (
-    { name, label, className = '', textareaStyle = '', resizable, autosize = true, error, errorMessage, ...rest },
+    {
+      name,
+      label,
+      className,
+      labelClassName,
+      textareaClassName,
+      resizable,
+      autosize = false,
+      error,
+      errorMessage,
+      ...rest
+    },
     ref
   ) => {
     const innerRef = useRef<Nullable<HTMLTextAreaElement>>(null)
     const [isFocused, setIsFocused] = useState(false)
+    const [value, setValue] = useState(rest.defaultValue)
 
     useEffect(() => {
       const textarea = innerRef.current
@@ -40,49 +55,60 @@ export const Textarea = forwardRef<HTMLTextAreaElement, PropsWithClassName<Texta
       }
     }, [autosize])
 
+    const isFilled = value || rest.value
+    const isActive = isFocused || isFilled
+
     return (
-      <div className='flex flex-col w-full group text-subtext'>
+      <div className={cn('relative flex flex-col w-full transition-[margin,colors] mt-medium', className)}>
         <label
           htmlFor={name}
-          className={cn('group-hover:text-primary', {
-            'text-gray': !isFocused,
-            'text-primary': isFocused,
-            'group-hover:text-gray': rest.disabled,
-            '!text-red group-hover:text-red': error,
-          })}
+          className={cn(
+            'absolute left-0 top-0 pointer-events-none transition-transform',
+            {
+              'text-text-secondary cursor-text': !rest.disabled,
+              'text-background-primary cursor-not-allowed': rest.disabled,
+              '-translate-y-full -top-1': isActive,
+              'translate-x-5 translate-y-3': !isActive,
+            },
+            labelClassName
+          )}
         >
-          {label}
+          <h3 className='font-normal'>{label}</h3>
         </label>
-        <div className={cn('relative input-focus bg-background-hover rounded-base', className)}>
-          <textarea
-            {...rest}
-            ref={instance => {
-              innerRef.current = instance
-              typeof ref === 'function' && ref(instance)
-            }}
-            id={name}
-            name={name}
-            className={cn(
-              `relative block input-focus border border-transparent bg-background-hover w-full min-h-[2.5rem] h-full px-small py-[10px]
-            overflow-hidden focus-visible:ring-primary rounded-base caret-primary focus:text-white group-hover:text-primary disabled:border-background-hover
-            disabled:text-gray disabled:cursor-not-allowed disabled:group-hover:text-gray`,
-              textareaStyle,
-              {
-                'resize-none': !resizable,
-                'group-hover:text-red focus:text-red caret-red focus-visible:ring-transparent !border-red': error,
-              }
-            )}
-            onFocus={e => {
-              setIsFocused(true)
-              rest.onFocus?.(e)
-            }}
-            onBlur={e => {
-              setIsFocused(false)
-              rest?.onBlur?.(e)
-            }}
-          />
-        </div>
-        {error && <p className='text-red mt-[3px]'>{errorMessage}</p>}
+        <textarea
+          {...rest}
+          ref={instance => {
+            innerRef.current = instance
+            typeof ref === 'function' && ref(instance)
+          }}
+          id={name}
+          name={name}
+          className={cn(
+            `w-full bg-white disabled:bg-background-secondary text-black disabled:text-background-primary
+             border-2 hover:border-main focus:border-main disabled:border-border disabled:cursor-not-allowed
+             rounded-base px-[18px] py-2 outline-none transition-colors text-h4`,
+            {
+              'border-border': !(isFilled && !isFocused),
+              'border-background-primary bg-background-secondary': isFilled && !isFocused,
+              'border-red': error,
+              'resize-none': !resizable,
+            },
+            textareaClassName
+          )}
+          onFocus={e => {
+            setIsFocused(true)
+            rest.onFocus?.(e)
+          }}
+          onBlur={e => {
+            setIsFocused(false)
+            rest?.onBlur?.(e)
+          }}
+          onChange={e => {
+            rest?.onChange?.(e)
+            setValue(e.target.value)
+          }}
+        />
+        {error && <h4 className='mt-1 text-red'>{errorMessage}</h4>}
       </div>
     )
   }

@@ -1,5 +1,4 @@
 import { Story, Meta } from '@storybook/react'
-import { useRef } from 'react'
 import { Textarea, TextareaProps } from './textarea'
 
 export default {
@@ -11,6 +10,14 @@ export default {
     errorMessage: 'Заполните это поле',
   },
   argTypes: {
+    resizable: {
+      control: 'boolean',
+      defaultValue: false,
+    },
+    autosize: {
+      control: 'boolean',
+      defaultValue: false,
+    },
     error: {
       control: 'boolean',
       defaultValue: false,
@@ -22,11 +29,7 @@ export default {
   },
 } as Meta
 
-const Template: Story<TextareaProps> = args => {
-  const ref = useRef<HTMLTextAreaElement>(null)
-
-  return <Textarea ref={ref} {...args} />
-}
+const Template: Story<TextareaProps> = args => <Textarea {...args} />
 
 export const Default = Template.bind({})
 Default.args = {}

@@ -1,33 +1,21 @@
 import { useFormErrors } from '@/shared/hooks'
 import { Children, cloneElement, FormHTMLAttributes, isValidElement, ReactNode, useState } from 'react'
-import {
-  ArrayPath,
-  FieldErrors,
-  FieldValues,
-  FormProvider,
-  useFieldArray,
-  UseFieldArrayProps,
-  UseFieldArrayReturn,
-  useForm,
-  UseFormProps,
-  UseFormReturn,
-} from 'react-hook-form'
+import { FieldErrors, FieldValues, FormProvider, useForm, UseFormProps, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ObjectSchema, AnySchema } from 'yup'
 import merge from 'lodash.merge'
-import { PropsWithClassName } from '@/shared/@types'
 
 type FormChildren<T extends FieldValues> =
   | ReactNode
   | ReactNode[]
-  | ((methods: UseFormReturn<T> & UseFieldArrayReturn<T, ArrayPath<T>, 'id'> & { isLoading: boolean }) => ReactNode)
+  | ((methods: UseFormReturn<T> & { isLoading: boolean }) => ReactNode)
 
 export interface FormProps<T extends FieldValues>
   extends Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'onError' | 'children'> {
   children?: FormChildren<T>
   validationSchema?: ObjectSchema<Record<keyof T, AnySchema>, object>
   formParams?: UseFormProps<T>
-  fieldArrayParams?: UseFieldArrayProps<T, ArrayPath<T>, 'id'>
+  className?: string
   onSubmit: (data: T, methods?: UseFormReturn<T>) => Promise<unknown> | void
   onError?: (errors?: FieldErrors<T>, methods?: UseFormReturn<T>) => Promise<unknown> | void
 }
@@ -36,18 +24,15 @@ export const Form = <TFormValues extends Record<string, unknown> = Record<string
   children,
   validationSchema,
   formParams = {},
-  fieldArrayParams = { name: '' as ArrayPath<TFormValues> },
   className = '',
   onSubmit,
   onError,
   ...rest
-}: PropsWithClassName<FormProps<TFormValues>>) => {
+}: FormProps<TFormValues>) => {
   const methods = useForm({
     ...formParams,
     ...(validationSchema && { resolver: yupResolver(validationSchema) }),
   })
-
-  const arrayFieldsMethods = useFieldArray({ ...fieldArrayParams, control: methods.control })
 
   const {
     formState: { errors },
@@ -68,24 +53,35 @@ export const Form = <TFormValues extends Record<string, unknown> = Record<string
       setIsLoading(false)
     }
   }
-  const normalizeChildren = (childs?: ReactNode | ReactNode[]): ReactNode | ReactNode[] | undefined => {
-    return Children.map(childs, child => {
-      if (isValidElement(child)) {
-        const name = child.props.name
 
-        if (!name) {
-          return cloneElement(child, child.props, normalizeChildren(child.props.children))
-        }
+  const normalizeChildren = (child: ReactNode) => {
+    if (isValidElement(child)) {
+      const name = child.props.name
 
-        return cloneElement(child, {
-          ...child.props,
-          ...getErrorByName(name),
-          ...(!child.props.control && { ...register(name) }),
-          key: name,
-        })
+      if (!name) {
+        return cloneElement(child, child.props, normalize(child.props.children))
       }
-      return child
-    })
+
+      return cloneElement(child, {
+        ...child.props,
+        ...getErrorByName(name),
+        ...(!child.props.control && { ...register(name) }),
+        key: name,
+      })
+    }
+    return child
+  }
+
+  const normalize = (childs?: ReactNode | ReactNode[]): ReactNode | ReactNode[] => {
+    if (!childs) {
+      return null
+    }
+
+    if (Array.isArray(childs)) {
+      return Children.map(childs, normalizeChildren)
+    }
+
+    return normalizeChildren(childs)
   }
 
   return (
@@ -99,9 +95,7 @@ export const Form = <TFormValues extends Record<string, unknown> = Record<string
         {...rest}
         noValidate
       >
-        {normalizeChildren(
-          typeof children === 'function' ? children(merge(methods, arrayFieldsMethods, { isLoading })) : children
-        )}
+        {normalize(typeof children === 'function' ? children(merge(methods, { isLoading })) : children)}
       </form>
     </FormProvider>
   )
