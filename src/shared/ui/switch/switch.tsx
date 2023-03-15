@@ -1,15 +1,13 @@
 import { FC } from 'react'
 import { Switch as HeadlessSwitch } from '@headlessui/react'
-import { ControllerRenderProps, RefCallBack } from 'react-hook-form'
+import { ControllerRenderProps } from 'react-hook-form'
 import cn from 'classnames'
 
-export interface SwitchProps extends Omit<ControllerRenderProps, 'onBlur' | 'ref'> {
+export interface SwitchProps extends ControllerRenderProps {
   label?: string
   disabled?: boolean
   wrapperClassName?: string
   labelClassName?: string
-  ref?: RefCallBack
-  onBlur?: () => void
 }
 
 export const Switch: FC<SwitchProps> = ({ name, value, label, wrapperClassName, labelClassName, ...rest }) => {
@@ -25,7 +23,7 @@ export const Switch: FC<SwitchProps> = ({ name, value, label, wrapperClassName, 
         id={name}
         name={name}
         checked={value}
-        className='group relative inline-flex items-center w-10 h-small bg-border rounded-xl disabled:bg-background-primary disabled:cursor-not-allowed'
+        className='relative inline-flex items-center w-10 group h-small bg-border rounded-xl disabled:bg-background-primary disabled:cursor-not-allowed'
       >
         {({ checked }) => (
           <span
