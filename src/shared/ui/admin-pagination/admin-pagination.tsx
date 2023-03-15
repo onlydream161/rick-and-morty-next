@@ -1,8 +1,9 @@
-import { FC, Fragment } from 'react'
+import { Fragment } from 'react'
 import Arrow from '@/shared/assets/icons/common/small-arrow.svg'
 import cn from 'classnames'
 import { Menu, Transition } from '@headlessui/react'
 import Skeleton from 'react-loading-skeleton'
+import { FCWithClassName } from '@/shared/@types'
 
 export interface AdminPaginationProps {
   page: number
@@ -15,14 +16,13 @@ export interface AdminPaginationProps {
   selectedText?: string
   selectedCount?: number
   disabled?: boolean
-  className?: string
   statsClassName?: string
   paginationClassName?: string
   onPageChange: (page: number) => void
   onPageSizeChange?: (page: number) => void
 }
 
-export const AdminPagination: FC<AdminPaginationProps> = ({
+export const AdminPagination: FCWithClassName<AdminPaginationProps> = ({
   page,
   totalPageCount = 0,
   withPageSize,
@@ -46,17 +46,9 @@ export const AdminPagination: FC<AdminPaginationProps> = ({
   disabled:border-lines disabled:bg-background-primary disabled:cursor-not-allowed`
 
   return (
-    <div
-      className={cn('flex items-center justify-between w-full', {
-        [className]: className,
-      })}
-    >
+    <div className={cn('flex items-center justify-between w-full', className)}>
       <div className='flex gap-large'>
-        <h6
-          className={cn('text-gray', {
-            [statsClassName]: statsClassName,
-          })}
-        >
+        <h6 className={cn('text-gray', statsClassName)}>
           {page * pageSize + 1 - pageSize}-{page === totalPageCount ? totalItems : pageSize * page} of {totalItems}
         </h6>
         {!!selectedCount && (
@@ -65,11 +57,7 @@ export const AdminPagination: FC<AdminPaginationProps> = ({
           </h6>
         )}
       </div>
-      <div
-        className={cn('flex items-center gap-6', {
-          [paginationClassName]: paginationClassName,
-        })}
-      >
+      <div className={cn('flex items-center gap-6', paginationClassName)}>
         {withPageSize && (
           <div className='flex items-center gap-1'>
             <h6 className='text-gray'>{pageSizeTitle}</h6>
@@ -156,26 +144,17 @@ export const AdminPagination: FC<AdminPaginationProps> = ({
 }
 
 export interface AdminPaginationSkeletonProps {
-  className?: string
   paginationClassName?: string
 }
 
-export const AdminPaginationSkeleton: FC<AdminPaginationSkeletonProps> = ({
+export const AdminPaginationSkeleton: FCWithClassName<AdminPaginationSkeletonProps> = ({
   className = '',
   paginationClassName = '',
 }) => {
   return (
-    <div
-      className={cn('flex items-center justify-between w-full', {
-        [className]: className,
-      })}
-    >
+    <div className={cn('flex items-center justify-between w-full', className)}>
       <Skeleton className='!w-[90px] h-5' />
-      <div
-        className={cn('flex items-center gap-6', {
-          [paginationClassName]: paginationClassName,
-        })}
-      >
+      <div className={cn('flex items-center gap-6', paginationClassName)}>
         <div className='flex items-center gap-1'>
           <Skeleton className='!w-[90px] h-5' />
           <Skeleton className='!w-[30px] h-5' />

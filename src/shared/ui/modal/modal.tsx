@@ -1,18 +1,18 @@
 import { Dialog, Transition } from '@headlessui/react'
-import React, { FC, Fragment, PropsWithChildren, useEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import Close from '@/shared/assets/icons/common/close.svg'
 import { useRouter } from 'next/router'
 import cn from 'classnames'
+import { FCWithChildren } from '@/shared/@types'
 
 export interface ModalProps {
   isOpen: boolean
   maskClosable?: boolean
   withCloseIcon?: boolean
-  className?: string
   onClose: () => void
 }
 
-export const Modal: FC<PropsWithChildren<ModalProps>> = ({
+export const Modal: FCWithChildren<ModalProps> = ({
   children,
   isOpen,
   maskClosable,

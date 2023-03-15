@@ -15,6 +15,7 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ObjectSchema, AnySchema } from 'yup'
 import merge from 'lodash.merge'
+import { PropsWithClassName } from '@/shared/@types'
 
 type FormChildren<T extends FieldValues> =
   | ReactNode
@@ -27,7 +28,6 @@ export interface FormProps<T extends FieldValues>
   validationSchema?: ObjectSchema<Record<keyof T, AnySchema>, object>
   formParams?: UseFormProps<T>
   fieldArrayParams?: UseFieldArrayProps<T, ArrayPath<T>, 'id'>
-  className?: string
   onSubmit: (data: T, methods?: UseFormReturn<T>) => Promise<unknown> | void
   onError?: (errors?: FieldErrors<T>, methods?: UseFormReturn<T>) => Promise<unknown> | void
 }
@@ -41,7 +41,7 @@ export const Form = <TFormValues extends Record<string, unknown> = Record<string
   onSubmit,
   onError,
   ...rest
-}: FormProps<TFormValues>) => {
+}: PropsWithClassName<FormProps<TFormValues>>) => {
   const methods = useForm({
     ...formParams,
     ...(validationSchema && { resolver: yupResolver(validationSchema) }),

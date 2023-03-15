@@ -40,9 +40,8 @@ export const Upload: FCWithChildren<UploadProps> = ({
       render={({ field }) => (
         <RCUpload
           disabled={rest.disabled}
-          className={cn('inline-flex input-focus focus-visible:ring-primary', {
+          className={cn('inline-flex input-focus focus-visible:ring-primary', className, {
             'focus-visible:ring-red': error,
-            [className]: className,
           })}
           customRequest={upload}
           onSuccess={res => {

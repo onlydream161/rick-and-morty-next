@@ -12,11 +12,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ name, label, className = '', error, errorMessage, ...rest }, ref) => {
     return (
       <>
-        <div
-          className={cn('inline-flex items-center gap-small', {
-            [className]: className,
-          })}
-        >
+        <div className={cn('inline-flex items-center gap-small', className)}>
           <input
             {...rest}
             ref={ref}
