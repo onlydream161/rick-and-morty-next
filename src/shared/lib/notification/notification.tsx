@@ -43,5 +43,5 @@ export const Notification: FC<NotificationProps> = ({ status = 'success', title,
   )
 }
 
-export const notify = (payload: string, settings?: Omit<NotificationProps, 'payload' | 't'>) =>
+export const notify = (payload: string, settings?: Omit<NotificationProps, 'payload'>) =>
   toast(<Notification {...settings} payload={payload} />)
