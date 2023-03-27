@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
 
-yarn install
+yarn install --frozen-lockfile
 
 exec "$@"
