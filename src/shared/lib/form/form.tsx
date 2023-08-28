@@ -3,24 +3,26 @@ import { Children, cloneElement, FormHTMLAttributes, isValidElement, ReactNode, 
 import { FieldErrors, FieldValues, FormProvider, useForm, UseFormProps, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ObjectSchema, AnySchema } from 'yup'
+import { BaseEntity } from '@/shared/@types'
 import merge from 'lodash.merge'
+import * as yup from 'yup'
 
 type FormChildren<T extends FieldValues> =
   | ReactNode
   | ReactNode[]
   | ((methods: UseFormReturn<T> & { isLoading: boolean }) => ReactNode)
 
-export interface FormProps<T extends FieldValues>
+export interface FormProps<T extends FieldValues = FieldValues>
   extends Omit<FormHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'onError' | 'children'> {
   children?: FormChildren<T>
-  validationSchema?: ObjectSchema<Record<keyof T, AnySchema>, object>
+  validationSchema?: ObjectSchema<Record<Exclude<keyof T, keyof BaseEntity>, AnySchema>, object>
   formParams?: UseFormProps<T>
   className?: string
-  onSubmit: (data: T, methods?: UseFormReturn<T>) => Promise<unknown> | void
+  onSubmit?: (data: T, methods?: UseFormReturn<T>) => Promise<unknown> | void
   onError?: (errors?: FieldErrors<T>, methods?: UseFormReturn<T>) => Promise<unknown> | void
 }
 
-export const Form = <TFormValues extends Record<string, unknown> = Record<string, unknown>>({
+export const Form = <TFormValues extends FieldValues = FieldValues>({
   children,
   validationSchema,
   formParams = {},
@@ -31,7 +33,7 @@ export const Form = <TFormValues extends Record<string, unknown> = Record<string
 }: FormProps<TFormValues>) => {
   const methods = useForm({
     ...formParams,
-    ...(validationSchema && { resolver: yupResolver(validationSchema) }),
+    resolver: yupResolver(validationSchema || yup.object({}).notRequired()),
   })
 
   const {
@@ -46,7 +48,7 @@ export const Form = <TFormValues extends Record<string, unknown> = Record<string
   const onFormSubmit = async (data: TFormValues) => {
     try {
       setIsLoading(true)
-      await onSubmit(data, methods)
+      await onSubmit?.(data, methods)
     } catch (error) {
       return Promise.reject(error)
     } finally {

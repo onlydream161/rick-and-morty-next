@@ -1,10 +1,10 @@
-import { FC } from 'react'
+import { Attributes, FC, Factory, ReactElement } from 'react'
 import { SkeletonTheme } from 'react-loading-skeleton'
 
 const withSkeleton =
-  <R,>(Component: FC<R>): FC<R> =>
-  (props: R) => {
-    return (
+  <R extends Attributes>(Component: FC): Factory<R> =>
+  (props?: R): ReactElement<R> =>
+    (
       <SkeletonTheme
         inline
         borderRadius={10}
@@ -14,6 +14,5 @@ const withSkeleton =
         <Component {...props} />
       </SkeletonTheme>
     )
-  }
 
 export default withSkeleton

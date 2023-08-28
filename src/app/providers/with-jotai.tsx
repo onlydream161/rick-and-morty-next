@@ -1,14 +1,13 @@
-import { FC } from 'react'
+import { Attributes, FC, Factory, ReactElement } from 'react'
 import { Provider } from 'jotai'
 
 const withJotai =
-  <R,>(Component: FC<R>): FC<R> =>
-  (props: R) => {
-    return (
+  <R extends Attributes>(Component: FC): Factory<R> =>
+  (props?: R): ReactElement<R> =>
+    (
       <Provider>
         <Component {...props} />
       </Provider>
     )
-  }
 
 export default withJotai
