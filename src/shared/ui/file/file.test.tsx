@@ -4,38 +4,31 @@ import * as stories from './file.stories'
 import { mock } from 'mockjs'
 import { useState } from 'react'
 import { FileModel, Nullable } from '@/shared/@types'
-import { FILE_ENTITY_MOCK, IMAGE_ENTITY_MOCK } from '@/shared/config'
+import { FILE_ENTITY_MOCK } from '@/shared/config'
 
-const { Default, Image } = composeStories(stories)
+const { Default } = composeStories(stories)
 
 describe('FileTests', () => {
   it('file should be render', () => {
     render(<Default />)
-    expect(screen.queryByTestId('file')).toBeInTheDocument()
+    expect(screen.getByTestId('file')).toBeInTheDocument()
   })
-
-  it('image should be render', () => {
-    render(<Image />)
-    expect(screen.queryByTestId('image-file')).toBeInTheDocument()
-  })
-
   it('file with loading should be render preloader instead close button', () => {
     render(<Default file={mock({ ...FILE_ENTITY_MOCK, loading: true })} />)
-    expect(screen.queryByTestId('file-close-button')).not.toBeInTheDocument()
-    expect(screen.queryByTestId('file-preloader')).toBeInTheDocument()
+    expect(screen.queryByTestId('file-delete-button')).not.toBeInTheDocument()
+    expect(screen.getByTestId('file-preloader')).toBeInTheDocument()
   })
 
-  it('image with loading should be render preloader instead close button', () => {
-    render(<Default file={mock({ ...IMAGE_ENTITY_MOCK, loading: true })} />)
-    expect(screen.queryByTestId('file-close-button')).not.toBeInTheDocument()
-    expect(screen.queryByTestId('image-skeleton')).toBeInTheDocument()
+  it('close button should be invisible with saved files', () => {
+    render(<Default isSaved={true} />)
+    expect(screen.queryByTestId('file-delete-button')).not.toBeInTheDocument()
   })
 
   it('close button should be trigger on remove', () => {
     const file = mock(FILE_ENTITY_MOCK)
     const { result } = renderHook(() => useState<Nullable<FileModel>>())
     render(<Default file={file} onRemove={result.current[1]} />)
-    fireEvent.click(screen.getByTestId('file-close-button'))
+    fireEvent.click(screen.getByTestId('file-delete-button'))
     expect(result.current[0]).toStrictEqual(file)
   })
 })

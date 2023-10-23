@@ -48,8 +48,3 @@ jest.mock('lodash.debounce', () =>
     return fn
   })
 )
-
-jest.mock('ulid', () => ({
-  ulid: jest.fn(() => 'ulid'),
-  monotonicFactory: jest.fn(() => 'ulid'),
-}))
