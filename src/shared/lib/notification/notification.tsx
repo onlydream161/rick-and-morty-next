@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { toast } from 'react-toastify'
+import { toast, ToastPosition } from 'react-toastify'
 import { useTranslate } from '../change-language'
 import Error from '@/shared/assets/icons/common/error.svg'
 import Success from '@/shared/assets/icons/common/success.svg'
@@ -12,6 +12,7 @@ export interface NotificationProps {
   title?: string
   payload?: string
   icon?: FC
+  position?: ToastPosition
 }
 
 export const Notification: FC<NotificationProps> = ({ status = 'success', title, payload, icon }) => {
@@ -31,23 +32,25 @@ export const Notification: FC<NotificationProps> = ({ status = 'success', title,
     info: {
       title: t('Info'),
       icon: Info,
-      iconStyle: 'stroke-background-primary',
+      iconStyle: 'stroke-gray',
     },
   }
   const NotificationIcon = icon || DEFAULT_NOTIFICATION_BODY[status].icon
   return (
     <div className=' flex-col justify-center py-5 px-large max-w-[380px] w-full gap-base rounded-base'>
-      <div className='flex gap-2.5'>
+      <div className='flex gap-2.5 items-center'>
         <NotificationIcon
           data-testid='notification-icon'
           className={`flex-shrink-0 ${DEFAULT_NOTIFICATION_BODY[status].iconStyle}`}
         />
         <h2 className='text-black'>{title || DEFAULT_NOTIFICATION_BODY[status].title}</h2>
       </div>
-      {payload && <h4 className='text-text'>{payload}</h4>}
+      {payload && <h4 className='text-text mt-3.5'>{payload}</h4>}
     </div>
   )
 }
 
 export const notify = (payload: string, settings?: Omit<NotificationProps, 'payload' | 't'>) =>
-  toast(<Notification {...settings} payload={payload} />)
+  toast(<Notification {...settings} payload={payload} />, {
+    position: settings?.position,
+  })

@@ -1,5 +1,6 @@
 export * from './optional-link-wrapper'
 export * from './change-language'
+export * from './docxtemplater'
 export * from './notification'
 export * from './http-client'
 export * from './react-query'

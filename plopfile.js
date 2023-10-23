@@ -36,5 +36,27 @@ module.exports = plop => {
         templateFile: 'plop/templates/Component/index.ts.hbs',
       },
     ],
-  })
+  }),
+    plop.setGenerator('rxdb-collection', {
+      description: 'Create a RxDB Collection',
+      prompts: [
+        {
+          type: 'input',
+          name: 'path',
+          message: 'Path',
+        },
+        {
+          type: 'input',
+          name: 'name',
+          message: 'What is your collection name?',
+        },
+      ],
+      actions: [
+        {
+          type: 'add',
+          path: '{{path}}/{{name}}-collection.ts',
+          templateFile: 'plop/templates/RxDBCollection.ts.hbs',
+        },
+      ],
+    })
 }

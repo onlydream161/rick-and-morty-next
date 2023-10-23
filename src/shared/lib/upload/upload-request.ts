@@ -3,14 +3,23 @@ import { httpClient } from '@/shared/lib'
 import { AxiosRequestConfig } from 'axios'
 import { RcFile } from 'rc-upload/lib/interface'
 
-export const uploadFiles = (files: RcFile | RcFile[], config: Omit<AxiosRequestConfig<RcFile>, 'data'> = {}) => {
+const createFileFormData = (formData: FormData, file: RcFile, withOffline?: boolean) => {
+  formData.append('file', file)
+  formData.append('originalName', file.name)
+  formData.append('withOffline', withOffline ? 'true' : 'false')
+}
+
+export const uploadFiles = (
+  files: RcFile | RcFile[],
+  config: Omit<AxiosRequestConfig<RcFile>, 'data'> & { withOffline?: boolean } = {}
+) => {
   const data = new FormData()
   if (Array.isArray(files)) {
     for (const file of files) {
-      data.append('files', file)
+      createFileFormData(data, file, config.withOffline)
     }
   } else {
-    data.append('files', files)
+    createFileFormData(data, files, config.withOffline)
   }
   return httpClient<FileModel, FormData>({
     ...config,

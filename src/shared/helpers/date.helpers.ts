@@ -12,7 +12,7 @@ export const setDateRange =
     setEndDate(range?.[1])
   }
 
-export const getMonthSelectOptions = (t: TFunction): SelectOption[] => [
+export const getMonthSelectOptions = (t: TFunction): SelectOption<number>[] => [
   { id: 1, label: t('january') },
   { id: 2, label: t('february') },
   { id: 3, label: t('march') },

@@ -1,8 +1,21 @@
 import { BASE_URL } from '@/shared/config'
-import { matchRequestUrl, MockedRequest } from 'msw'
+import { mock } from 'mockjs'
+import { DefaultBodyType, matchRequestUrl, MockedRequest, PathParams, RestRequest } from 'msw'
 import { SetupServerApi } from 'msw/lib/node'
 
 export const addBaseDataURL = (path: string) => BASE_URL + path
+
+export const getBaseResponseCollectionModel = (
+  req: RestRequest<DefaultBodyType, PathParams<string>>,
+  entity: Record<string, unknown>
+) => {
+  const pageSize = +(req.url.searchParams.get('itemsPerPage') || 1000)
+
+  return mock({
+    [`hydra:member|${pageSize}`]: [entity],
+    'hydra:totalItems': pageSize,
+  })
+}
 
 export const waitForRequest = (server: SetupServerApi, method: string, url: string) => {
   let requestId = ''

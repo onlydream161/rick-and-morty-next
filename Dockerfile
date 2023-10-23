@@ -1,4 +1,4 @@
-ARG NODE_VERSION=16.15.0
+ARG NODE_VERSION=18
 
 FROM node:${NODE_VERSION}-alpine as builder
 
@@ -11,12 +11,12 @@ COPY . .
 RUN yarn install --frozen-lockfile && \
     yarn next build
 
-FROM node:${NODE_VERSION} AS prod
+FROM node:${NODE_VERSION}-alpine AS prod
 
 WORKDIR /app
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
 # Next
 COPY --from=builder /app/public ./public
