@@ -1,0 +1,22 @@
+const {{camelCase name}}Schema = {
+  keyCompression: true, // set this to true, to enable the keyCompression
+  version: 0,
+  title: '{{pascalCase name}} schema',
+  primaryKey: 'id',
+  type: 'object',
+  properties: {
+    id: {
+      type: 'string',
+      maxLength: 26, // <- the primary key must have set maxLength
+    },
+    '@id': {
+      type: 'string',
+      final: true,
+    },
+  },
+  required: ['id'],
+} as const
+
+export const {{camelCase name}}Collection = {
+  schema: {{camelCase name}}Schema,
+}

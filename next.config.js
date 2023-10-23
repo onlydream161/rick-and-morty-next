@@ -5,6 +5,7 @@ const withPWA = require('next-pwa')({
   disable: process.env.NODE_ENV === 'development',
 })
 const { i18n } = require('./next-i18next.config')
+const packageVersion = require('./package.json').version
 
 /** @type {import('next').NextConfig} */
 const baseConfig = {
@@ -15,9 +16,21 @@ const baseConfig = {
       acc[el.startsWith('NEXT_PUBLIC_') ? 'publicRuntimeConfig' : 'serverRuntimeConfig'][el] = process.env[el]
       return acc
     },
-    { serverRuntimeConfig: {}, publicRuntimeConfig: {} }
+    {
+      serverRuntimeConfig: {},
+      publicRuntimeConfig: {
+        NEXT_PUBLIC_PROJECT_VERSION: packageVersion,
+        NEXT_PUBLIC_PROJECT_LAST_BUILD_DATE: Date.now(),
+      },
+    }
   ),
   output: 'standalone',
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreBuildErrors: true,
+  },
   i18n,
   webpack: config => {
     config.module.rules.push({

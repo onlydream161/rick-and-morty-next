@@ -1,30 +1,35 @@
 import { forwardRef, InputHTMLAttributes, useRef, useState, ReactElement, MouseEvent, useEffect } from 'react'
+import { Nullable } from '@/shared/@types'
+import { Button } from '../button'
+import { FieldError } from 'react-hook-form'
+import { useAfterMountEffect } from '@/shared/hooks'
 import SearchIcon from '@/shared/assets/icons/common/search.svg'
 import CloseIcon from '@/shared/assets/icons/common/close.svg'
 import CloseEyeIcon from '@/shared/assets/icons/common/close-eye.svg'
 import OpenEyeIcon from '@/shared/assets/icons/common/open-eye.svg'
 import DatePickerIcon from '@/shared/assets/icons/common/datepicker.svg'
+import Loading from '@/shared/assets/icons/common/loading.svg'
 import SuccessIcon from '@/shared/assets/icons/common/success.svg'
+import Skeleton from 'react-loading-skeleton'
 import cn from 'classnames'
-import { Nullable } from '@/shared/@types'
-import { Button } from '../button'
-import { FieldError } from 'react-hook-form'
-import { useAfterMountEffect } from '@/shared/hooks'
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   name: string
   type?: InputHTMLAttributes<HTMLInputElement>['type'] | 'datepicker' | 'selectSearch'
   label?: string
   defaultValue?: string
-  error?: FieldError
+  error?: Nullable<FieldError>
   isDropdownOpen?: boolean
   labelClassName?: string
   inputClassName?: string
   isSaved?: boolean
+  isFilter?: boolean
+  isLoading?: boolean
   extraContent?: ReactElement
   inputWrapperClassName?: string
+  resetTrigger?: string
   reset?: () => void
-  onSuccess?: (value: string) => void
+  onSuccess?: () => void
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -39,8 +44,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       labelClassName,
       inputClassName,
       isSaved,
+      isFilter = false,
+      isLoading,
       inputWrapperClassName,
       extraContent,
+      resetTrigger,
       reset,
       onSuccess,
       ...rest
@@ -48,6 +56,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const innerRef = useRef<Nullable<HTMLInputElement>>(null)
+    const isFirstRender = useRef(true)
 
     const [isFocused, setIsFocused] = useState(false)
     const [value, setValue] = useState(() => rest.value || rest.defaultValue)
@@ -55,11 +64,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     rest.disabled = rest.disabled && !isSaved
 
+    const isTypeNumber = type === 'number'
     const isFilled = value || typeof value === 'number'
     const isActive = isFocused || isFilled || isDropdownOpen
     const isSearch = type === 'search'
     const isAdd = !!onSuccess
-    const withoutLabel = isSearch || isAdd
+    const withoutLabel = isSearch || isAdd || isFilter
     // Если сделать через date, то будет ненужная логика дефолтного datepicker
     const isDatePicker = type === 'datepicker'
     const isSelect = type === 'select' || isDatePicker
@@ -73,18 +83,32 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const onClear = (event?: MouseEvent<HTMLButtonElement>) => {
       event?.stopPropagation()
-      Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set?.call(innerRef.current, '')
-      innerRef.current?.dispatchEvent(new Event('change', { bubbles: true }))
+      if (innerRef.current) {
+        Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set?.call(innerRef.current, '')
+        innerRef.current.dispatchEvent(new Event('change', { bubbles: true }))
+      }
       reset?.()
     }
 
     useEffect(() => {
-      setValue(isSaved && !rest.value ? '—' : rest.value)
+      setValue(isSaved && !rest.value && !isTypeNumber ? '—' : rest.value)
     }, [rest.value, isSaved])
 
     useAfterMountEffect(() => {
-      rest.disabled && onClear()
+      rest.disabled && rest.value && onClear()
     }, [rest.disabled])
+
+    useEffect(() => {
+      if (!isFirstRender.current) {
+        if (rest.value) {
+          onClear()
+        } else {
+          isFirstRender.current = true
+        }
+      } else if (resetTrigger) {
+        isFirstRender.current = false
+      }
+    }, [resetTrigger])
 
     return (
       <div className={cn('flex flex-col w-full gap-y-1 h-fit', className)}>
@@ -95,16 +119,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {
               'border-border bg-white':
                 !(isFocused || isFilled || rest.disabled) || (isSelect && isFocused && !isFilled),
-              'border-background-primary bg-background-secondary': !isFocused && !isDropdownOpen && isFilled,
+              'border-gray bg-gray-secondary': !isFocused && !isDropdownOpen && isFilled,
               'border-main bg-white': isFocused,
-              'border-background-primary bg-background': withDropdown && isFilled && isDropdownOpen,
+              'border-gray bg-background': withDropdown && isFilled && isDropdownOpen,
               'border-red': error,
               'border-none px-0 py-2.5 bg-transparent': isSaved,
               'px-[18px] py-2': !isSaved,
-              'bg-background-secondary border-border cursor-not-allowed': rest.disabled,
+              'bg-gray-secondary border-border cursor-not-allowed': rest.disabled,
               'hover:border-main': !rest.disabled,
-              'cursor-text': !rest.disabled && !(isDatePicker || isSelect),
-              'cursor-pointer': !rest.disabled && (isDatePicker || isSelect),
+              'cursor-text': (!rest.disabled && isSaved) || isFilter,
+              'cursor-pointer': !rest.disabled && !isSaved && isSelect,
               'mt-medium': !withoutLabel,
             },
             inputWrapperClassName
@@ -119,10 +143,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'absolute pointer-events-none transition-transform',
               {
                 'text-text-secondary': !rest.disabled,
-                'text-background-primary': rest.disabled,
+                'text-gray': rest.disabled,
                 'translate-x-[18px] translate-y-3 left-0 top-0': !isActive || ((isSelect || isDatePicker) && !isFilled),
                 '-translate-y-full -top-1.5 -left-0.5': ((isActive && !isSelect) || (isSelect && isFilled)) && !isSaved,
-                '-translate-y-full -left-0 -top-1': isSaved,
+                '-translate-y-full -left-0 -top-1 translate-x-0': isSaved,
                 hidden: withoutLabel,
               },
               labelClassName
@@ -141,57 +165,65 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 <SearchIcon className='stroke-currentColor' />
               </Button>
             ))}
-          <input
-            {...rest}
-            ref={instance => {
-              innerRef.current = instance
-              if (typeof ref === 'function') {
-                ref(instance)
-              } else if (ref?.current || ref?.current === null) {
-                ref.current = instance
-              }
-            }}
-            id={name}
-            name={name}
-            type={isOpen ? 'text' : type}
-            placeholder={placeholder}
-            autoComplete={isPassword ? 'new-password' : 'off'}
-            readOnly={rest.readOnly || isSaved}
-            className={cn(
-              `w-full flex-grow bg-transparent text-h4 placeholder:text-h4 placeholder:text-text-secondary disabled:placeholder:text-background-primary
-            placeholder:transition-opacity cursor-inherit disabled:cursor-not-allowed outline-none`,
-              {
-                'placeholder:opacity-0': isSelectSearch && !isActive,
-              },
-              inputClassName
-            )}
-            onFocus={e => {
-              rest.onFocus?.(e)
-              setIsFocused(true)
-            }}
-            onBlur={e => {
-              rest?.onBlur?.(e)
-              setIsFocused(false)
-            }}
-            onChange={e => {
-              rest?.onChange?.(e)
-              setValue(e.target.value)
-            }}
-          />
+          {isSaved &&
+            (isLoading ? (
+              <Skeleton height={29} containerClassName='w-full' />
+            ) : (
+              <h4 {...rest}>{value || (value === 0 ? 0 : '—')}</h4>
+            ))}
           {!isSaved && (
             <>
-              {isAdd && isFilled && (
+              <input
+                {...rest}
+                ref={instance => {
+                  innerRef.current = instance
+                  if (typeof ref === 'function') {
+                    ref(instance)
+                  } else if (ref?.current || ref?.current === null) {
+                    ref.current = instance
+                  }
+                }}
+                id={name}
+                name={name}
+                type={isOpen ? 'text' : type}
+                value={value}
+                placeholder={placeholder}
+                autoComplete={isPassword ? 'new-password' : 'off'}
+                readOnly={rest.readOnly || isSaved}
+                className={cn(
+                  `w-full flex-grow bg-transparent text-h4 placeholder:text-h4 placeholder:text-text-secondary disabled:placeholder:text-gray
+            placeholder:transition-opacity cursor-inherit disabled:cursor-not-allowed outline-none`,
+                  {
+                    'placeholder:opacity-0': isSelectSearch && !isActive,
+                  },
+                  inputClassName
+                )}
+                onFocus={e => {
+                  rest.onFocus?.(e)
+                  setIsFocused(true)
+                }}
+                onBlur={e => {
+                  rest?.onBlur?.(e)
+                  setIsFocused(false)
+                }}
+                onChange={e => {
+                  rest?.onChange?.(e)
+                  setValue(e.target.value)
+                }}
+                onWheel={e => type === 'number' && e.currentTarget.blur()}
+              />
+              {isAdd && isFilled && !isLoading && (
                 <Button
                   variant='icon'
                   data-testid='input-on-success-button'
                   disabled={rest.disabled}
-                  onClick={event => [event?.stopPropagation(), onSuccess(value as string)]}
+                  onClick={event => [event?.stopPropagation(), onSuccess()]}
                   className='flex-shrink-0'
                 >
                   <SuccessIcon className='stroke-currentColor' />
                 </Button>
               )}
-              {isFilled && (
+              {isFilled && !isLoading && (
                 <Button
                   data-testid='reset-button'
                   variant='icon'
@@ -202,6 +234,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                   <CloseIcon className='stroke-currentColor' />
                 </Button>
               )}
+              {isLoading && <Loading className='h-6 fill-main animate-spin' />}
               {isPassword && (
                 <Button
                   variant='icon'
@@ -255,7 +288,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 //     if (MEDIUM_PASSWORD_REG_EXP.test(value)) {
 //       return {
 //         text: t('mediumPassword'),
-//         color: 'rgba(var(--main-secondary))',
+//         color: 'rgba(var(--main-hover))',
 //         lineLength: '60%',
 //       }
 //     }

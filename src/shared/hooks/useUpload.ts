@@ -1,17 +1,18 @@
-import { AxiosRequestConfig, AxiosResponse, Cancel } from 'axios'
+import { AxiosError, AxiosRequestConfig, AxiosResponse, Cancel } from 'axios'
 import { RcFile, UploadRequestError, UploadRequestOption } from 'rc-upload/lib/interface'
 import { useRef, useState } from 'react'
-import { FileModel, Nullable } from '@/shared/@types'
+import { FileModel, HydraError, Nullable } from '@/shared/@types'
 import { notify, uploadFiles, useTranslate } from '@/shared/lib'
 
 export interface UploadHookProps {
   multiple?: boolean
   optimistic?: boolean
+  withOffline?: boolean
   // Изменить возвращаемое значение в зависимости с бэком
   customRequest?: (file: RcFile, config?: AxiosRequestConfig<RcFile>) => Promise<AxiosResponse<FileModel>>
 }
 
-export const useUpload = ({ multiple, optimistic, customRequest }: UploadHookProps) => {
+export const useUpload = ({ multiple, optimistic, withOffline, customRequest }: UploadHookProps) => {
   const { t } = useTranslate(['common'])
 
   const [isLoading, setIsLoading] = useState(false)
@@ -21,14 +22,14 @@ export const useUpload = ({ multiple, optimistic, customRequest }: UploadHookPro
     file,
     onSuccess,
     onError,
-  }: UploadRequestOption<Partial<FileModel> & { uid: string; loading: boolean }>) => {
+  }: UploadRequestOption<Partial<FileModel> & { uid: string; loading: boolean; withOffline?: boolean }>) => {
+    const rcFile = file as RcFile
     try {
       setIsLoading(true)
       if (!multiple && abortController.current) {
         abortController.current.abort()
       }
       abortController.current = new AbortController()
-      const rcFile = file as RcFile
 
       const optimisticFileData = {
         uid: rcFile.uid,
@@ -46,12 +47,16 @@ export const useUpload = ({ multiple, optimistic, customRequest }: UploadHookPro
 
       const response = await request(rcFile, {
         signal: abortController.current.signal,
+        withOffline,
       })
       onSuccess?.({ ...response.data, loading: false, uid: rcFile.uid })
     } catch (error) {
-      if ((error as Cancel).message === 'canceled') return
-      notify(t('fileUploadError'), { status: 'error' })
       onError?.(error as UploadRequestError)
+      if ((error as Cancel).message === 'canceled') return
+      if ((error as AxiosError<HydraError>).response?.data?.['hydra:description'] === 'unsupported file format') {
+        return notify(t('Unsupported file format'), { status: 'error' })
+      }
+      notify(t('fileUploadError'), { status: 'error' })
     } finally {
       setIsLoading(false)
     }

@@ -1,9 +1,9 @@
 import { isTestEnv } from '@/shared/config'
 import { SetStateAction, WritableAtom } from 'jotai'
-import { atomWithStorage, RESET } from 'jotai/utils'
-import { Router } from 'next/router'
+import { atomWithReset, atomWithStorage, RESET } from 'jotai/utils'
+import Router from 'next/router'
 
-export type StorageType = 'hash' | 'query'
+export type StorageType = 'hash' | 'query' | 'none'
 
 export interface FilterAtomParams {
   name: string
@@ -20,12 +20,12 @@ export interface AtomWithHashOptions<Value> {
 }
 
 export const atomWithUrlLocation = <Value>(key: string, initialValue: Value, options: AtomWithHashOptions<Value>) => {
-  const getURLParams = () =>
-    options?.storageType === 'query'
-      ? new URLSearchParams(location.search.slice(1))
-      : new URLSearchParams(location.hash.slice(1))
+  const isStorageTypeHash = options?.storageType === 'hash'
 
-  const urlMark = options?.storageType === 'query' ? '?' : '#'
+  const getURLParams = () =>
+    isStorageTypeHash ? new URLSearchParams(location.hash.slice(1)) : new URLSearchParams(location.search.slice(1))
+
+  const urlMark = isStorageTypeHash ? '#' : '?'
 
   const serialize = options?.serialize || JSON.stringify
   const deserialize = options?.deserialize || JSON.parse
@@ -35,14 +35,20 @@ export const atomWithUrlLocation = <Value>(key: string, initialValue: Value, opt
     const searchParams = getURLParams()
     newValue ? searchParams.set(key, serialize(newValue)) : searchParams.delete(key)
 
-    const url = urlMark + searchParams.toString()
+    const currentState = history.state
 
-    const historyState = { ...history.state, url, as: url, key: key + Date.now() }
+    const searchParamsString = searchParams.toString()
 
-    if (options?.replaceState) {
-      history.replaceState(historyState, '', url)
+    const as = isStorageTypeHash
+      ? currentState.as
+      : history.state?.as?.replace(/(#|\?)(.+)?/gm, '') + (searchParamsString ? urlMark + searchParamsString : '')
+
+    const historyState = { ...currentState, as, key: key + Date.now() }
+
+    if (options?.replaceState || history.state?.as === historyState.as) {
+      history.replaceState(historyState, '', as)
     } else {
-      history.pushState(historyState, '', url)
+      history.pushState(historyState, '', as)
     }
   }
 
@@ -57,11 +63,14 @@ export const atomWithUrlLocation = <Value>(key: string, initialValue: Value, opt
 
   const queryStorage = {
     getItem: (key: string) => {
+      if (typeof window === 'undefined') {
+        return initialValue
+      }
       const searchParams = getURLParams()
       const storedValue = searchParams.get(key)
 
       if (storedValue === null) {
-        throw new Error('no value stored')
+        return initialValue
       }
 
       return deserialize(storedValue)
@@ -93,7 +102,11 @@ export const atomWithStorageFactory = <Value>(
   initialValue: Value,
   options?: AtomWithHashOptions<Value>
 ): WritableAtom<Value, SetStateAction<Value> | typeof RESET> => {
-  const eventName = options?.storageType === 'query' ? 'popstate' : 'hashchange'
+  const eventName = options?.storageType === 'hash' ? 'hashchange' : 'popstate'
+
+  if (options?.storageType === 'none') {
+    return atomWithReset(initialValue)
+  }
 
   return atomWithUrlLocation(
     key,

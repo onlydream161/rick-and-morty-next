@@ -1,73 +1,100 @@
+import { ReactNode } from 'react'
 import { FCWithClassName, FileModel } from '@/shared/@types'
-import { OptionalLinkWrapper } from '@/shared/lib'
-import { ALLOWED_IMAGES_EXT } from '@/shared/config'
-import { getFileExtension } from '@/shared/helpers'
-import { NextImage } from '../next-image'
+import { forceDownload, getFileExtension, getFileNameWithoutExtension } from '@/shared/helpers'
+import { Button } from '../button'
+import { httpClient, useTranslate } from '@/shared/lib'
 import cn from 'classnames'
-import Close from '@/shared/assets/icons/common/file-close.svg'
 import Loading from '@/shared/assets/icons/common/loading.svg'
-import Skeleton from 'react-loading-skeleton'
+import OpenEye from '@/shared/assets/icons/common/open-eye.svg'
 
 export interface FileProps {
   file: FileModel
   onRemove?: (file: FileModel) => void
+  extraContent?: ReactNode
+  isSaved?: boolean
+  showExtension?: boolean
+  onView?: (file: FileModel) => void
+  isDownload?: boolean
+  removeButtonClassName?: string
+  fileNameClassName?: string
 }
 
-export const File: FCWithClassName<FileProps> = ({ file, className = '', onRemove }) => {
+export const File: FCWithClassName<FileProps> = ({
+  file,
+  className,
+  onRemove,
+  extraContent = <></>,
+  isSaved,
+  showExtension = true,
+  isDownload = true,
+  onView,
+  removeButtonClassName,
+  fileNameClassName,
+}) => {
+  const { t } = useTranslate(['common'])
   const isLoading = file.loading
 
-  const isImage = ALLOWED_IMAGES_EXT.includes(getFileExtension(file).toUpperCase())
+  const fileExtension = getFileExtension(file)
 
-  const CloseButton: FCWithClassName = ({ className }) => (
-    <button
-      data-testid='file-close-button'
-      type='button'
-      className={cn(
-        'flex items-center justify-center w-[23px] h-[23px] bg-border rounded-full hover:bg-background-primary active:bg-text transition-colors',
-        className
-      )}
-      onClick={e => {
-        e.preventDefault()
-        onRemove?.(file)
-      }}
-    >
-      <Close className='stroke-black' />
-    </button>
-  )
+  // Current blob size limit is around 500MB for browsers
+  const downloadResource = async (src: string, filename: string) => {
+    if (typeof window !== 'undefined' && isDownload) {
+      const response = await httpClient<Blob>({ url: src, responseType: 'blob' }).then(res => res.data)
+
+      forceDownload(window.URL.createObjectURL(response), filename).then(url => window.URL.revokeObjectURL(url))
+    }
+  }
 
   return (
-    <OptionalLinkWrapper href={file.path} newTab>
-      {isImage ? (
-        isLoading ? (
-          <Skeleton
-            containerTestId='image-skeleton'
-            width={140}
-            height={100}
-            containerClassName='pointer-events-none'
-          />
+    <div className='flex flex-col gap-2 cursor-pointer'>
+      <div
+        data-testid='file'
+        className={cn(
+          `flex items-center gap-5 max-w-full w-fit rounded-base transition-colors
+          bg-border hover:bg-gray-quaternary active:bg-gray py-3 px-5`,
+          className
+        )}
+        onClick={() => downloadResource(file.fullPath, file.originalName)}
+      >
+        {onView && (
+          <Button variant='icon' onClick={() => onView(file)}>
+            <OpenEye className='stroke-blue-gray' />
+          </Button>
+        )}
+        {isLoading ? (
+          <>
+            <Loading data-testid='file-preloader' className='mr-5 w-7 h-7 fill-text-secondary animate-spin shrink-0' />
+            <h4 className='text-text-secondary'>{t('File loading')}...</h4>
+          </>
         ) : (
-          <div data-testid='image-file' className='relative w-fit h-[100px]'>
-            <NextImage src={file.path} width={140} height={100} className='rounded-base' />
-            <CloseButton className='absolute top-1 right-1' />
-          </div>
-        )
-      ) : (
-        <div
-          data-testid='file'
-          className={cn(
-            `flex items-center gap-small max-w-full w-fit rounded-base pl-3 pr-1 h-[31px]
-       bg-background-primary hover:bg-background-secondary active:bg-background-tertiary transition-colors border-none`,
-            className
-          )}
-        >
-          <h4 className='w-[116px] text-white truncate'>{file.name}</h4>
-          {isLoading ? (
-            <Loading data-testid='file-preloader' className='w-4 h-4 mr-2 fill-white animate-spin shrink-0' />
-          ) : (
-            <CloseButton />
-          )}
-        </div>
-      )}
-    </OptionalLinkWrapper>
+          <>
+            <h4 className={cn('text-black truncate max-w-[185px]', fileNameClassName)}>
+              {getFileNameWithoutExtension(file.originalName)}
+            </h4>
+            {showExtension && (
+              <h4 className='text-black'>
+                <span className='text-text-secondary h4'> .{fileExtension}</span>
+              </h4>
+            )}
+            {!isSaved && onRemove && (
+              <Button
+                data-testId='file-delete-button'
+                onClick={e => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onRemove(file)
+                }}
+                className={removeButtonClassName}
+                color='secondary'
+                variant='text'
+              >
+                <h3>{t('Delete')}</h3>
+              </Button>
+            )}
+          </>
+        )}
+      </div>
+      {extraContent}
+    </div>
   )
 }

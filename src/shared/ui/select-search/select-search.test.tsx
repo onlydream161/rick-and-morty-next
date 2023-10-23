@@ -22,8 +22,7 @@ describe('Select Search Tests', () => {
     expect(onChange).toHaveBeenCalledTimes(0)
 
     await act(() => userEvent.click(screen.getByTestId('select-search-dropdown-button')))
-    await act(() => userEvent.click(screen.getAllByRole('heading')[1]))
-
+    await act(() => userEvent.click(screen.getAllByTestId('select-search-option')[0]))
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange).toHaveBeenCalledWith(1)
   })
@@ -37,7 +36,7 @@ describe('Select Search Tests', () => {
 
     await act(() => userEvent.click(screen.getByTestId('reset-button')))
 
-    expect(onChange).toHaveBeenCalledTimes(1)
+    expect(onChange).toHaveBeenCalledTimes(2)
     expect(onChange).toHaveBeenCalledWith(null)
   })
 
@@ -55,5 +54,21 @@ describe('Select Search Tests', () => {
 
     expect(onSearch).toHaveBeenCalledTimes(1)
     expect(onSearch).toHaveBeenCalledWith(searchValue)
+  })
+
+  it('Select Search with option addition should switch input for custom options on "other" button on reset custom option', async () => {
+    const customOptionValue = 'customOptionValue'
+
+    render(<Default withOptionAddition />)
+
+    await act(() => userEvent.click(screen.getByTestId('select-search-dropdown-button')))
+    await act(() => userEvent.click(screen.getByRole('heading', { name: 'Other' })))
+    // После открытия listbox не пропадает из DOM
+    expect(screen.getByRole('textbox', { name: 'Enter a value' })).toBeInTheDocument()
+
+    await act(() => userEvent.type(screen.getByRole('textbox', { name: 'Enter a value' }), customOptionValue))
+    await act(() => userEvent.click(screen.getByTestId('reset-button')))
+
+    expect(screen.queryByRole('textbox', { name: 'Enter a value' })).not.toBeInTheDocument()
   })
 })

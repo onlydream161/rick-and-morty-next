@@ -1,11 +1,11 @@
-import { useFormErrors } from '@/shared/hooks'
 import { Children, cloneElement, FormHTMLAttributes, isValidElement, ReactNode, useState } from 'react'
 import { FieldErrors, FieldValues, FormProvider, useForm, UseFormProps, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ObjectSchema, AnySchema } from 'yup'
-import { BaseEntity } from '@/shared/@types'
-import merge from 'lodash.merge'
-import * as yup from 'yup'
+import { BaseEntity } from '@/shared/@types/global'
+import { useFormErrors } from '@/shared/hooks/useFormErrors'
+import { object } from 'yup'
+import merge from 'lodash/merge'
 
 type FormChildren<T extends FieldValues> =
   | ReactNode
@@ -33,7 +33,7 @@ export const Form = <TFormValues extends FieldValues = FieldValues>({
 }: FormProps<TFormValues>) => {
   const methods = useForm({
     ...formParams,
-    resolver: yupResolver(validationSchema || yup.object({}).notRequired()),
+    resolver: yupResolver(validationSchema || object({}).notRequired()),
   })
 
   const {

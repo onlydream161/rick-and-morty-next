@@ -11,17 +11,30 @@ export const LANG_EN = 'en'
 export const SORT_ASC = 'asc'
 export const SORT_DESC = 'desc'
 
-export const DEFAULT_DATE_FORMAT = 'DD-MM-YYYY'
+export const BROWSER_DATE_FORMAT = 'MM.DD.YYYY'
+export const DEFAULT_DATE_FORMAT = 'DD.MM.YYYY'
+export const CUSTOM_BACKEND_FILTER_DATE_FORMAT = 'YYYY-MM-DD'
+export const DEFAULT_DOT_DATE_FORMAT = 'DD.MM.YYYY'
+export const YEAR_FORMAT_WITH_MONTH = 'MM.YYYY'
+export const DEFAULT_DATE_TIME_FORMAT = 'DD.MM.YYYY HH ч. mm мин.'
 
-export const SHORT_WEEK_DAYS_NAME = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+export const SHORT_WEEK_DAYS_NAME = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 
 export const SHORT_MONTHS_NAME = ['Янв', 'Фев', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
+export const MINUTES_SECONDS_MASK = '## мин ## сек'
 
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 15, 20, 30, 40, 50]
+
+export const DEFAULT_COLLECTION_ORDER = '{ "order[dateCreate]": "desc" }'
 
 export const ACCESS_TOKEN_COOKIES_NAME = 'access_token'
 export const REFRESH_TOKEN_COOKIES_NAME = 'refresh_token'
 export const REFRESH_TOKEN_MAX_AGE = 360000
+
+export const MINIMUM_BACKEND_NUMBER = -2147483647
+export const MAXIMUM_BACKEND_NUMBER = 2147483647
+
+export const BASE64_REG_EXP = /data:.+;base64,/
 
 export const EMAIL_REG_EXP =
   // eslint-disable-next-line
@@ -35,8 +48,9 @@ export const SELECT_INITIAL_FILTERS = {
   name: '',
 }
 
-export const ALLOWED_IMAGES_EXT = ['JPG', 'JPEG', 'PNG', 'GIF', 'SVG', 'TIFF', 'ICO']
-export const ALLOWED_VIDEOS_EXT = ['MPEG', 'MP4', 'Quicktime', 'WMV', 'AVI', 'FLV', 'OGG']
+export const PDF_EXT = 'pdf'
+export const ALLOWED_IMAGES_EXT = ['JPG', 'JPEG', 'PNG', 'GIF', 'SVG', 'TIFF', 'ICO', 'HEIF', 'BMP']
+export const ALLOWED_VIDEOS_EXT = ['MPEG', 'MP4', 'Quicktime', 'WMV', 'AVI', 'FLV', 'OGG', '3GP']
 export const ALLOWED_AUDIOS_EXT = ['MP3', 'WAV', 'OGG']
 export const ALLOWED_FILES_EXT = [...ALLOWED_IMAGES_EXT, ...ALLOWED_VIDEOS_EXT, ...ALLOWED_AUDIOS_EXT]
 
@@ -49,6 +63,11 @@ export const ALLOWED_IMAGES_MIMETYPE = [
   'image/tiff',
   'image/x-tiff',
   'image/x-icon',
+  'image/heif',
+  'image/heif-sequence',
+  'image/heic',
+  'image/heic-sequence',
+  'image/bmp',
 ]
 export const ALLOWED_VIDEOS_MIMETYPE = [
   'video/mpeg',
@@ -64,6 +83,7 @@ export const ALLOWED_VIDEOS_MIMETYPE = [
   'video/x-flv',
   'video/ogg',
   'application/ogg',
+  'video/3gpp',
 ]
 export const ALLOWED_AUDIOS_MIMETYPE = [
   'audio/mpeg',

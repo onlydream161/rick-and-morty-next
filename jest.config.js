@@ -19,7 +19,6 @@ const customJestConfig = {
     '^@/(.*)': '<rootDir>/src/$1',
     '^.+\\.(svg)$': '<rootDir>/jest/__mocks__/svg.ts',
   },
-  coveragePathIgnorePatterns: ['<rootDir>/.*/index.ts$'],
   testEnvironment: 'jest-environment-jsdom',
   resolver: '<rootDir>/jest/resolver.js',
   watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],

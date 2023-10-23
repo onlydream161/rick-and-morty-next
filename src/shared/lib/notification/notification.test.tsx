@@ -22,7 +22,7 @@ describe('NotificationTests', () => {
   it('Info should be render', () => {
     const component = render(<Default status='info' />)
     expect(component.container).toBeInTheDocument()
-    expect(screen.getByTestId('notification-icon')).toHaveClass('stroke-background-primary')
+    expect(screen.getByTestId('notification-icon')).toHaveClass('stroke-gray')
     expect(screen.getByText(/info/i)).toBeInTheDocument()
   })
 })

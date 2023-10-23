@@ -21,6 +21,6 @@
       "@/jest/*": ["./jest/*"]
     }
   },
-  "include": ["src", "jest", "global.d.ts"],
+  "include": ["src", "jest", "worker", "global.d.ts", "service-worker.d.ts"],
   "exclude": ["node_modules"]
 }
