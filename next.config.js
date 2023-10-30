@@ -24,13 +24,16 @@ const baseConfig = {
       },
     }
   ),
-  output: 'standalone',
   typescript: {
     ignoreBuildErrors: true,
   },
   eslint: {
-    ignoreBuildErrors: true,
+    ignoreDuringBuilds: true,
   },
+  images: {
+    domains: ['rickandmortyapi.com'],
+  },
+  output: 'standalone',
   i18n,
   webpack: config => {
     config.module.rules.push({

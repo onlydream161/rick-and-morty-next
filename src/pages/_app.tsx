@@ -9,16 +9,14 @@ if (API_MOCKING === 'enabled') {
   require('@/app/mocks-server')
 }
 
-const _App = (props: AppPropsWithLayout) => {
-  return (
-    <>
-      <Head>
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-      </Head>
-      <App {...props} />
-    </>
-  )
-}
+const _App = (props: AppPropsWithLayout) => (
+  <>
+    <Head>
+      <meta name='viewport' content='width=device-width, initial-scale=1' />
+    </Head>
+    <App {...props} />
+  </>
+)
 
 // This disables the ability to perform automatic static optimization,
 // causing every page in your app to be server-side rendered.

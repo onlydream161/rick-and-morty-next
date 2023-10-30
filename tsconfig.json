@@ -18,7 +18,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/jest/*": ["./jest/*"]
+      "@/jest/*": ["./jest/*"],
+      "react": ["./node_modules/@types/react"]
     }
   },
   "include": ["src", "jest", "worker", "global.d.ts", "service-worker.d.ts"],
