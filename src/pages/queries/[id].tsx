@@ -6,6 +6,10 @@ import { QueryClient, dehydrate, useQuery } from 'react-query'
 import { Character } from '..'
 import { ParamsType } from '../posts/[id]'
 
+export interface TypeDeteilProps {
+  id: string
+}
+
 export const getStaticPaths = async () => {
   const characters: Character = await axios.get('https://rickandmortyapi.com/api/character/').then(res => res.data)
   const paths = characters.results.map(item => ({ params: { id: item.id.toString() } }))
@@ -16,7 +20,7 @@ export const getStaticPaths = async () => {
   }
 }
 
-const characterSingle = async id => {
+const characterSingle = async (id: string) => {
   const characters = await axios.get(`https://rickandmortyapi.com/api/character/${id}`).then(res => res.data)
   return characters
 }
@@ -33,7 +37,7 @@ export const getStaticProps = async ({ params }: ParamsType) => {
   }
 }
 
-const DeteilQuery = ({ id }) => {
+const DeteilQuery = ({ id }: TypeDeteilProps) => {
   const { data: character } = useQuery(['postSingle', id], () => characterSingle(id))
 
   return (
