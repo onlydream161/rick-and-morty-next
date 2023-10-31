@@ -7,7 +7,7 @@ interface PropsPostPage {
   posts: Character
 }
 
-const PostPage: FC<PropsPostPage> = ({ posts }) => <HomeCard posts={posts} />
+const PostPage: FC<PropsPostPage> = ({ posts }) => <HomeCard posts={posts} path={'posts'} />
 
 export default PostPage
 

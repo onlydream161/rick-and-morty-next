@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 
 export interface PostIdType {
-  character: Result
+  character: Result | undefined
 }
 export interface CharacterId {
   id: string

@@ -8,6 +8,7 @@ import { i18n } from 'next-i18next'
 import { withProviders } from './providers'
 import { useAfterMountEffect } from '@/shared/hooks'
 import { AppPropsWithLayout } from '@/shared/@types'
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
 
 NProgress.configure({ showSpinner: false })
 dayjs.locale(ru)
@@ -32,11 +33,26 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   const Layout = Component.Layout ?? (({ children }) => <>{children}</>)
 
+  const [queryClient] = React.useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  )
+
   return (
     <div className='flex flex-col justify-between h-full min-h-screen'>
       <main className='flex flex-col overflow-x-hidden min-w-base'>
         <Layout>
-          <Component {...pageProps} />
+          <QueryClientProvider client={queryClient}>
+            <Hydrate state={pageProps.dehydratedState}>
+              <Component {...pageProps} />
+            </Hydrate>
+          </QueryClientProvider>
         </Layout>
       </main>
     </div>

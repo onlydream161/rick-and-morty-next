@@ -6,9 +6,10 @@ import { FC } from 'react'
 
 interface HomeCardtype {
   posts: Character
+  path: string
 }
 
-export const HomeCard: FC<HomeCardtype> = ({ posts }) => {
+export const HomeCard: FC<HomeCardtype> = ({ posts, path }) => {
   const cards = posts.results
   return (
     <section className='container flex  min-w-[1440px] mt-[100px] pb-[50px]'>
@@ -19,7 +20,7 @@ export const HomeCard: FC<HomeCardtype> = ({ posts }) => {
             key={card.id}
           >
             <h1>{card.name}</h1>
-            <Link href={`/posts/${card.id}`}>
+            <Link href={`/${path}/${card.id}`}>
               <Image className=' hover:cursor-pointer' width={200} height={200} src={card.image} alt={card.name} />
             </Link>
           </div>

@@ -4,6 +4,7 @@ import { AppPropsWithLayout } from '@/shared/@types'
 import App from '@/app'
 //Next.js требует импортировать глобальные стили только в _app.tsx
 import '@/app/index.css'
+import React from 'react'
 
 if (API_MOCKING === 'enabled') {
   require('@/app/mocks-server')
