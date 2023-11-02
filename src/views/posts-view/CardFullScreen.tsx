@@ -13,6 +13,7 @@ export const CardFullScreen = ({ character }: PostIdType) => {
       <p className=' text-base mb-5'>{character?.status}</p>
       <p className=' text-base mb-5'>{character?.species}</p>
       <button
+        data-testid='button'
         className=' mt-16'
         onClick={() => {
           router.back()

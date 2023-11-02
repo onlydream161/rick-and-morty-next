@@ -5,6 +5,7 @@ const createJestConfig = nextJest({
 })
 
 const customJestConfig = {
+  dir: './',
   setupFilesAfterEnv: ['<rootDir>/jest/jest.setup.ts'],
   coverageDirectory: '<rootDir>/jest/coverage',
   collectCoverageFrom: ['**/*.{ts,tsx}', '!**/*.stories.{ts,tsx}', '!**/*.d.{ts,tsx}'],

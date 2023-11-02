@@ -3,15 +3,15 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { QueryClient, dehydrate, useQuery } from 'react-query'
 
-const characterList = async () => {
-  const characters = await axios.get('https://rickandmortyapi.com/api/character/?page=1').then(res => res.data)
+const characterList = async (id = 1) => {
+  const characters = await axios.get(`https://rickandmortyapi.com/api/character/?page=${id}`).then(res => res.data)
   return characters
 }
 
 export async function getStaticProps() {
   const queryC = new QueryClient()
 
-  await queryC.prefetchQuery('posts', characterList)
+  await queryC.prefetchQuery(['posts', 1], () => characterList(1))
 
   return {
     props: {
@@ -22,7 +22,7 @@ export async function getStaticProps() {
 
 const QueryPage = () => {
   const [page, setPage] = useState(1)
-  const { isLoading, data } = useQuery('posts', characterList)
+  const { isLoading, data } = useQuery(['posts', page], () => characterList(page))
 
   return (
     <div>
